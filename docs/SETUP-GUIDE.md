@@ -345,11 +345,32 @@ ls benchmark/results-pure-ftpd/
 
 ## 附录: 已验证的协议镜像大小
 
-| 协议 | Subject | 镜像大小 |
-|------|---------|----------|
-| FTP | PureFTPD | 1.33 GB |
-| RTSP | Live555 | 1.58 GB |
-| SIP | Kamailio | 2.7 GB |
+| 协议 | Subject | 镜像大小 | 论文评估 |
+|------|---------|----------|----------|
+| FTP | PureFTPD | 1.33 GB | ❌ (论文测 ProFTPD) |
+| RTSP | Live555 | 1.58 GB | ✅ |
+| SIP | Kamailio | 2.7 GB | ✅ |
+
+> **注**：论文 ProFuzzBench 基准评估使用的是 ProFTPD（而非 PureFTPD）、Live555、Lighttpd、Exim、Kamailio 共5种协议服务器。
+
+---
+
+## 附录: 论文信息
+
+| 项目 | 内容 |
+|------|------|
+| 论文名 | 大语言模型引导的协议模糊测试技术研究 |
+| 英文名 | Research on Protocol Fuzzing Technology Guided by Large Language Models |
+| 框架名 | LLMProFuzz (LPF) |
+| 期刊 | 信息网络安全，2025，25(12)：1847-1862 |
+| 作者 | 杨立群，李镇，韦超仁，闫治敏，仇勇鑫 |
+| 单位 | 北京航空航天大学网络空间安全学院 |
+
+**论文实验环境**：
+- CPU: Intel Core i9-7960X (32 核, 2.80GHz)
+- 内存: 32GB
+- 系统: Ubuntu 22.04.4 LTS
+- 测试时长: 12 小时/次，重复 3 次
 
 ---
 
