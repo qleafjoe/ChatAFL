@@ -12,7 +12,8 @@ We give at most 400 for the examples and 1300 for the stall prompt
 Similarly 1700 is for the example request in the seed enrichment
 */
 
-#define OPENAI_TOKEN "1"
+// API Key 从环境变量 MINIMAX_API_KEY 读取
+#define OPENAI_TOKEN getenv("MINIMAX_API_KEY")
 
 #define MAX_PROMPT_LENGTH 2048
 #define EXAMPLES_PROMPT_LENGTH 400

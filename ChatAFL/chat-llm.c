@@ -48,25 +48,29 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
     CURLcode res = CURLE_OK;
     char *answer = NULL;
     char *url = NULL;
+    // MiniMax OpenAI-compatible API
     if (strcmp(model, "instruct") == 0)
     {
-        url = "https://api.openai.com/v1/completions";
+        url = "https://api.minimax.io/v1/completions";
     }
     else
     {
-        url = "https://api.openai.com/v1/chat/completions";
+        url = "https://api.minimax.io/v1/chat/completions";
     }
-    char *auth_header = "Authorization: Bearer " OPENAI_TOKEN;
+    char *api_key = getenv("MINIMAX_API_KEY");
+    if (!api_key) api_key = "";
+    char *auth_header;
+    asprintf(&auth_header, "Authorization: Bearer %s", api_key);
     char *content_header = "Content-Type: application/json";
     char *accept_header = "Accept: application/json";
     char *data = NULL;
     if (strcmp(model, "instruct") == 0)
     {
-        asprintf(&data, "{\"model\": \"gpt-3.5-turbo-instruct\", \"prompt\": \"%s\", \"max_tokens\": %d, \"temperature\": %f}", prompt, MAX_TOKENS, temperature);
+        asprintf(&data, "{\"model\": \"MiniMax-M2.7\", \"prompt\": \"%s\", \"max_tokens\": %d, \"temperature\": %f}", prompt, MAX_TOKENS, temperature);
     }
     else
     {
-        asprintf(&data, "{\"model\": \"gpt-3.5-turbo\",\"messages\": %s, \"max_tokens\": %d, \"temperature\": %f}", prompt, MAX_TOKENS, temperature);
+        asprintf(&data, "{\"model\": \"MiniMax-M2.7\",\"messages\": %s, \"max_tokens\": %d, \"temperature\": %f}", prompt, MAX_TOKENS, temperature);
     }
     curl_global_init(CURL_GLOBAL_DEFAULT);
     do
@@ -142,6 +146,8 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
     {
         free(data);
     }
+
+    free(auth_header);
 
     curl_global_cleanup();
     return answer;

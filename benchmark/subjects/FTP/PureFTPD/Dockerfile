@@ -1,5 +1,9 @@
 FROM ubuntu:20.04
 
+# MiniMax API Key (passed via --build-arg during docker build)
+ARG MINIMAX_API_KEY
+ENV MINIMAX_API_KEY=${MINIMAX_API_KEY}
+
 # Install common dependencies
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get -y update && \
