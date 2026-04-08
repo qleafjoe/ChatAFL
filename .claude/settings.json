@@ -1,0 +1,10 @@
+{
+  "language": "chinese",
+  "permissions": {
+    "allow": [
+      "Bash(docker start:*)",
+      "Bash(find \"e:/lunwen/ChatAFL/benchmark\" -name \"*.sh\" -exec file {} \\;)",
+      "Bash(find \"e:/lunwen/ChatAFL\" -name \"*.sh\" -exec sed -i 's/\\\\r$//' {} \\;)"
+    ]
+  }
+}

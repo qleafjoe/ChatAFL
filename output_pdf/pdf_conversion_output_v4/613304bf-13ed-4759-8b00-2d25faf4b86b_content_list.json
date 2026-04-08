@@ -1,0 +1,3505 @@
+[
+    {
+        "type": "text",
+        "text": "大语言模型引导的协议模糊测试技术研究",
+        "text_level": 1,
+        "bbox": [
+            129,
+            144,
+            890,
+            179
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "杨立群 1,2,3，李镇 1 ，韦超仁 1 ，闫治敏1 ，仇勇鑫 1",
+        "bbox": [
+            181,
+            186,
+            836,
+            203
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "（1. 北京航空航天大学网络空间安全学院，北京 100191；2. 中国民用航空飞行学院民航安全工程学院，广汉 618307；",
+        "bbox": [
+            132,
+            207,
+            883,
+            222
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "3. 四川省全电通航飞行器关键技术工程研究中心，广汉 618307）",
+        "bbox": [
+            297,
+            225,
+            714,
+            239
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "摘 要：网络协议软件漏洞频发，严重威胁网络空间安全。以AFLNet为代表的灰盒协议模糊测试工具通过引入覆盖率反馈与状态建模机制提升了漏洞挖掘能力，但受限于“语义屏障”，此类工具难以理解协议的语法结构与上下文逻辑，测试效率较低。近年来，大语言模型在语义建模、上下文推理与代码生成等任务中展现出强大的泛化与理解能力，为打破这一屏障提供了关键技术路径。文章提出了一种由大语言模型引导的协议模糊测试框架（LLMProFuzz，LPF），在以下 3 个层面克服传统方法的局限性 ：一是利用少样本提示工程自动提取协议语法模板 ；二是基于历史漏洞特征设计种子富集机制，生成覆盖边界场景和异常逻辑的高价值初始用例；三是引入结构感知的变异位置选择策略，提高有效测试用例的生成比例。在 HTTP、FTP、RTSP 等典型协议栈中的实验结果表明，LPF 在代码覆盖率、状态覆盖率和测试效率等方面均显著优于AFLNet 与 StateAFL 等基准工具。",
+        "bbox": [
+            181,
+            251,
+            838,
+            442
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "关键词：大语言模型；网络协议；模糊测试；结构感知变异；提示工程",
+        "bbox": [
+            215,
+            445,
+            754,
+            459
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "中图分类号 ：TP309 文献标志码 ： A 文章编号 ：1671-1122（2025）12-1847-16",
+        "bbox": [
+            215,
+            469,
+            836,
+            485
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "中文引用格式：杨立群，李镇，韦超仁，等.大语言模型引导的协议模糊测试技术研究[J].信息网络安全，2025，25（12）：1847-1862.",
+        "bbox": [
+            181,
+            504,
+            834,
+            533
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "英文引用格式 ：YANG Liqun, LI Zhen, WEI Chaoren, et al. Research on Protocol Fuzzing Technology Guidedby Large Language Models[J]. Netinfo Security, 2025, 25(12): 1847-1862.",
+        "bbox": [
+            181,
+            538,
+            836,
+            570
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Research on Protocol Fuzzing Technology Guided by Large Language Models ",
+        "text_level": 1,
+        "bbox": [
+            218,
+            591,
+            800,
+            633
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "YANG Liqun $^ { 1 , 2 , 3 }$ , LI Zhen1 , WEI Chaoren1 , YAN Zhimin1 , QIU Yongxin1 ",
+        "bbox": [
+            240,
+            644,
+            777,
+            660
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "(1. School of Cyber Science and Technology, Beihang University, Beijing 100191, China; 2. School of Civil Aviation Safety Engineering, Civil Aviation Flight University of China, Guanghan 618307, China; 3. Engineering Research Center of Key Technologies for All-Electric General Aviation Aircraft of Sichuan Province, Guanghan 618307, China) ",
+        "bbox": [
+            184,
+            663,
+            833,
+            720
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Abstract: Security vulnerabilities in network protocol software occur frequently and pose serious threats to cyberspace security. Gray-box protocol fuzzing tools, such as ",
+        "bbox": [
+            181,
+            728,
+            836,
+            759
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "header",
+        "text": "2025 年第 12 期",
+        "bbox": [
+            689,
+            65,
+            774,
+            78
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "header",
+        "text": "",
+        "bbox": [
+            800,
+            49,
+            926,
+            61
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "header",
+        "text": "理论研究",
+        "bbox": [
+            823,
+            64,
+            901,
+            78
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "header",
+        "text": "doi ：10.3969/j.issn.1671-1122.2025.12.002",
+        "bbox": [
+            99,
+            84,
+            310,
+            95
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "page_footnote",
+        "text": "收稿日期：2025-08-23",
+        "bbox": [
+            119,
+            803,
+            272,
+            816
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "page_footnote",
+        "text": "基金项目：国家自然科学基金 [62302025,62572027,U2333205]；四川省全电通航飞行器关键技术工程研究中心开放课题 [CAFUC 202401KF003]作者简介：杨立群（1990—），男，河北，副教授，博士，CCF 会员，主要研究方向为网络信息安全、工业互联网和工控安全；李镇（1995—），男，山东，硕士研究生，主要研究方向为网络信息安全、模糊测试；韦超仁（2002—），男，四川，硕士研究生，主要研究方向为模糊测试、大语言模型；闫治敏（2003—），男，内蒙古，硕士研究生，主要研究方向为大语言模型、模糊测试；仇勇鑫（2001—），男，山西，硕士研究生，主要研究方向为模糊测试。",
+        "bbox": [
+            119,
+            817,
+            915,
+            890
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "page_footnote",
+        "text": "通信作者：杨立群 lqyang@buaa.edu.cn",
+        "bbox": [
+            119,
+            891,
+            357,
+            904
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "footer",
+        "text": "万方数据",
+        "bbox": [
+            78,
+            969,
+            147,
+            983
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "page_number",
+        "text": "1847 ",
+        "bbox": [
+            890,
+            942,
+            924,
+            953
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "AFLNet, have improved vulnerability detection by introducing coverage feedback and state modeling mechanisms. However, constrained by a persistent “semantic barrier”, these tools struggle to comprehend protocol syntax structures and contextual logic, resulting in limited testing efficiency. In recent years, large language models have demonstrated exceptional generalization and comprehension capabilities in tasks such as semantic modeling, contextual reasoning, and code generation, providing a promising pathway to overcome this barrier. This paper proposed LPF (LLMProFuzz), a protocol fuzzing framework guided by large language models, which addressed the limitations of traditional methods from three perspectives: firstly, automatically extracting protocol syntax templates through few-shot prompt engineering; secondly, designing a seed enrichment mechanism based on historical vulnerability characteristics to generate high-value initial cases that cover boundary and exceptional scenarios; thirdly, introducing a structure-aware mutation location selection strategy to increase the proportion of effective test cases. Experimental results on representative protocol stacks, including HTTP, FTP, and RTSP, demonstrate that LPF significantly outperforms baseline tools such as AFLNet and StateAFL in terms of code coverage, state coverage, and testing efficiency. ",
+        "bbox": [
+            156,
+            145,
+            815,
+            396
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Key words: large language models; network protocol; fuzzing; structure-aware mutation; prompt engineering ",
+        "bbox": [
+            158,
+            398,
+            816,
+            429
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "0 引言",
+        "text_level": 1,
+        "bbox": [
+            78,
+            441,
+            138,
+            458
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "随着网络技术的不断演进，网络协议已成为现代信息系统中不可或缺的基础组件，其安全性直接关系到国家关键基础设施的稳定运行、企业信息系统的安全防护以及公众数据的隐私保障。然而，协议实现逻辑的不断复杂化与漏洞检测机制的滞后性为攻击者创造了众多可乘之机。近年来，网络协议漏洞相关的安全事件频发，造成服务中断、数据泄露、远程控制等严重后果，这些都凸显了网络协议漏洞挖掘工作的重要性和紧迫性[1]。2023年发现的“Rapid Reset”漏洞（CVE-2023-44487）主要影响HTTP/2协议服务器，攻击者可以利用该协议的快速重置机制发起分布式拒绝服务（Distributed Denial of Service，DDoS）攻击，导致Google、Amazon和Microsoft等云平台面临前所未有的风险。2024年披露的“RegreSSHion”漏洞（CVE-2024-6387）允许未授权攻击者通过构造特殊SSH报文以root身份执行任意代码，影响了全球超过1400万台SSH服务器。此外，通用漏洞披露（Common Vulnerabilitiesand Exposures，CVE）平台数据表明，近十年全球新增漏洞数量持续攀升，年增长幅度更是居高不下，其中，2024年披露的漏洞总数已超过40000个，再创历史新高。",
+        "bbox": [
+            76,
+            467,
+            475,
+            906
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "这些案例与数据均表明，网络协议安全已成为网络空间安全治理中的关键挑战[2]。",
+        "bbox": [
+            500,
+            440,
+            893,
+            479
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "协议模糊测试（Protocol Fuzzing）作为一种主流的自动化漏洞挖掘方法，在学术界和工业界受到广泛关注[3]。该技术经历了从黑盒测试到白盒测试再到灰盒测试的演变[4]。基于黑盒的模糊测试方法（如SPIKE、Peach等）依赖人工或规则驱动，缺乏对运行状态的感知能力；基于白盒的模糊测试方法（如SAGE）通过符号执行实现精确路径探索，但因其计算开销巨大，难以适用于大规模系统[5,6]。2020年，PHAM[7]等人提出了AFLNet，将覆盖率引导的灰盒模糊测试策略引入有状态网络协议测试，标志着协议模糊测试进入了“覆盖率驱动”的智能化时代。然而，AFLNet在实践中仍面临以下三大挑战。",
+        "bbox": [
+            498,
+            485,
+            895,
+            748
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "1）协议语法与语义感知能力欠缺 ",
+        "text_level": 1,
+        "bbox": [
+            535,
+            754,
+            779,
+            771
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "AFLNet在测试用例生成与种子变异过程中缺乏对协议语法和上下文语义的深入理解，导致测试工具缺乏语法指导[8]。",
+        "bbox": [
+            500,
+            776,
+            895,
+            837
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "2）初始种子覆盖面不足 ",
+        "text_level": 1,
+        "bbox": [
+            532,
+            844,
+            712,
+            860
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "在测试执行过程中，AFLNet依赖的初始种子数量有限，难以覆盖协议交互的边界路径与异常场景，初",
+        "bbox": [
+            500,
+            866,
+            895,
+            905
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "header",
+        "text": "",
+        "bbox": [
+            70,
+            48,
+            196,
+            61
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "header",
+        "text": "理论研究",
+        "bbox": [
+            93,
+            63,
+            173,
+            78
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "header",
+        "text": "2025 年第 12 期",
+        "bbox": [
+            220,
+            65,
+            308,
+            78
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "page_number",
+        "text": "1848 ",
+        "bbox": [
+            73,
+            942,
+            106,
+            953
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "footer",
+        "text": "万方数据",
+        "bbox": [
+            78,
+            969,
+            147,
+            983
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "始种子库的消息类型较少，限制了模糊测试的探索能力，导致测试容易陷入浅层路径的重复探索。",
+        "bbox": [
+            101,
+            144,
+            495,
+            183
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "3）变异策略盲目且低效 ",
+        "text_level": 1,
+        "bbox": [
+            135,
+            189,
+            313,
+            203
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "AFLNet采用随机化的位翻转、字节替换等固定算子进行种子变异，这种缺乏结构和语义约束的变异策略容易破坏测试用例的格式合法性，导致测试用例缺乏实际价值，严重制约测试效率的提升。",
+        "bbox": [
+            101,
+            209,
+            496,
+            292
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "以上问题的根源在于测试工具缺乏对协议语法和语义的理解，因此，仅通过优化覆盖率反馈算法或改进变异算子等方式已难以实现测试能力的质变。要突破这一瓶颈，模糊测试技术亟需从“浅层指标引导的暴力破解”范式，演进为“深层理解驱动的智能测试”范式。",
+        "bbox": [
+            99,
+            298,
+            496,
+            401
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "近年来，人工智能特别是大语言模型（Large LanguageModels，LLMs）技术发展迅猛，以ChatGPT系列为代表的LLMs能够从输入中识别上下文关系、抽取语法规则并生成语义合法的代码片段，这与协议模糊测试对输入语义建模和结构感知的需求高度契合，为解决协议模糊测试中的“语义鸿沟”问题提供了新思路。尽管LLMs广泛应用于程序测试、代码生成、多模态融合等方面，但将其系统地融入有状态协议模糊测试中，构建一套完整的LLMs驱动的模糊测试机制，解决协议语法有效提取、种子高质量生成与变异效率改善等核心问题，仍是一个具有挑战性且有研究价值的课题。为此，本文提出了一种由大语言模型引导的协议模糊测试框架（LLMProFuzz，LPF）。该框架构建了一种由大语言模型赋能的灰盒协议模糊测试机制，将LLMs的语义理解与生成能力深度融入预处理（协议语法提取）、初始化（基于漏洞特征的种子富集）和测试执行（结构感知变异）3个核心阶段，从而有效提升了协议模糊测试的智能化水平。本文的主要贡献如下。",
+        "bbox": [
+            99,
+            407,
+            496,
+            794
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "1）提出了一种基于LLMs多轮对话的协议语法提取方法，结合LLMs对自然语言的理解和生成能力，根据协议规范文件，自动生成高精度协议语法模板，采用多轮交互和一致性检查方法筛选有效语法项，为结构化测试用例生成和语义约束变异提供支撑。",
+        "bbox": [
+            99,
+            800,
+            495,
+            904
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "2）设计了一种基于历史漏洞特征的种子富集策略，通过提示词引导LLMs生成包含已知漏洞触发模式的高价值初始种子，有效提升了种子库对边界路径与异常场景的覆盖能力。",
+            "3）提出了一种基于结构感知的种子变异优化策略，基于协议语法结构，指导模糊测试器选择合适的种子变异位置，从而提升测试用例变异的有效性。",
+            "4）在多个典型协议测试场景下对LPF进行对比实验，结果表明，LPF较AFLNet和StateAFL的代码覆盖率分别提升了 $4 . 5 9 \\%$ 和 $5 . 4 4 \\%$ ，状态覆盖率分别提升了$1 9 . 7 8 \\%$ 和 $3 . 3 2 \\%$ 。此外，LPF在崩溃触发速度上也显著优于现有工具。"
+        ],
+        "bbox": [
+            521,
+            144,
+            916,
+            401
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "1 相关工作",
+        "text_level": 1,
+        "bbox": [
+            524,
+            411,
+            622,
+            427
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "1.1 AFLNet 工具",
+        "text_level": 1,
+        "bbox": [
+            524,
+            438,
+            665,
+            453
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "AFLNet是现代协议模糊测试领域的一项里程碑式工作，它将覆盖率引导的灰盒模糊测试思想从文件输入型程序扩展到了有状态的网络协议程序[9]。AFLNet作为基于遗传算法的高效模糊测试工具，其核心与AFL（American Fuzzy Lop）类似[10]。两者均通过对被测程序进行插桩来实时追踪代码执行路径，当变异输入触发新路径时，将其保留至种子队列并优先变异，以此高效探索程序代码空间。不同的是，AFLNet通过调用网络接口，从响应报文中提取状态码，利用服务器响应码来构建状态模型，引导模糊测试的执行过程。此外，AFLNet沿用了AFL的fork-server机制，显著降低了重复执行被测程序时的启动开销，提升了测试吞吐率。AFLNet原理如图1所示。",
+        "bbox": [
+            521,
+            459,
+            918,
+            746
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "image",
+        "img_path": "images/a0bfc25a993cdf6a2b26189c2591be013d5d4f7f0122771f566d5c219eb3893c.jpg",
+        "image_caption": [
+            "图 1 AFLNet 原理图"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            527,
+            754,
+            915,
+            883
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "header",
+        "text": "2025 年第 12 期",
+        "bbox": [
+            689,
+            65,
+            774,
+            78
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "header",
+        "text": "",
+        "bbox": [
+            800,
+            49,
+            926,
+            61
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "header",
+        "text": "理论研究",
+        "bbox": [
+            823,
+            64,
+            901,
+            78
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "footer",
+        "text": "万方数据",
+        "bbox": [
+            78,
+            968,
+            147,
+            983
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "page_number",
+        "text": "1849 ",
+        "bbox": [
+            890,
+            942,
+            926,
+            953
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "具体来说，AFLNet在AFL的核心框架之上进行了以下3个方面的扩展。",
+        "bbox": [
+            78,
+            144,
+            473,
+            183
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "1）网络通信模块",
+        "text_level": 1,
+        "bbox": [
+            112,
+            189,
+            241,
+            203
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "AFLNet增加了一个网络通信模块，使其能够扮演通信客户端的角色，通过TCP或UDP协议向待测试的服务器程序发送测试用例（即协议消息序列）。这使得模糊测试器能够与网络服务进行真实的交互。",
+        "bbox": [
+            76,
+            209,
+            473,
+            292
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "2）协议状态追踪",
+        "text_level": 1,
+        "bbox": [
+            112,
+            298,
+            241,
+            313
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "对于有状态网络协议（如FTP、RTSP等），服务器的行为不仅取决于当前接收的消息，还依赖之前的交互历史信息。AFLNet通过监控服务器返回的响应码序列（如HTTP的“200 OK”和“404 Not Found”）对服务器的状态抽象建模。在测试过程中，一旦某个测试用例引导服务器到达了一个新状态，AFLNet便会将该测试用例视为高价值种子并纳入队列保留。这种基于状态反馈的机制能有效引导模糊测试深入探索协议的状态空间。",
+        "bbox": [
+            76,
+            319,
+            473,
+            510
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "3）消息级变异策略 ",
+        "text_level": 1,
+        "bbox": [
+            112,
+            516,
+            259,
+            532
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "除了AFL原有的字节级变异策略外，AFLNet还引入了针对协议消息的变异策略，允许对消息序列中的单个消息进行独立的变异、删除或重复，以更好地模拟协议交互中可能出现的异常。",
+        "bbox": [
+            78,
+            537,
+            473,
+            618
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "基于以上扩展，AFLNet能够系统性地对有状态网络协议进行模糊测试，并成功发现了多个知名软件（如LightFTP、Live555）中的安全漏洞。为提升测试效率，后续工作（如SNPSFuzzer[11]和SnapFuzz[12]）通过引入快照（Snapshot）技术避免了重复的网络重连，而NSFuzz[13]则通过识别网络事件循环消除了不必要的等待时间。这些方法虽然能在一定程度上提高模糊测试的吞吐率，但在初始用例获取和变异策略选择等方面仍存在较大的优化空间[14]，这也是本文工作的主要动机。",
+        "bbox": [
+            76,
+            625,
+            473,
+            837
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "1.2 协议状态机",
+        "text_level": 1,
+        "bbox": [
+            78,
+            844,
+            210,
+            860
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "网络协议状态机（Protocol State Machine，PSM）是一种用于建模网络通信过程中状态变化行为的形式",
+        "bbox": [
+            78,
+            867,
+            473,
+            905
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "化工具，通过有限状态集合与明确定义的状态转移规则，描述协议实体在接收到消息或触发事件后如何从一个状态转移到另一个状态[15]。PSM在协议实现、模糊测试、形式验证和漏洞分析等领域具有广泛的应用价值。一般地，PSM可定义为一个五元组，如公式（1）所示。",
+        "bbox": [
+            496,
+            144,
+            895,
+            269
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "text": "$$\nM = (S, \\Sigma , \\delta , s _ {0}, F) \\tag {1}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            535,
+            276,
+            895,
+            292
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "其中， $S$ 表示状态集合，包含协议运行过程中的所有可能状态； $\\varSigma$ 为输入符号集合，表示协议实体可能接收到的消息或事件； $\\delta \\colon S \\times \\Sigma  S$ 是状态转移函数，定义在给定状态下接收特定输入后转移到的新状态； $s _ { 0 } \\in S$ 为初始状态； $F \\subseteq S$ 为终止状态集合，表示协议交互可能的结束状态。",
+        "bbox": [
+            496,
+            297,
+            893,
+            423
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "在实际网络协议设计中，状态机主要用于规范通信流程，限制非法输入和异常行为。客户端与服务器在协议交互过程中依据状态机模型进行状态推进，从而实现连接建立、认证协商、数据传输、连接释放等功能。例如，在FTP协议中，服务器状态通常依次经历初始连接（INIT）、用户身份验证（AUTH_WAIT）、命令处理（COMMAND）、数据传输（TRANSFER）与连接关闭（CLOSE）等状态。协议状态机可以使用有向图建模，其中，节点表示状态，边表示状态之间的合法转移关系。设状态数为 $\\left| S \\right| { = } n$ ，则理论上最多存在 $n { \\bigl ( } n - 1 { \\bigr ) }$ 条有向状态迁移边，表示任意两个状态之间均可达。然而，在实际协议设计中，为了保障安全性与可控性，会显式约束状态之间的转移，仅保留合法路径。协议交互过程可抽象为一条状态路径，如公式（2）所示，每一步转移均满足公式（3），其中 $a _ { i } \\in \\Sigma$ 。",
+        "bbox": [
+            496,
+            428,
+            895,
+            752
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "text": "$$\nP = \\left(s _ {0}, s _ {1}, \\dots , s _ {k}\\right) \\tag {2}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            535,
+            758,
+            893,
+            775
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "text": "$$\ns _ {i + 1} = \\delta \\left(s _ {i}, a _ {i}\\right) \\tag {3}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            535,
+            780,
+            893,
+            796
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "该路径可用于形式化分析协议的状态覆盖率、死状态、不可达状态及冗余状态等，是协议验证与模糊测试的重要基础。",
+        "bbox": [
+            496,
+            800,
+            893,
+            860
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "状态机建模不仅有助于协议规范的编写与实现， 更能在模糊测试技术中发挥重要作用。传统模糊测试 ",
+        "bbox": [
+            500,
+            866,
+            893,
+            905
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "header",
+        "text": "",
+        "bbox": [
+            70,
+            48,
+            194,
+            61
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "header",
+        "text": "理论研究",
+        "bbox": [
+            93,
+            64,
+            173,
+            78
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "header",
+        "text": "2025 年第 12 期",
+        "bbox": [
+            220,
+            65,
+            308,
+            78
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "page_number",
+        "text": "1850 ",
+        "bbox": [
+            73,
+            942,
+            106,
+            953
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "footer",
+        "text": "万方数据",
+        "bbox": [
+            78,
+            969,
+            147,
+            983
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "由于缺乏协议状态感知能力，容易生成违反状态机逻辑的非法消息，导致被测系统提前关闭连接，状态覆盖率较低[16]。状态感知的模糊测试工具则依赖协议状态机信息，从合法的初始状态出发，逐步推进状态，生成与状态一致的有效消息序列，从而大幅提升测试效率与漏洞触发概率。",
+        "bbox": [
+            99,
+            144,
+            496,
+            270
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "1.3 主流网络协议服务器软件",
+        "text_level": 1,
+        "bbox": [
+            102,
+            276,
+            344,
+            293
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "网络协议的实现依赖于特定的服务器软件，这些软件不仅要完成协议规范的报文解析与处理，还要承担实际网络环境中的功能执行与逻辑调度[17]。为方便理解面向协议服务器的模糊测试场景，本文针对流媒体（RTSP）、文件传输（FTP）、Web服务（HTTP）、电子邮件（SMTP）和实时通信（SIP）等典型协议，选取了以下5款具有代表性的开源服务器软件进行简要介绍。",
+        "bbox": [
+            99,
+            299,
+            496,
+            467
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "1）Live555 ",
+        "text_level": 1,
+        "bbox": [
+            137,
+            475,
+            218,
+            487
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "基于 $\\mathrm { C } { + }$ 开发的流媒体框架，完整实现了RTSP、RTP、RTCP及SIP协议。核心组件Live555 Media Server支持命令行接口，采用事件驱动模型与模块化架构，具备跨平台特性，广泛应用于IP摄像头、嵌入式视频终端及媒体代理服务器等场景。",
+        "bbox": [
+            99,
+            496,
+            496,
+            599
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "2）ProFTPD ",
+        "text_level": 1,
+        "bbox": [
+            135,
+            606,
+            228,
+            620
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "功能完备的FTP服务器，支持类Unix与Windows系统。其配置语法与Apache兼容，提供虚拟主机、目录级访问控制（.ftpaccess）、SSL/TLS加密及匿名访问等高级功能。",
+        "bbox": [
+            101,
+            627,
+            496,
+            708
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "3）Lighttpd ",
+        "text_level": 1,
+        "bbox": [
+            135,
+            714,
+            220,
+            730
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "面向高并发与资源受限环境的Web服务器，完整实现HTTP/1.1协议，采用单进程异步事件驱动架构，显著降低内存开销并提升吞吐性能，广泛部署于物联网网关、嵌入式平台及轻量级Web服务。",
+        "bbox": [
+            99,
+            735,
+            496,
+            817
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "4）Exim ",
+        "text_level": 1,
+        "bbox": [
+            135,
+            824,
+            200,
+            838
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "一款适用于类Unix系统的邮件传输代理（MTA），可实现SMTP/LMTP协议及TLS加密、身份验证、垃圾邮件过滤等扩展功能，为电子邮件系统提供高度灵",
+        "bbox": [
+            99,
+            845,
+            496,
+            905
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "活的传输控制能力。",
+        "bbox": [
+            522,
+            144,
+            665,
+            160
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "5）Kamailio ",
+        "text_level": 1,
+        "bbox": [
+            557,
+            168,
+            645,
+            180
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "基于SIP协议的高性能信令服务器，遵循RFC3261标准并扩展支持呼叫路由、负载均衡、TLS加密及WebRTC，广泛应用于电信级VoIP网络与企业统一通信平台。",
+        "bbox": [
+            521,
+            188,
+            916,
+            270
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "选择以上主流开源软件作为测试目标，能够有效测试LPF框架对不同类型协议模糊测试的泛化能力。此外，这些软件拥有公开的漏洞历史信息和活跃的开发者社区，便于对发现的崩溃（Crash）进行验证和定性，从而更客观地评价本文方法在真实漏洞挖掘场景下的实际效果。",
+        "bbox": [
+            521,
+            275,
+            918,
+            400
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "1.4 LLMs 及其在模糊测试中的应用",
+        "text_level": 1,
+        "bbox": [
+            522,
+            407,
+            815,
+            423
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "LLMs是基于海量文本数据训练的深度学习模型，其核心技术基础是2017年由VASWANI[18]等人提出的Transformer架构。与传统的循环神经网络（RecurrentNeural Network，RNN）或卷积神经网络（ConvolutionalNeural Network，CNN）不同，Transformer通过其创新的自注意力机制（Self-Attention）能够并行处理序列中的所有元素，并高效地捕捉长距离语义依赖关系。这一架构突破使得训练拥有数千亿甚至万亿级别参数的模型成为可能。以GPT系列、DeepSeek、Gemini等为代表的LLMs，通过在海量文本和代码语料上进行预训练，学习到了丰富的语言规律、事实知识和推理能力。",
+        "bbox": [
+            521,
+            430,
+            918,
+            665
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "提示工程（Prompt Engineering）是与LLMs交互以引导其生成期望输出的关键技术[19]。一个精心设计的提示词（Prompt）能够有效激活LLMs的内部知识库，并指导其完成特定任务。在模糊测试场景中，提示工程主要用于提取协议语法、生成高质量的测试用例以及优化变异策略。少样本学习（Few-Shot Learning）是提示工程中的一种高级技巧，通过在提示中提供多个具体的“输入—输出”对作为示例，让模型在不进行参数更新的情况下，快速适应新任务的格式和要求。",
+        "bbox": [
+            521,
+            671,
+            918,
+            861
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "近年来，研究人员积极探索LLMs在模糊测试领域中的应用，并取得了一系列令人瞩目的进展[20]。在",
+        "bbox": [
+            521,
+            866,
+            916,
+            905
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "header",
+        "text": "2025 年第 12 期",
+        "bbox": [
+            689,
+            65,
+            774,
+            78
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "header",
+        "text": "",
+        "bbox": [
+            800,
+            49,
+            926,
+            61
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "header",
+        "text": "理论研究",
+        "bbox": [
+            823,
+            64,
+            901,
+            78
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "footer",
+        "text": "万方数据",
+        "bbox": [
+            78,
+            968,
+            147,
+            983
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "page_number",
+        "text": "1851 ",
+        "bbox": [
+            890,
+            942,
+            924,
+            955
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "基于生成的模糊测试工具中，Codamosa[21]将LLMs应用于Python模块的测试用例生成，通过模型自动推导函数的参数约束与异常处理分支，其代码覆盖率较人工编写的测试用例提升了 $2 5 \\%$ 。为测试深度学习框架API的安全性，TitanFuzz[22]利用LLMs生成高维张量输入与异常操作序列，在TensorFlow 2.12版本中发现了12个未知的安全漏洞。FuzzGPT[23]专注于生成边界测试用例，通过精心设计的提示词引导LLMs模拟协议交互过程中的极端场景（如并发请求冲突、服务器资源耗尽），在HTTP/3协议软件中成功挖掘到了3个零日漏洞。$\\mathrm { E C G } ^ { \\mathrm { [ 2 4 ] } }$ 利用LLMs生成可调用目标内核API的C语言测试代码，并通过迭代编译反馈生成有效规约，实现高语义感知的测试用例构造，其代码覆盖率平均提升了 $1 6 . 0 2 \\%$ 。5GPT[25]融合5G领域安全属性、历史CVE信息与思维链提示方法，通过多轮交互和双层筛选机制，生成高质量测试用例，成功识别了47个潜在漏洞。RESTLess[26]通过融合LLMs和规约增强技术来生成复杂且语义合理的长请求序列，提升了API模糊测试的语义深度和状态覆盖率，并发现了38个漏洞。LLMIF[27]针对IoT协议（如Zigbee），结合提示和领域增强实现协议种子自动生成，使代码覆盖率提升了 $5 5 \\%$ 。",
+        "bbox": [
+            76,
+            144,
+            475,
+            595
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "同时，基于变异的模糊测试工具也从LLMs中获益匪浅。FuzzCoder[28]开发了一种基于微调LLMs的字节级变异策略，能够从历史攻击样本中学习模式，提升字节序列上的脆弱性发现效率。BertRLFuzzer[29]结合了BERT模型与强化学习技术，动态优化Web漏洞的探测策略，使其在SQL注入与XSS漏洞上的发现率较传统方法提高了 $2 7 \\%$ 。WhiteFox[30]则将LLMs与白盒分析技术结合，通过模型理解编译器的中间表示来指导变异，显著提升了对编译器漏洞的发现能力。EOM[31]等人将覆盖率反馈与LLMs输出回路嵌入变异流程，通过强化学习加权改写JavaScript引擎测试输入，实现了漏洞发现与覆盖率的显著提升。此外，Fuzz4All[32]创新性地融合了提示工程与变异策略，利用LLMs从文档中提取简洁的提示，从而生成兼具多样性并且结",
+        "bbox": [
+            76,
+            603,
+            475,
+            905
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "构合规的测试代码片段。",
+        "bbox": [
+            500,
+            145,
+            674,
+            160
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "以上研究表明，LLMs正逐步从辅助生成工具演进为测试策略的核心组成部分，基于LLMs的模糊测试工具能够显著提升测试效率与漏洞触发能力。然而，将LLMs应用于协议模糊测试仍面临一些挑战，包括如何保证语法提取的精度、如何降低模型交互的性能开销，以及如何利用LLMs指导变异策略等，这些都是本文需要着力解决的问题。",
+        "bbox": [
+            498,
+            167,
+            895,
+            313
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "2 设计与实现",
+        "text_level": 1,
+        "bbox": [
+            500,
+            322,
+            620,
+            339
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "为了解决传统协议模糊测试的挑战，本文设计并实现了LPF（LLMProFuzz）框架。该框架基于AFLNet进行扩展，通过模块化设计，将LLMs的语义理解能力集成到灰盒模糊测试流程中。在AFLNet的基础上，LPF主要进行了以下3个部分的改进：1）基于LLMs的协议语法提取模块实现了协议语法信息的自动化提取；2）基于历史漏洞的种子富集模块扩展了初始种子的多样性及语义覆盖面；3）基于结构感知的变异策略优化方法提高了种子变异的质量和测试效率。",
+        "bbox": [
+            498,
+            349,
+            895,
+            541
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "2.1 框架概述",
+        "text_level": 1,
+        "bbox": [
+            500,
+            547,
+            612,
+            561
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "LPF在继承AFLNet框架的状态追踪（用于识别协议状态转移）和代码覆盖率反馈（用于引导探索新路径）两大核心机制的基础上，引入了协议语法提取模块、种子富集模块和结构感知变异模块3个关键增强模块，从预处理、输入生成到变异执行3个层面系统性优化测试流程，其整体架构如图2所示。",
+        "bbox": [
+            498,
+            569,
+            895,
+            695
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "image",
+        "img_path": "images/61d2c02a6216131c203aaeb3dce7b78fa77c34aafb9ff8b5f8dfb78a6c87f57e.jpg",
+        "image_caption": [
+            "图 2 LPF 整体架构"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            506,
+            701,
+            887,
+            861
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "协议语法提取模块主要工作在模糊测试的预处理",
+        "bbox": [
+            535,
+            888,
+            895,
+            904
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "header",
+        "text": "",
+        "bbox": [
+            70,
+            48,
+            196,
+            61
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "header",
+        "text": "理论研究",
+        "bbox": [
+            93,
+            63,
+            173,
+            78
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "header",
+        "text": "2025 年第 12 期",
+        "bbox": [
+            220,
+            65,
+            308,
+            78
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "page_number",
+        "text": "1852 ",
+        "bbox": [
+            73,
+            942,
+            106,
+            953
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "footer",
+        "text": "万方数据",
+        "bbox": [
+            78,
+            969,
+            147,
+            983
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "阶段，在测试开始前调用LLMs解析协议文档或流量数据，生成结构化的协议语法模板库，为后续测试提供协议语法信息的先验知识；种子富集模块工作在模糊测试的初始化阶段，利用LLMs对历史漏洞触发模式的先验知识，生成融合了漏洞特征的初始测试用例，以扩展和优化初始种子库；结构感知变异模块结合语法模板对种子进行结构感知变异，取代传统模糊测试框架的随机变异逻辑，提升有效测试用例的生成比例，进而提升测试效率。LPF的3个核心引擎与AFLNet原有的种子队列、变异器、状态追踪器和反馈机制紧密集成，通过共享内存和消息队列进行通信，形成一个智能化的闭环反馈系统。",
+        "bbox": [
+            99,
+            144,
+            498,
+            401
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "2.2 基于 LLMs 的协议语法提取",
+        "text_level": 1,
+        "bbox": [
+            101,
+            407,
+            362,
+            423
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "协议语法模板的精准提取是生成高质量测试用例的基础。为此，本文提出了一种基于LLMs的自动化协议语法提取方法，其核心在于利用少样本提示引导LLMs生成结构化的协议语法模板。具体流程如下。",
+        "bbox": [
+            99,
+            430,
+            496,
+            512
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "1）提示词设计",
+        "text_level": 1,
+        "bbox": [
+            137,
+            518,
+            248,
+            532
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "在分析RFC标准规范文件、目标协议实现代码及采集的真实流量等多源文件的基础上，本文在提示词中引入协议版本关键词（如“RTSP”“RFC2326”“Live555”），旨在引导LLMs将知识检索范围限定于相关性较强的信息源，避免LLMs的回答过于发散。然后，采用少样本提示，即在提示中嵌入2~3个格式化良好的语法模板示例（如“DESCRIBE: ...”或“PLAY: ...”），让LLMs现场学习这些样例并“记住”回答格式，这将避免LLMs微调所需的复杂过程，如图3所示。",
+        "bbox": [
+            99,
+            538,
+            498,
+            730
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "2）多轮交互与一致性检查",
+        "text_level": 1,
+        "bbox": [
+            135,
+            736,
+            331,
+            751
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "由于协议定义庞杂，单轮交互难以覆盖全部消息类型，本文设计了一种多轮交互机制，并将前一轮的对话内容作为上下文，以防止LLMs重复已有内容。本阶段采用主提示和补充提示两类提示模板。其中，主提示用于首次交互，引导模型生成主要消息模板；补充提示用于后续交互，并附带指令“only list newmessage types”以控制输出范围。此外，为解决采样生",
+        "bbox": [
+            99,
+            757,
+            498,
+            905
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "image",
+        "img_path": "images/ba25a3c56ec7e20b4a22cfef89b936179121922f2c65dfcae9f10761713bd6d9.jpg",
+        "image_caption": [],
+        "image_footnote": [],
+        "bbox": [
+            535,
+            145,
+            720,
+            313
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "image",
+        "img_path": "images/ba0864c8df3fc74caa4a2e7e08a9210a4348020cbdd2dad39e3f7eee2233527e.jpg",
+        "image_caption": [
+            "图 3 协议语法提取提示词"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            723,
+            145,
+            905,
+            313
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "成的随机性问题，在多轮交互采样的基础上，本文基于一致性阈值筛选最终结果。具体来说，若某请求消息类型在总迭代次数中出现频次达2/3及以上（例如，30轮实验中出现不少于20次），则认定为有效语法并纳入最终模板库。该策略既能有效剔除偶发“幻觉”，又能保留低频但真实的字段。",
+        "bbox": [
+            521,
+            345,
+            916,
+            469
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "3）模板处理与数据结构",
+        "text_level": 1,
+        "bbox": [
+            557,
+            476,
+            735,
+            491
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "多轮交互的每次响应会经过自动解析，并剥离非结构描述信息，提取“消息类型：字段列表”内容。使用预定义分隔符（如“:”“\\r\\n”）对响应进行解析，将模板存储为JSON格式，键为消息类型（如“DESCRIBE”），值为字段结构对象，包括字段名称、正则表达式、位置等信息。这些模板被存入grammar_templates字典中，并导出为JSON形式的离线语法库，供后续消息级变异与语义校验调用。",
+        "bbox": [
+            521,
+            497,
+            916,
+            663
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "算法1展示了基于LLMs自动提取协议语法模板的完整流程。",
+        "bbox": [
+            521,
+            669,
+            916,
+            705
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "算法1 协议语法模板提取算法",
+        "text_level": 1,
+        "bbox": [
+            555,
+            712,
+            774,
+            726
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "输入 ：protocol_name",
+        "bbox": [
+            552,
+            734,
+            681,
+            748
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "输出 ：msg_types_set",
+        "bbox": [
+            552,
+            750,
+            679,
+            764
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1. templates_prompt ConsPrompt(protocol_name) ",
+            "2. for iter $ 0$ to CONSISTENCY_COUNT do ",
+            "3. grammar_list $\\gets$ Init consistency_table ",
+            "4. templates_ans ChatLLM(templates_prompt) ",
+            "5. remaining_prompt $\\gets$ RemPrompt(protocol_name) ",
+            "6. remaining_ans $\\gets$ ChatLLM(remaining_prompt) ",
+            "7. comb_templates templates_ans ∪ remaining_ans ",
+            "8. grammar_list $\\gets$ extract_grammars(comb_templates) ",
+            "9. for jobj $\\in$ grammar_list do "
+        ],
+        "bbox": [
+            552,
+            766,
+            867,
+            906
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "header",
+        "text": "2025 年第 12 期",
+        "bbox": [
+            689,
+            65,
+            774,
+            78
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "header",
+        "text": "",
+        "bbox": [
+            800,
+            49,
+            926,
+            61
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "header",
+        "text": "理论研究",
+        "bbox": [
+            823,
+            64,
+            901,
+            78
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "footer",
+        "text": "万方数据",
+        "bbox": [
+            78,
+            969,
+            147,
+            983
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "page_number",
+        "text": "1853 ",
+        "bbox": [
+            890,
+            942,
+            926,
+            955
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "10. header jobj[0] ",
+            "11. field_table consistency_table[header] ",
+            "12. for ${ \\mathrm { i } } \\gets 1$ to length(jobj) do ",
+            "13. $\\mathbf { v } $ jobj[i] ",
+            "14. field_table[v] field_table[v] + 1 ",
+            "15. end for ",
+            "16. end for ",
+            "17. end for ",
+            "18. pattern_index $ 0$ ",
+            "19. for header $\\in$ consistency_table do ",
+            "20. field_table consistency_table[header] ",
+            "21. patterns $\\gets$ gen_patterns(header, field_table) ",
+            "22. save_to_file(patterns) ",
+            "23. msg_type $\\gets$ extract_msg_type(patterns) ",
+            "24. if msg_type $\\neq$ null then ",
+            "25. msg_types_set $\\gets$ msg_types_set ∪ msg_type ",
+            "26. protocol_patterns $\\gets$ protocol_patterns ∪ patterns ",
+            "27. end if ",
+            "28. end for "
+        ],
+        "bbox": [
+            109,
+            145,
+            421,
+            441
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "算法1以待测协议名称protocol_name作为输入，输出为所提取的协议消息类型集合msg_types_set。第1行通过构造一致性提示词ConsPrompt（protocol_name）来初始化模板抽取请求。第2~17行采用多轮迭代以提升模板生成的多样性与稳定性。在每一轮迭代中，首先调用ChatLLM函数生成基础语法响应templates_ans（第4行），并进一步利用补充提示RemPrompt（protocol_name）生成扩展答案remaining_ans（第5、6行），合并结果形成候选模板集合comb_templates（第7行）。然后，调用extract_grammars（第8行）将部分模板解析为结构化语法对象grammar_list，并基于提取的头字段header与对应字段序列v构建一致性统计表consistency_table（第9~16行）。该统计过程通过记录字段出现频次，识别协议语法中的稳定共现结构。在第18~28行进入语法模板归纳阶段，对每个header，利用gen_patterns函数结合字段统计信息生成对应的正则模板patterns（第21行），再将其写入文件并保存（第22行）。通过extract_msg_type函数提取语法中的消息类型标识msg_type（第23行），并加入消息类型集合msg_types_set（第25行），同时将协议语法的正则化模板保存到protocol_patterns中（第26行）。最后，msg_types_set汇总了协议中可能出现的所",
+        "bbox": [
+            76,
+            447,
+            475,
+            906
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "有消息类型。",
+        "bbox": [
+            500,
+            144,
+            593,
+            160
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "2.3 基于历史漏洞的种子富集",
+        "text_level": 1,
+        "bbox": [
+            500,
+            166,
+            743,
+            184
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "在协议模糊测试中，初始种子的质量在很大程度上决定了模糊测试的覆盖深度与漏洞发现效率。传统的种子生成方式多依赖人工构造、历史抓包数据或随机采样，这些方法存在协议语义覆盖不足、状态遍历不全和缺乏高风险触发特征等问题[33,34]。为此，本文设计了一种基于历史漏洞特征的种子富集机制，利用LLMs的语言生成能力，生成具备攻击潜力的高价值初始测试用例。该机制的核心思想在于利用公开漏洞信息构建漏洞触发模式数据库，并以此为基础设计提示词，引导LLMs自动生成模拟这些历史攻击特征的初始种子。通过结合协议语法规则与攻击行为语义，该模块有效解决了传统模糊测试中语法合规性与漏洞相关性的矛盾。图4展示了初始种子富集模块整体流程。",
+        "bbox": [
+            498,
+            190,
+            895,
+            468
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "image",
+        "img_path": "images/a885487fb1fd3b495022c21f841d6433a0ec640a29057e677f26cb863c761091.jpg",
+        "image_caption": [
+            "图4 初始种子富集模块整体流程"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            517,
+            474,
+            879,
+            641
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "初始种子富集模块整体流程主要包括漏洞触发模式的提取与建模、上下文感知的提示词生成以及序列生成与逻辑一致性检查3个阶段。通过引入结构化漏洞知识与提示工程技术，该模块能够引导LLMs生成既符合协议语法规范又带有历史漏洞特征的高价值种子。",
+        "bbox": [
+            496,
+            669,
+            895,
+            796
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "1）漏洞触发模式的提取与建模",
+        "text_level": 1,
+        "bbox": [
+            535,
+            800,
+            763,
+            817
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "为了LLMs能够理解并利用历史漏洞信息，必须对其进行结构化提取与标准化建模。本文综合多种数据来源，包括国家信息安全漏洞共享平台（China NationalVulnerability Database，CNVD）、CVE、安全厂商分析报告，",
+        "bbox": [
+            496,
+            822,
+            895,
+            905
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "header",
+        "text": "",
+        "bbox": [
+            70,
+            48,
+            194,
+            61
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "header",
+        "text": "理论研究",
+        "bbox": [
+            94,
+            64,
+            173,
+            78
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "header",
+        "text": "2025 年第 12 期",
+        "bbox": [
+            220,
+            65,
+            308,
+            78
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "page_number",
+        "text": "1854 ",
+        "bbox": [
+            73,
+            942,
+            106,
+            953
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "footer",
+        "text": "万方数据",
+        "bbox": [
+            78,
+            969,
+            147,
+            983
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "以及主流协议实现的补丁与提交日志。针对每个漏洞样本，提取以下3项关键信息要素：（1）漏洞类型，如缓冲区溢出、特殊字符串、命令注入等；（2）适用范围，包括受影响的协议名称、版本信息、特定实现环境；（3）触发条件，涵盖攻击消息的类型（如FTP中的CWD、HTTP中的Range字段）、易受攻击字段、输入模式（如超长路径或特殊字符），以及必要的前置状态上下文。部分漏洞仅在满足特定会话历史交互后才会被触发，因此必须精确记录所需的请求顺序与上下文依赖。所有提取结果统一存储于结构化漏洞知识库中，作为后续提示工程与用例生成的重要输入。",
+        "bbox": [
+            99,
+            144,
+            498,
+            384
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "2）上下文感知的提示词生成",
+        "text_level": 1,
+        "bbox": [
+            135,
+            390,
+            346,
+            406
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "为指导LLMs高效生成种子序列，本文提出了一种上下文感知的提示词构造方法。该方法根据现有种子序列的协议消息分布与语义结构来识别请求消息类型，并结合漏洞知识库中对应协议的漏洞特征构建提示词，指导模型生成既符合协议规范又具备攻击潜力的测试用例，如图5所示。提示词构造流程分为以下3个步骤：（1）解析原始种子序列，并与协议模板库中的完整消息集合做差集，识别出尚未出现但已在模板中定义的请求消息类型。将这些消息类型作为插入目标，用以扩展对未覆盖协议状态和代码路径的探索。（2）组织提示词内容，包括任务指令、上下文序列、插入目标类型列表、历史漏洞特征及输出格式。（3）将构造好的提示词输入LLMs，引导其生成语义连贯、逻辑完备的消息序列。",
+        "bbox": [
+            99,
+            412,
+            498,
+            717
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Here is a sample request that uses a long string to attack ",
+        "bbox": [
+            119,
+            741,
+            285,
+            750
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "the RTSP Client-ID: ",
+        "bbox": [
+            122,
+            750,
+            183,
+            756
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "ANNOUNCE rtsp://example.com/media RTSP/1.0 ",
+        "bbox": [
+            122,
+            756,
+            269,
+            763
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            122,
+            763,
+            158,
+            768
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Client-ID: AAAAAAAAAAAAAAAAA... ",
+        "bbox": [
+            122,
+            769,
+            246,
+            775
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            122,
+            776,
+            168,
+            782
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Base sequence: ",
+        "bbox": [
+            122,
+            782,
+            168,
+            788
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "DESCRIBE rtsp://127.0.0.1:8554/stream RTSP/1.0 ",
+        "bbox": [
+            122,
+            788,
+            271,
+            794
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "CSeq: ",
+        "bbox": [
+            122,
+            794,
+            145,
+            799
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "User-Agent: NormalClient ",
+        "bbox": [
+            122,
+            800,
+            200,
+            805
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "SETUP rtsp://127.0.0.1:8554/stream RTSP/1.0 ",
+        "bbox": [
+            122,
+            811,
+            258,
+            817
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "CSeq: 2 ",
+        "bbox": [
+            122,
+            817,
+            147,
+            824
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Transport: RTP/AVP-unicast:client nort=80o0-8001 ",
+        "bbox": [
+            122,
+            825,
+            272,
+            830
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Output only the complete modified sequence. ",
+        "bbox": [
+            122,
+            831,
+            254,
+            836
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Please add the OPTIONS and TEARDOWN client ",
+        "bbox": [
+            122,
+            844,
+            269,
+            850
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "reguests in the arrurate locations,and the modified ",
+        "bbox": [
+            122,
+            850,
+            267,
+            856
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "sequence of client reguest is* ",
+        "bbox": [
+            122,
+            856,
+            205,
+            862
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "提示词",
+        "bbox": [
+            191,
+            865,
+            225,
+            875
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "OPTIONS rtsp://127.0.0.1:8554/stream RTSP/1.0 ",
+        "bbox": [
+            303,
+            742,
+            449,
+            750
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "CSeq: 1 ",
+        "bbox": [
+            305,
+            750,
+            330,
+            754
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "User-Agent: NormalClient ",
+        "bbox": [
+            305,
+            756,
+            382,
+            762
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "DESCRIBE rtsp://127.0.0.1:8554/stream RTSP/1.0 ",
+        "bbox": [
+            305,
+            768,
+            452,
+            774
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "CSeq: 2 ",
+        "bbox": [
+            305,
+            775,
+            330,
+            780
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "User-Agent: NormalClient ",
+        "bbox": [
+            305,
+            781,
+            383,
+            787
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Client-ID: AAAAAAAAAAAAAAAAAA... ",
+        "bbox": [
+            305,
+            787,
+            434,
+            793
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            305,
+            794,
+            330,
+            799
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "SETUP rtsn://127 0 0 1:8554/stream RTSP/1.0",
+        "bbox": [
+            305,
+            800,
+            441,
+            805
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "CSeq: 3 ",
+        "bbox": [
+            305,
+            807,
+            330,
+            811
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Transport: RTP/AVP:unicast:client port=8000-8001 ",
+        "bbox": [
+            305,
+            811,
+            455,
+            817
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "UsersAgent: NomalClient ",
+        "bbox": [
+            305,
+            817,
+            383,
+            824
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Client-ID: AAAAAAAAAAAAAAAAAA. ",
+        "bbox": [
+            305,
+            825,
+            434,
+            830
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "TEARDOWN rtsp://127.0.0.1:8554/stream RTSP/1.0 ",
+        "bbox": [
+            305,
+            837,
+            459,
+            843
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "CSeq: 4 ",
+        "bbox": [
+            305,
+            844,
+            330,
+            849
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "User-Agent: NormalClient ",
+        "bbox": [
+            305,
+            849,
+            383,
+            855
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Client-ID:AAAAAAAAAAAAAAAAAA ",
+        "bbox": [
+            305,
+            856,
+            434,
+            862
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "大模型输出",
+        "bbox": [
+            364,
+            865,
+            418,
+            875
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "图 5 基于漏洞特征的种子富集提示词和 LLMs 输出",
+        "bbox": [
+            125,
+            890,
+            470,
+            905
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "3）序列生成与逻辑一致性检查",
+        "text_level": 1,
+        "bbox": [
+            555,
+            145,
+            785,
+            161
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "有状态协议的交互序列之间通常受限于严格的状态转移关系，请求消息的插入位置必须遵循这种状态转换规则，否则极易生成语法合规但语义无效的测试用例。为确保生成序列的逻辑正确性，本文在提示词设计中嵌入协议上下文、历史请求序列及限定语句（如“The correct client request sequence is:”），引导LLMs推理出合理的请求插入位置。以RTSP协议为例，典型的合法请求序列为{DESCRIBE, SETUP, PLAY}。当插入新的请求类型（如RECORD）时，若位置不当（如置于PLAY之前），将导致状态机异常。通过提供历史上下文与规范示例，模型能够自动调整请求顺序，必要时插入过渡消息（如PAUSE），从而生成合法序列{DESCRIBE, SETUP, RECORD, PAUSE, PLAY}。此外，系统还引入了基于规则与有限状态机的验证模块，对生成序列进行自动筛选，剔除逻辑矛盾和不满足协议状态转移约束的用例，确保最终富集种子具备结构合法性与状态可达性。",
+        "bbox": [
+            521,
+            166,
+            919,
+            532
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "2.4 结构感知的变异策略优化",
+        "text_level": 1,
+        "bbox": [
+            521,
+            538,
+            764,
+            554
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "传统模糊测试工具通常采用字节级的随机变异策略，尽管具备较强的通用性，但在网络协议测试场景下却容易破坏消息的结构完整性，导致生成的用例在早期解析阶段即被目标程序拒绝，从而严重浪费计算资源与测试时间。为此，本文提出了一种基于结构感知的变异优化策略，借助LLMs对协议语法的理解能力，在保证语法合规性的前提下，实现对关键字段的定向变异操作。该策略的核心思想在于充分利用第2.2节中构建的协议语法模板库，在进行变异前对输入消息进行语法解析，并将其划分为固定字段和可变字段两类。其中，固定字段（如请求类型、协议版本等）为协议结构的关键组成部分，禁止任何修改；可变字段包括参数值、可选头字段、标识符和路径信息等，可以进行有策略的变异操作。",
+        "bbox": [
+            519,
+            561,
+            918,
+            861
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "变异流程如算法2所示。首先，模糊测试器将待变异的消息序列M分割为历史上下文 $M _ { 1 }$ 、当前变异目",
+        "bbox": [
+            521,
+            867,
+            916,
+            905
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "header",
+        "text": "2025 年第 12 期",
+        "bbox": [
+            689,
+            65,
+            774,
+            78
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "header",
+        "text": "",
+        "bbox": [
+            800,
+            49,
+            926,
+            61
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "header",
+        "text": "理论研究",
+        "bbox": [
+            823,
+            64,
+            901,
+            78
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "footer",
+        "text": "万方数据",
+        "bbox": [
+            78,
+            969,
+            147,
+            983
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "page_number",
+        "text": "1855 ",
+        "bbox": [
+            890,
+            942,
+            926,
+            955
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "标消息 $M _ { 2 }$ 及剩余消息 $M _ { 3 }$ 。为了判断当前测试是否陷入了状态空间或代码覆盖的探索瓶颈，LPF引入了一个关键指标——平台期长度PlateauLen。该指标表示在当前协议状态下，模糊测试器连续生成的、未带来覆盖率提升或程序崩溃的“非感兴趣”输入数量，旨在量化测试过程是否进入“覆盖率平台期”。测试器每遇到一个未触发新路径或新崩溃的输入，就将PlateauLen加一，一旦出现新的路径或崩溃，PlateauLen则被重置。当PlateauLen未超过最大容忍阈值Max时，系统将以设定概率ε随机选择是否对 $M _ { 2 }$ 执行结构感知变异或传统随机变异。若PlateauLen达到上限Max，说明测试器可能卡在某一状态，传统变异难以继续推进，此时系统调用LLMs生成新的消息 $M _ { 2 } ^ { \\prime }$ ，以突破当前状态的限制并探索新的状态路径。最终，三段子序列合并为新的消息序列 $M ^ { \\prime }$ ，用于后续执行。",
+        "bbox": [
+            78,
+            144,
+            475,
+            467
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "算法2 结构感知变异算法",
+        "text_level": 1,
+        "bbox": [
+            112,
+            472,
+            297,
+            487
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "输入：待变异的消息序列M ",
+        "bbox": [
+            107,
+            493,
+            282,
+            507
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "输出：新的消息序列M'",
+        "bbox": [
+            109,
+            509,
+            259,
+            523
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1. StructureAwareMutate(M, G, R, PlateauLen, Max): ",
+            "$2 . ( \\mathrm { M } _ { 1 } , \\mathrm { M } _ { 2 } , \\mathrm { M } _ { 3 } ) \\gets$ split_sequence(M) ",
+            "3. if PlateauLen < Max: ",
+            "4. if random() < ε: ",
+            "5. $\\mathrm { M } _ { 2 } ^ { \\prime } \\gets$ $\\mathbf { M } _ { 2 } ^ { \\prime } {  } \\mathbf { G r a m m a r M u t a t e } ( \\mathbf { M } _ { 2 } , \\mathbf { G } )$ ",
+            "6. else: ",
+            "7. $\\mathrm { M _ { 2 } ^ { \\prime } {  } R a n d o m M u t a t e ( M _ { 2 } ) }$ $\\left( \\mathbf { M } _ { 2 } \\right)$ ",
+            "8. else: ",
+            "9. $\\mathbf { M } _ { 2 } ^ { \\prime } { \\gets } \\mathbf { C h a t N e x t M s g ( M } _ { 2 } , \\mathbf { R } )$ ",
+            "10. PlateauLen $ 0$ ",
+            "11. $\\mathrm { M } ^ { \\prime } \\gets$ concatenate $\\left( \\mathbf { M } _ { 1 } , \\mathbf { M } _ { 2 } ^ { \\prime } , \\mathbf { M } _ { 3 } \\right)$ ",
+            "12. return M', PlateauLen "
+        ],
+        "bbox": [
+            109,
+            525,
+            400,
+            707
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "在语法匹配阶段，系统维护一个映射结构 $G =$ $\\{ t y p e  g r a m m a r \\}$ ，用于将消息类型（如RTSP协议中的PLAY、SETUP等）与对应的正则语法模板关联。该语法模板预先由LLMs基于少样本提示生成，结构上定义了字段标签与数据格式，所有可变异区域均使用<Value>占位符标注。模糊测试器运行时通过正则匹配对输入消息进行语法解析，提取结构化键值对并识别出所有可变异字段。如图6所示，变异阶段仅对标注为<Value>的字段执行插入、替换或删减等操作，同",
+        "bbox": [
+            78,
+            714,
+            475,
+            905
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "时确保变异结果不破坏其基本格式和语法规则。例如，对于Range字段的值，系统可注入超长字符串、边界值或非法时间片段，模拟缓冲区溢出或协议状态机混乱等异常场景。",
+        "bbox": [
+            498,
+            144,
+            895,
+            226
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "image",
+        "img_path": "images/cca00511c1e841868780ad4e22d9151751c3c63f31688f386f7f088a1b253a2c.jpg",
+        "image_caption": [
+            "原始请求消息"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            509,
+            235,
+            720,
+            416
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "image",
+        "img_path": "images/ffb0c4f3b7f5ba96883143657a292a02660e641974eb86df7e2bfff7de8ae2c8.jpg",
+        "image_caption": [],
+        "image_footnote": [],
+        "bbox": [
+            720,
+            314,
+            745,
+            337
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "image",
+        "img_path": "images/37b1aff769f06db0bd64b132f308e7964fbef6a0a909730d0028b2132a8d2422.jpg",
+        "image_caption": [
+            "标记变异字段",
+            "图 6 结构感知变异示意图"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            748,
+            237,
+            872,
+            415
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "为了兼顾种子执行效率与代码分支探索能力，系统引入混合策略，即在每轮变异中以设定概率交替使用结构感知变异与传统无结构变异。其中，结构感知策略更倾向生成高质量、语法合法的输入，提升对状态机深层路径的探索能力；无结构随机变异则保持了广度搜索能力，有效覆盖未建模或非典型路径。值得注意的是，所有语法模板在模糊测试开始阶段仅需提取一次，后续可复用于快速匹配与字段识别，从而实现语法信息与变异逻辑的解耦。这一设计不仅显著减少了LLMs的调用频率，提升了系统整体吞吐率，也增强了变异模块的可控性与可扩展性。对于无法匹配任何已知模板的输入，系统将自动回退至传统变异模式，以保证测试过程的连续性与兼容性。",
+        "bbox": [
+            496,
+            456,
+            895,
+            742
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "3 实验与评估 ",
+        "text_level": 1,
+        "bbox": [
+            500,
+            751,
+            619,
+            768
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "3.1 实验环境",
+        "text_level": 1,
+        "bbox": [
+            500,
+            779,
+            611,
+            794
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "本文实验在一台配备 Intel(R)Core(TM)i9-7960XCPU的机器上进行。这台机器具有32个逻辑核心，主频为2.80GHz，主内存为32GB，操作系统及版本为Ubuntu22.04.4 LTS。实验所选测试对象来自ProFuzzBench测试集，这是目前广泛认可的网络协议模糊测试基准套",
+        "bbox": [
+            496,
+            800,
+            895,
+            905
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "header",
+        "text": "",
+        "bbox": [
+            70,
+            48,
+            194,
+            61
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "header",
+        "text": "理论研究",
+        "bbox": [
+            94,
+            64,
+            173,
+            78
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "header",
+        "text": "2025 年第 12 期",
+        "bbox": [
+            220,
+            65,
+            308,
+            78
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "page_number",
+        "text": "1856 ",
+        "bbox": [
+            73,
+            942,
+            106,
+            953
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "footer",
+        "text": "万方数据",
+        "bbox": [
+            78,
+            969,
+            147,
+            983
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "件，涵盖了多个常见文本协议的开源实现。被测协议及其信息如表1所示，涉及5种主流协议及其代表性实现。",
+        "bbox": [
+            99,
+            144,
+            493,
+            183
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "table",
+        "img_path": "images/f1faea153749b9a9687a15e6bbc6041e1b4a2fbee0bcf93e9ae00f41d2e9dd3a.jpg",
+        "table_caption": [
+            "表1 被测协议及其信息"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td>服务器软件</td><td>协议名称</td><td>版本号</td></tr><tr><td>ProFTPD</td><td>FTP</td><td>6903c5e</td></tr><tr><td>Live555</td><td>RTSP</td><td>2c92a57</td></tr><tr><td>Lightpd1</td><td>HTTP</td><td>51d48de</td></tr><tr><td>Exim</td><td>SMTP</td><td>e3c7712</td></tr><tr><td>Kamailio</td><td>SIP</td><td>8d482b1</td></tr></table>",
+        "bbox": [
+            184,
+            207,
+            415,
+            302
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "上述协议实现涵盖了文件传输、流媒体播放、网页服务、邮件传输和会话发起等典型网络交互场景，具有代表性强、覆盖协议语法复杂度广的特点。为便于性能评估与覆盖率分析，所有目标程序均使用GCC 9.4.0编译，并在编译阶段插入了代码覆盖追踪代码。",
+        "bbox": [
+            99,
+            310,
+            496,
+            434
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "3.2 实验设计",
+        "text_level": 1,
+        "bbox": [
+            101,
+            441,
+            212,
+            458
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "为全面评估LPF在协议模糊测试中的有效性，本文选取了当前主流的两种代表性协议灰盒模糊测试工具（AFLNet与StateAFL）作为对比基线。AFLNet通过结合状态反馈与代码覆盖率反馈，引导测试路径优化；而StateAFL在此基础上进一步引入内存状态监测机制，以增强对复杂协议状态空间的探索能力。",
+        "bbox": [
+            99,
+            464,
+            498,
+            592
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "实验从代码覆盖率、状态覆盖率及测试效率3个维度对LPF的性能进行系统性评估。覆盖率统计基于ProFuzzBench的自动化分析工具，分别测量各工具在不同协议实现上的代码与状态空间覆盖能力。为增强结果的稳定性，每项测试均独立重复3次，每次持续$^ { 1 2 \\mathrm { ~ h ~ } }$ ，并对多轮测试结果取平均值进行比较分析。所有触发程序崩溃的测试用例均通过AFLNet-replay工具进行了复现，以确保其有效性和可重现性。在测试效率指标方面，本文以测试用例执行速率和首次崩溃触发时间为衡量指标。",
+        "bbox": [
+            99,
+            598,
+            496,
+            815
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "整体实验流程分为初始化、测试执行与结果分析3个阶段。在初始化阶段中，调用LPF的语法提取模块，为每种目标协议构建语法模板库，并基于历史漏洞特征对原始种子集合进行富集。在测试执行阶段中，",
+        "bbox": [
+            99,
+            821,
+            496,
+            905
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "LPF与两种基线工具并行运行，系统自动记录代码覆盖与异常触发事件。在此阶段，LPF引入了关键参数—平台期长度阈值Max，用以调控LLMs的智能干预时机。当某状态连续Max次变异均无覆盖增益时，则判定为进入“平台期”，并由LLMs生成新消息以尝试突破。基于初步试验，本文将该值设定为300，以平衡“探索深度”与“测试效率”。若Max过小可更快触发LLMs，但会增加调用开销 ；Max过大虽有利于保持吞吐率，但会延长停滞期。在结果分析阶段，所有崩溃样本均经人工复现与核验，以确认触发机制与漏洞性质。",
+        "bbox": [
+            521,
+            144,
+            916,
+            356
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "3.3 实验结果与分析",
+        "text_level": 1,
+        "bbox": [
+            522,
+            364,
+            692,
+            379
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "实验结果表明，LPF在协议语法提取准确率、代码覆盖率、状态覆盖率及测试效率等多个关键性能指标上，均优于现有的协议模糊测试工具。尤其是在协议语法自动化建模方面，LPF展现出优越的泛化能力和较高的准确性，为后续的种子变异阶段提供了更精准的指导。",
+        "bbox": [
+            521,
+            385,
+            916,
+            512
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "3.3.1 协议语法提取准确率 ",
+        "text_level": 1,
+        "bbox": [
+            522,
+            518,
+            733,
+            533
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "在协议语法提取阶段，LPF基于LLMs自动生成协议语法模板。为验证LPF对不同LLMs的兼容性与泛化性，本文选取GPT-4、Qwen3和Code Llama三种主流LLMs进行实验验证，分别执行多轮RTSP协议的语法提取任务，采用相同的提示模板、temperature等设置，实验结果记录在表2中。以RTSP协议为例，通过30轮语法生成测试发现，LLMs生成了RFC标准中定义的全部10种请求消息类型。其中，GPT-4取得了最高的准确率，达到 $9 6 . 7 \\%$ ，Qwen3-235B准确率达 $9 4 . 8 \\%$ ，另一个代码专用模型Code Llama-34B准确率为 $9 1 . 2 \\%$ 。该结果验证了LPF在无需人工规则配置的情况下，能够高效、准确地还原复杂协议的语法结构。相较于传统的基于手工规则或静态语法描述语言（如Peach中的XML模板）方法，LPF在自动化程度、适应性和测试效率方面具备明显优势。同时，其输出语法结构在覆盖面和逻辑一致性上表现良好，为后续的结构感知变异提供了准确的语法指导。",
+        "bbox": [
+            521,
+            541,
+            918,
+            905
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "header",
+        "text": "2025 年第 12 期",
+        "bbox": [
+            689,
+            65,
+            774,
+            78
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "header",
+        "text": "",
+        "bbox": [
+            800,
+            49,
+            926,
+            61
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "header",
+        "text": "理论研究",
+        "bbox": [
+            823,
+            64,
+            901,
+            78
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "footer",
+        "text": "万方数据",
+        "bbox": [
+            78,
+            968,
+            147,
+            983
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "page_number",
+        "text": "1857 ",
+        "bbox": [
+            890,
+            942,
+            924,
+            955
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "table",
+        "img_path": "images/7930995e32bf2d1801cc17d733a354978839429f9d4624411afaf1289b60641a.jpg",
+        "table_caption": [
+            "表 2 不同 LLMs 的协议语法提取准确率对比"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td>大模型</td><td>参数规模/B</td><td>准确率</td><td>缺失率</td><td>超出率</td></tr><tr><td>GPT-4</td><td>1760</td><td>96.7%</td><td>3.3%</td><td>4.7%</td></tr><tr><td>Qwen3</td><td>235</td><td>94.8%</td><td>5.2%</td><td>7.9%</td></tr><tr><td>Code Llama</td><td>34</td><td>91.2%</td><td>8.8%</td><td>10.4%</td></tr></table>",
+        "bbox": [
+            107,
+            163,
+            444,
+            226
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "图7展示了LLMs生成的RTSP协议请求类型分布情况。进一步的误差分析表明，LLMs在生成过程中主要存在以下3类语法偏差：1）语法缺失。部分标准请求类型未被正确生成，例如，“ANNOUNCE”和“GET_PARAMETER”在30轮测试中分别缺失4次和 2次。2）幻觉生成。模型凭空构造了不存在于标准中的请求类型，如“SET_PUSH”。3）语法复合或重构。生成的请求语法结构虽具逻辑合理性，但偏离标准定义，或不具备明确语义功能，如“GET_DESCRIPTION”。另外，GPT-4生成了12次“REDIRECT”请求，该请求类型虽然属于协议标准定义，但在大多数实际部署中并不具备可执行功能。针对这些问题，LPF通过引入一致性阈值策略与多轮验证机制，剔除异常输出，确保最终生成模板的完整性与准确性。",
+        "bbox": [
+            76,
+            235,
+            475,
+            536
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "image",
+        "img_path": "images/dd4143fd1cea06fa52d031ccc9fcd9d46fc3041b856e13d14fe33ec19bfee0c0.jpg",
+        "image_caption": [
+            "图 7 LLMs 生成的 RTSP 协议请求类型分布情况"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            89,
+            543,
+            460,
+            725
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "3.3.2 代码覆盖率",
+        "text_level": 1,
+        "bbox": [
+            78,
+            756,
+            218,
+            771
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "表3展示了LPF、AFLNet和StateAFL在代码覆盖率方面的对比结果，其中，提升率的计算方式为(LPF覆盖数-基准工具覆盖数)/基准工具覆盖数 $\\times 1 0 0 \\%$ 。本文统计了3次12 h测试中各工具所覆盖的平均代码分支数量，LPF整体上优于两个基准工具。平均来看，在相同的运行时间内，LPF比AFLNet多覆盖了 $4 . 5 9 \\%$ ",
+        "bbox": [
+            76,
+            779,
+            475,
+            905
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "的代码分支，比StateAFL多覆盖了 $5 . 4 4 \\%$ 的代码分支，表明LPF在处理各种协议时能更高效地覆盖代码分支。",
+        "bbox": [
+            500,
+            145,
+            890,
+            183
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "table",
+        "img_path": "images/e1794cbf4061172ba2d0e461bbf399564717ccb957f799a170eedae5c252c75c.jpg",
+        "table_caption": [
+            "表3 LPF 与基准工具的代码覆盖率对比"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=\"2\">测试对象</td><td>LPF</td><td colspan=\"2\">AFLNet</td><td colspan=\"2\">StateAFL</td></tr><tr><td>覆盖分支数 /个</td><td>覆盖分支数 /个</td><td>提升率</td><td>覆盖分支数 /个</td><td>提升率</td></tr><tr><td>ProFTPD</td><td>5043</td><td>4812</td><td>4.80%</td><td>4733</td><td>6.55%</td></tr><tr><td>Live555</td><td>3026</td><td>2792</td><td>8.38%</td><td>2801</td><td>8.03%</td></tr><tr><td>Lightpd1</td><td>4726</td><td>4610</td><td>2.52%</td><td>4778</td><td>-1.09%</td></tr><tr><td>Exim</td><td>3880</td><td>3694</td><td>5.04%</td><td>3564</td><td>8.87%</td></tr><tr><td>Kamailio</td><td>9775</td><td>9565</td><td>2.20%</td><td>9323</td><td>4.85%</td></tr></table>",
+        "bbox": [
+            514,
+            207,
+            880,
+            296
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "从各测试对象来看，LPF在Live555协议上的提升最为显著，覆盖分支数量达到3026个，分别较AFLNet与StateAFL提升了 $8 . 3 8 \\%$ 和 $8 . 0 3 \\%$ ；而在Lighttpd1服务器测试中LPF的性能提升相对有限，覆盖了4726个分支，仅比AFLNet多 $2 . 5 2 \\%$ ，相较于StateAFL则下降了 $1 . 0 9 \\%$ 。这主要是因为Lighttpd1的“单进程异步架构”逻辑相对集中，代码路径较为扁平。StateAFL的随机变异策略可以充分探索这些核心路径，而LPF基于语法结构的变异策略在此类架构下难以发挥优势。图8展示了3种测试工具在不同协议上的代码覆盖率随测试时间的变化趋势。这些数据表明，LPF在不同协议上的性能提升有所差异，但在大多数情况下能够显著提升代码分支覆盖率。",
+        "bbox": [
+            498,
+            303,
+            895,
+            561
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "image",
+        "img_path": "images/026f5cbaae7bfb5dd0249c89fcfe24e2a54be1e74749ccf16b17f950394c7447.jpg",
+        "image_caption": [
+            "a）ProFTPD"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            584,
+            570,
+            807,
+            714
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "image",
+        "img_path": "images/4ab4607e41c4e45fe38a504a4a33f68795c8a4522cf824af998eea0e8dea1925.jpg",
+        "image_caption": [
+            "b）Live555 "
+        ],
+        "image_footnote": [],
+        "bbox": [
+            584,
+            741,
+            807,
+            885
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "header",
+        "text": "",
+        "bbox": [
+            70,
+            48,
+            194,
+            61
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "header",
+        "text": "理论研究",
+        "bbox": [
+            94,
+            64,
+            173,
+            78
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "header",
+        "text": "2025 年第 12 期",
+        "bbox": [
+            222,
+            65,
+            308,
+            78
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "page_number",
+        "text": "1858 ",
+        "bbox": [
+            73,
+            942,
+            106,
+            953
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "footer",
+        "text": "万方数据",
+        "bbox": [
+            78,
+            969,
+            147,
+            983
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "image",
+        "img_path": "images/e70f8b4c5997b7850386af79e74d41c0e800b0ce256fd542fef58bc2c6c2903f.jpg",
+        "image_caption": [
+            "c）Lighttpd1 "
+        ],
+        "image_footnote": [],
+        "bbox": [
+            176,
+            144,
+            419,
+            297
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "image",
+        "img_path": "images/76fc81fcb5e5637cf0edd6dc7532f5f32fb4ae0227fc6a8d76f0ac4cf99dea01.jpg",
+        "image_caption": [
+            "d）Exim "
+        ],
+        "image_footnote": [],
+        "bbox": [
+            174,
+            322,
+            423,
+            481
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "image",
+        "img_path": "images/64d186732f8ec5ab4f4a2d7f64153a4fbaebbcb920761bdbaaa4899207757048.jpg",
+        "image_caption": [
+            "e）Kamailio",
+            "图8 3种测试工具代码覆盖率变化趋势"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            174,
+            506,
+            423,
+            667
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "3.3.3 状态覆盖率",
+        "text_level": 1,
+        "bbox": [
+            101,
+            714,
+            241,
+            730
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "为了评估LPF在协议状态空间探索方面的能力，本文对LPF与基准工具AFLNet和StateAFL进行了3轮、每轮持续12 h的状态覆盖实验，记录各测试工具在不同协议下平均覆盖的状态数量，实验结果如表4所示，其中，提升率的计算方式为(LPF覆盖数-基准工具覆盖数)/基准工具覆盖数 $\\times 1 0 0 \\%$ 。LPF在大多数协议上均实现了更高的状态覆盖率，展现出其在状态感知引导机制方面的优势。在Live555协议中，LPF平均覆盖",
+        "bbox": [
+            99,
+            737,
+            496,
+            904
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "11.3个状态，较AFLNet提升 $2 8 . 4 1 \\%$ ，较 StateAFL 提升 $2 . 7 3 \\%$ ；在Exim协议中，LPF覆盖14.4个状态，同样超过AFLNet的11.0个状态和StateAFL的12.1个状态，状态覆盖率分别提升 $3 0 . 9 1 \\%$ 和 $1 9 . 0 1 \\%$ ；此外，在ProFTPD和Lighttpd1 协议中，LPF的状态覆盖提升幅度在 $1 0 . 8 5 \\% { \\sim } 1 8 . 0 6 \\%$ 之间。然而，在对Kamailio的状态覆盖率测试中，LPF相较于StateAFL下降了 $1 3 . 6 8 \\%$ 。这主要是SIP协议本身的高度复杂性以及Kamailio的动态状态转移机制导致的。LLMs生成的语法模板难以完整捕捉这些动态路径，而StateAFL有一定概率探索到此类动态转移，从而表现更优。整体结果表明，LPF通过引入语义驱动的状态识别机制与结构感知变异策略，有效增强了对协议状态机的探索深度与广度，进一步提升了模糊测试的全面性和有效性。",
+        "bbox": [
+            521,
+            144,
+            918,
+            445
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "table",
+        "img_path": "images/973b4fb55c777f43e78da4292f6dab888ee635981c2f36448de9efa66e80e478.jpg",
+        "table_caption": [
+            "表 4 LPF 与基准工具的状态覆盖率对比"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=\"2\">测试对象</td><td>LPF</td><td colspan=\"2\">AFLNet</td><td colspan=\"2\">StateAFL</td></tr><tr><td>覆盖状态数 /个</td><td>覆盖状态数 /个</td><td>提升率</td><td>覆盖状态数 /个</td><td>提升率</td></tr><tr><td>ProFTPD</td><td>23.5</td><td>20.4</td><td>15.20%</td><td>21.2</td><td>10.85%</td></tr><tr><td>Live555</td><td>11.3</td><td>8.8</td><td>28.41%</td><td>11.0</td><td>2.73%</td></tr><tr><td>Lightpdf1</td><td>8.5</td><td>7.2</td><td>18.06%</td><td>8.7</td><td>-2.30%</td></tr><tr><td>Exim</td><td>14.4</td><td>11.0</td><td>30.91%</td><td>12.1</td><td>19.01%</td></tr><tr><td>Kamailio</td><td>10.1</td><td>9.5</td><td>6.32%</td><td>11.7</td><td>-13.68%</td></tr></table>",
+        "bbox": [
+            540,
+            469,
+            898,
+            558
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "3.3.4 测试效率",
+        "text_level": 1,
+        "bbox": [
+            522,
+            566,
+            643,
+            581
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "在测试效率方面，LPF在对5种协议软件的12 h测试周期内共触发了9次程序崩溃，明显优于AFLNet的4次和StateAFL的7次。进一步分析发现，LPF生成的测试用例有效融合了历史漏洞的攻击模式。例如，在SMTP协议的测试中，LPF引入了SQL注入类载荷，成功触发了多个独特的崩溃点，而AFLNet和StateAFL由于其变异策略的随机性与盲目性，未能覆盖这些关键执行路径。",
+        "bbox": [
+            519,
+            589,
+            916,
+            754
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "表5 给出了不同工具首次触发程序崩溃所需时间的对比结果。LPF在ProFTPD、Live555 和Lighttpd1三项测试中展现出更快的崩溃触发能力。在Live555测试中，LPF在2213.6 s时首次触发崩溃，分别优于AFLNet（2427.5 s）和 StateAFL（4618.7 s），表明其生成的测试样本更具有针对性。在Lighttpd1测试中，LPF同样优于StateAFL，首次触发崩溃仅用时4845.4 s，而",
+        "bbox": [
+            519,
+            760,
+            918,
+            904
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "header",
+        "text": "2025 年第 12 期",
+        "bbox": [
+            689,
+            65,
+            774,
+            78
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "header",
+        "text": "",
+        "bbox": [
+            800,
+            49,
+            926,
+            61
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "header",
+        "text": "理论研究",
+        "bbox": [
+            823,
+            64,
+            901,
+            78
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "footer",
+        "text": "万方数据",
+        "bbox": [
+            78,
+            968,
+            147,
+            983
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "page_number",
+        "text": "1859 ",
+        "bbox": [
+            890,
+            942,
+            926,
+            955
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "AFLNet在该协议下未能触发崩溃。在Exim测试中，尽管StateAFL的崩溃时间最短（594.9 s），但LPF也以864.6 s表现出接近性能，且明显优于AFLNet（1880.0 s），说明其在以命令交互为核心的邮件协议测试中依然具有竞争力。值得注意的是，在ProFTPD测试中，AFLNet和StateAFL在12 h内均未引发崩溃，而LPF在5845.4 s时成功触发崩溃，进一步凸显其在FTP协议测试中的有效性。",
+        "bbox": [
+            76,
+            144,
+            473,
+            313
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "table",
+        "img_path": "images/be238b1f3363facd34079cff022cd7a0de6f842dbe243075c6757d2e38fdd55e.jpg",
+        "table_caption": [
+            "表 5 不同工具首次触发程序崩溃所需时间的对比结果"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=\"2\">测试对象</td><td colspan=\"3\">崩溃时间 /s</td></tr><tr><td>AFLNet</td><td>StateAFL</td><td>LPF</td></tr><tr><td>ProFTPD</td><td>—</td><td>—</td><td>5845.4</td></tr><tr><td>Live555</td><td>2427.5</td><td>4618.7</td><td>2213.6</td></tr><tr><td>Lightpd1</td><td>—</td><td>9228.3</td><td>4845.4</td></tr><tr><td>Exim</td><td>1880.0</td><td>594.9</td><td>864.6</td></tr><tr><td>Kamailio</td><td>1977.5</td><td>3250.6</td><td>1893.2</td></tr></table>",
+        "bbox": [
+            150,
+            338,
+            403,
+            449
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "图9展示了3种测试工具在不同协议下的平均每秒执行次数对比，用以评估模糊测试的执行效率。在Lighttpd1和Live555测试中，LPF分别达到了28.1次/s和21.1次/s，显著高于其他两种工具；在Exim测试中，尽管整体执行频率较低，LPF仍以5.9次/s保持领先。相较而言，在Kamailio协议测试中，LPF（8.7次/s）的性能与AFLNet（9.1次/s）和StateAFL（8.5次/s）相近，三者差异较小；而在ProFTPD测试中，LPF的效率虽高于StateAFL，但略低于AFLNet。",
+        "bbox": [
+            76,
+            456,
+            473,
+            648
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "image",
+        "img_path": "images/97ebebec9df92c00d78c877f4bc63d0d2d10dd4c22e9bb079c1fa6bc230af0b2.jpg",
+        "image_caption": [
+            "图9 3种测试工具平均执行次数对比"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            91,
+            656,
+            459,
+            837
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "综上所述，LPF在大多数测试场景中展现出更高的执行效率，尤其是在Lighttpd1与Live555等复杂协议中，",
+        "bbox": [
+            78,
+            867,
+            473,
+            905
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "其种子生成机制与结构感知变异策略显著减少了冗余路径，从而提升了模糊测试的吞吐率。这些结果进一步验证了LPF在提升模糊测试效率方面的通用性与实用价值。",
+        "bbox": [
+            498,
+            144,
+            895,
+            205
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "4 结束语",
+        "text_level": 1,
+        "bbox": [
+            500,
+            214,
+            578,
+            231
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "网络协议的安全性关乎整个网络空间的稳定运行与信任机制的构建。针对传统模糊测试在处理复杂协议语义和变异策略方面存在的局限性，本文提出并实现了一种融合LLMs的协议模糊测试框架LPF。该框架在提示词设计、协议语法抽取、历史漏洞知识迁移及结构感知变异策略等关键环节上实现了系统性改进，从而有效提升了模糊测试的智能化水平与实际测试能力。实验评估表明，LPF在多个典型协议场景中均表现出优异性能，在代码覆盖率、状态覆盖率及漏洞触发效率等方面显著优于其他代表性工具。",
+        "bbox": [
+            498,
+            240,
+            895,
+            458
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "尽管LPF在验证语义驱动的协议模糊测试上展现出了综合优势，但当前框架在多语言协议实现的适配性、LLMs在极端场景下的输出稳定性以及对高度动态加密协议的精细化建模等方面仍有优化空间。未来的研究可从以下3个方向进一步拓展与深化。首先，可探索结合领域知识微调与上下文增强检索机制，利用协议RFC标准文档与公开漏洞样本数据构建高质量训练集，并通过冻结LLMs底层参数、仅微调上层适配层的方式，以较低成本注入协议领域知识，同时结合上下文增强检索机制，提升模型在跨协议环境下的泛化能力；然后，引入形式化方法对协议语法模板与状态建模结果进行自动验证，将LLMs生成的协议状态机模型转换为UPPAAL等工具的输入格式，在测试前执行可达性与安全属性检查，增强流程的准确性与鲁棒性；最后，结合符号执行与约束求解技术，探索LLMs与程序分析工具的协同推理机制，从而提升对深层协议逻辑路径与边界行为的探索能力。同时，将进一步构建更全面的评估框架，纳入更多最新协议模糊测试工具进行系统性对比，以更全面地验证LPF的适配性与优势。",
+        "bbox": [
+            496,
+            463,
+            895,
+            907
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "header",
+        "text": "",
+        "bbox": [
+            70,
+            48,
+            196,
+            61
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "header",
+        "text": "理论研究",
+        "bbox": [
+            93,
+            63,
+            173,
+            78
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "header",
+        "text": "2025 年第 12 期",
+        "bbox": [
+            220,
+            65,
+            308,
+            78
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "page_number",
+        "text": "1860 ",
+        "bbox": [
+            73,
+            942,
+            106,
+            953
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "footer",
+        "text": "万方数据",
+        "bbox": [
+            78,
+            969,
+            147,
+            983
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "参考文献：",
+        "text_level": 1,
+        "bbox": [
+            102,
+            145,
+            166,
+            158
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "list",
+        "sub_type": "ref_text",
+        "list_items": [
+            "[1] BA J, BÖHME M, MIRZAMOMEN Z, et al. Stateful Greybox Fuzzing[C]//USENIX. The 31st USENIX Security Symposium. Berkely: USENIX Association, 2022: 3255-3272. ",
+            "[2] LU Liyu, LIU Yuan, HONG Chao, et al. Screening Method of Fuzzy Test Seeds Based on Impact Orientation[J]. Network Security Technology & Application, 2024(2): 44-46. ",
+            "陆力瑜，刘媛，洪超，等.基于影响性导向的模糊测试种子筛选方法[J].网络安全技术与应用，2024（2）：44-46.",
+            "[3] MILLER B P, ZHANG Mengxiao, HEYMANN E R. The Relevance of Classic Fuzz Testing: Have We Solved this One?[J]. IEEE Transactions on Software Engineering, 2022, 48(6): 2028-2039. ",
+            "[4] MANÈS V J M, HAN H, HAN C, et al. The Art, Science, and Engineering of Fuzzing: A Survey[J]. IEEE Transactions on Software Engineering, 2021, 47(11): 2312-2331. ",
+            "[5] ZHANG Xiaohan, ZHANG Cen, LI Xinghua, et al. A Survey of Protocol Fuzzing[J]. ACM Computing Surveys, 2024, 57(2): 1-36. ",
+            "[6] ZHAO Yiru, GAO Long, WEI Qiang, et al. Towards Tightly-Coupled Hybrid Fuzzing via Excavating Input Specifications[J]. IEEE Transactions on Dependable and Secure Computing, 2024, 21(5): 4801-4814. ",
+            "[7] PHAM V, BÖHME M, ROYCHOUDHURY A. AFLNet: A Greybox Fuzzer for Network Protocols[C]//IEEE. The 13th IEEE International Conference on Software Testing, Verification and Validation (ICST). New York: IEEE, 2020: 460-465. ",
+            "[8] LUO Zhengxiong, YU Junze, DU Qingpeng, et al. Parallel Fuzzing of IoT Messaging Protocols through Collaborative Packet Generation[J]. IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems, 2024, 43(11): 3431-3442. ",
+            "[9] MENG Ruijie, PHAM V-T, BÖHME M, et al. AFLNet Five Years Later: On Coverage-Guided Protocol Fuzzing[J]. IEEE Transactions on Software Engineering, 2025, 51(4): 960-974. ",
+            "[10] Website. American Fuzzy Lop (AFL) Fuzzer[EB/OL]. [2025-07-30]. http://lcamtuf.coredump.cx/afl. ",
+            "[11] LI Junqiang, LI Senyi, SUN Gang, et al. SNPSFuzzer: A Fast Greybox Fuzzer for Stateful Network Protocols Using Snapshots[J]. IEEE Transactions on Information Forensics and Security, 2022, 17: 2673-2687. ",
+            "[12] ANDRONIDIS A, CADAR C. SnapFuzz: High-Throughput Fuzzing of Network Applications[C]//ACM. The 31st ACM SIGSOFT International Symposium on Software Testing and Analysis. New York: ACM, 2022: 340-351. ",
+            "[13] QIN Shisong, HU Fan, MA Zheyu, et al. NSFuzz: Towards Efficient and State-Aware Network Service Fuzzing[J]. ACM Transactions on Software Engineering and Methodology, 2023, 32(6): 1-26. ",
+            "[14] HUANG Tao, GAO Yansong, ZHENG Yifeng, et al. FineBID: Fine-Grained Protocol Reverse Engineering for Bit-Level Field Identification[J]. IEEE Transactions on Dependable and Secure Computing, 2025, 22(3): 2670-2686. ",
+            "[15] KIM J, SEO M, MARIN E, et al. Ambusher: Exploring the Security of Distributed SDN Controllers through Protocol State Fuzzing[J]. IEEE "
+        ],
+        "bbox": [
+            102,
+            160,
+            498,
+            905
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "list",
+        "sub_type": "ref_text",
+        "list_items": [
+            "Transactions on Information Forensics and Security, 2024, 19: 6264-6279. ",
+            "[16] ZHANG Qingyu, LIN Jiayi, SUN Chenxin, et al. CherryPicker: A Parallel Solving and State Sharing Hybrid Fuzzing System[J]. IEEE Transactions on Dependable and Secure Computing, 2025, 22(4): 3324- 3336. ",
+            "[17] HONG Xuanquan, JIA Peng, LIU Jiayong. AFLNeTrans: Fuzzing of Protocols with State Relationship Awareness[J]. Netinfo Security, 2024, 24(1): 121-132. "
+        ],
+        "bbox": [
+            524,
+            146,
+            918,
+            269
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "洪玄泉，贾鹏，刘嘉勇. AFLNeTrans：状态间关系感知的网络协议模糊测试 [J]. 信息网络安全，2024，24（1）：121-132.",
+        "bbox": [
+            524,
+            273,
+            916,
+            302
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "list",
+        "sub_type": "ref_text",
+        "list_items": [
+            "[18] VASWANI A, SHAZEER N, PARMAR N, et al. Attention is All You Need[C]//ACM. The 31st International Conference on Neural Information Processing Systems (NIPS’17). New York: ACM, 2017: 6000-6010. ",
+            "[19] BROWN T, MANN B, RYDER N, et al. Language Models are Few-Shot Learners[C]//ACM. The 34th International Conference on Neural Information Processing Systems (NIPS ‘20). New York: ACM, 2020: 1877-1901. ",
+            "[20] ZHU Xiaogang, ZHOU Wei, HAN Q, et al. When Software Security Meets Large Language Models: A Survey[J]. IEEE/CAA Journal of Automatica Sinica, 2025, 12(2): 317-334. ",
+            "[21] LEMIEUX C, INALA J, LAHIRI S, et al. Codamosa: Escaping Coverage Plateaus in Test Generation with Pre-Trained Large Language Models[C]//IEEE. The 45th IEEE/ACM International Conference on Software Engineering (ICSE). New York: IEEE, 2023: 919-931. ",
+            "[22] DENG Yinlin, XIA C S, PENG Haoran, et al. Large Language Models are Zero-Shot Fuzzers: Fuzzing Deep-Learning Libraries via Large Language Models[C]//ACM. The 32nd ACM SIGSOFT International Symposium on Software Testing and Analysis(ISSTA 2023). New York: ACM, 2023: 423-435. ",
+            "[23] DENG Yinlin, XIA C S, YANG Chenyuan, et al. Large Language Models are Edge-Case Generators: Crafting Unusual Programs for Fuzzing Deep Learning Libraries[C]//ACM. The IEEE/ACM 46th International Conference on Software Engineering (ICSE’24). New York: ACM, 2024: 1-13. ",
+            "[24] ZHANG Qiang, SHEN Yuheng, LIU Jianzhong, et al. ECG: Augmenting Embedded Operating System Fuzzing via LLM-Based Corpus Generation[J]. IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems, 2024, 43(11): 4238-4249. ",
+            "[25] SHAHRIAR A, HISHAM S J, RAHMAN K M A, et al. 5GPT: 5G Vulnerability Detection by Combining Zero-Shot Capabilities of GPT-4 with Domain Aware Strategies through Prompt Engineering[J]. IEEE Transactions on Information Forensics and Security, 2025, 20: 7045-7060. ",
+            "[26] ZHENG Tao, SHAO Jiang, DAI Jinqiao, et al. RESTLess: Enhancing State-of-the-Art REST API Fuzzing with LLMs in Cloud Service Computing[J]. IEEE Transactions on Services Computing, 2024, 17(6): 4225-4238. ",
+            "[27] WANG Jincheng, YU Le, LUO Xiapu. LLMIF: Augmented Large Language Model for Fuzzing IoT Devices[C]//IEEE. The 2024 IEEE Symposium on Security and Privacy (SP). New York: IEEE, 2024: 881-896. "
+        ],
+        "bbox": [
+            524,
+            305,
+            918,
+            905
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "header",
+        "text": "2025 年第 12 期",
+        "bbox": [
+            689,
+            65,
+            774,
+            78
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "header",
+        "text": "",
+        "bbox": [
+            800,
+            49,
+            926,
+            61
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "header",
+        "text": "理论研究",
+        "bbox": [
+            823,
+            64,
+            901,
+            78
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "footer",
+        "text": "万方数据",
+        "bbox": [
+            78,
+            969,
+            145,
+            983
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "page_number",
+        "text": "1861 ",
+        "bbox": [
+            890,
+            942,
+            924,
+            953
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "list",
+        "sub_type": "ref_text",
+        "list_items": [
+            "[28] YANG Liqun, WEI Chaoren, YANG Jian, et al. Code Large Language Model-Based Fuzz Testing for Industrial IoT Programs[J]. IEEE Internet of Things Journal, 2024: 1-11. ",
+            "[29] PIYUSH J, JOSEPH S, JAYA S G, et al. BertRLFuzzer: A BERT and Reinforcement Learning Based Fuzzer[C]//ACM. The Thirty-Eighth AAAI Conference on Artificial Intelligence and Thirty-Sixth Conference on Innovative Applications of Artificial Intelligence and Fourteenth Symposium on Educational Advances in Artificial Intelligence (AAAI’24/IAAI’24/ EAAI’24). New York: ACM, 2024: 23521-23522. ",
+            "[30] YANG Chenyuan, DENG Yinlin, LU Runyu, et al. WhiteFox: White-Box Compiler Fuzzing Empowered by Large Language Models[C]// ACM. The ACM on Programming Languages. New York: ACM, 2024, 8(2): 709-735. "
+        ],
+        "bbox": [
+            78,
+            145,
+            473,
+            351
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "list",
+        "sub_type": "ref_text",
+        "list_items": [
+            "[31] EOM J, JEONG S, KWON T. Fuzzing JavaScript Interpreters with Coverage-Guided Reinforcement Learning for LLM-Based Mutation[C]// ACM. The 33rd ACM SIGSOFT International Symposium on Software Testing and Analysis (ISSTA 2024). New York: ACM, 2024: 1656-1668. ",
+            "[32] XIA C S, PALTENGHI M, TIAN Jiale, et al. Fuzz4All: Universal Fuzzing with Large Language Models[C]//ACM. The 46th International Conference on Software Engineering. New York: ACM, 2024: 1-13. ",
+            "[33] YE Kai, ZHU Xiaogang, XIAO Xi, et al. BazzAFL: Moving Fuzzing Campaigns towards Bugs via Grouping Bug-Oriented Seeds[J]. IEEE Transactions on Dependable and Secure Computing, 2025, 22(1): 179-191. ",
+            "[34] LI Yuwei, JI Shouling, LYU Chenyang, et al. V-Fuzz: Vulnerability Prediction-Assisted Evolutionary Fuzzing for Binary Programs[J]. IEEE Transactions on Cybernetics, 2022, 52(5): 3745-3756. "
+        ],
+        "bbox": [
+            500,
+            145,
+            895,
+            351
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "header",
+        "text": "",
+        "bbox": [
+            70,
+            49,
+            197,
+            61
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "header",
+        "text": "理论研究",
+        "bbox": [
+            93,
+            64,
+            173,
+            78
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "header",
+        "text": "2025 年第 12 期",
+        "bbox": [
+            222,
+            65,
+            308,
+            78
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "page_number",
+        "text": "1862 ",
+        "bbox": [
+            73,
+            942,
+            106,
+            953
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "footer",
+        "text": "万方数据",
+        "bbox": [
+            78,
+            969,
+            147,
+            983
+        ],
+        "page_idx": 15
+    }
+]
