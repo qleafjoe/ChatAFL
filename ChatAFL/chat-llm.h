@@ -12,7 +12,8 @@ We give at most 400 for the examples and 1300 for the stall prompt
 Similarly 1700 is for the example request in the seed enrichment
 */
 
-#define OPENAI_TOKEN "1"
+#define MINIMAX_TOKEN "sk-api-adJ3ML-ux_Ary01UQr8ehTDCoex9QhDJSln-9qQC49PvINgkw77-Vgtm7BZQSx3hHVzeQCr3K3FWD3hx-2uoG9S2kKdoYS4Q0akTfhMXDzSJR7cY08LiEJs"
+#define MINIMAX_MODEL "MiniMax-M2.7"
 
 #define MAX_PROMPT_LENGTH 2048
 #define EXAMPLES_PROMPT_LENGTH 400

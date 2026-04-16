@@ -47,27 +47,12 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
     CURL *curl;
     CURLcode res = CURLE_OK;
     char *answer = NULL;
-    char *url = NULL;
-    if (strcmp(model, "instruct") == 0)
-    {
-        url = "https://api.openai.com/v1/completions";
-    }
-    else
-    {
-        url = "https://api.openai.com/v1/chat/completions";
-    }
-    char *auth_header = "Authorization: Bearer " OPENAI_TOKEN;
+    char *url = "https://api.minimaxi.com/v1/text/chatcompletion_v2";
+    char *auth_header = "Authorization: Bearer " MINIMAX_TOKEN;
     char *content_header = "Content-Type: application/json";
     char *accept_header = "Accept: application/json";
     char *data = NULL;
-    if (strcmp(model, "instruct") == 0)
-    {
-        asprintf(&data, "{\"model\": \"gpt-3.5-turbo-instruct\", \"prompt\": \"%s\", \"max_tokens\": %d, \"temperature\": %f}", prompt, MAX_TOKENS, temperature);
-    }
-    else
-    {
-        asprintf(&data, "{\"model\": \"gpt-3.5-turbo\",\"messages\": %s, \"max_tokens\": %d, \"temperature\": %f}", prompt, MAX_TOKENS, temperature);
-    }
+    asprintf(&data, "{\"model\": \"" MINIMAX_MODEL "\", \"messages\": %s, \"max_tokens\": %d, \"temperature\": %f}", prompt, MAX_TOKENS, temperature);
     curl_global_init(CURL_GLOBAL_DEFAULT);
     do
     {
@@ -90,6 +75,7 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, chat_with_llm_helper);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);
 
+            printf("[DEBUG] JSON payload: %s\n", data);
             res = curl_easy_perform(curl);
 
             if (res == CURLE_OK)
@@ -101,23 +87,30 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
                 {
                     json_object *choices = json_object_object_get(jobj, "choices");
                     json_object *first_choice = json_object_array_get_idx(choices, 0);
-                    const char *data;
 
-                    // The answer begins with a newline character, so we remove it
-                    if (strcmp(model, "instruct") == 0)
-                    {
-                        json_object *jobj4 = json_object_object_get(first_choice, "text");
-                        data = json_object_get_string(jobj4);
+                    // Extract message content
+                    json_object *jobj4 = json_object_object_get(first_choice, "message");
+                    json_object *jobj5 = json_object_object_get(jobj4, "content");
+                    const char *content_str = json_object_get_string(jobj5);
+
+                    if (content_str == NULL) {
+                        printf("Error: content is NULL\n");
+                    } else {
+                        // The answer begins with a newline character, so we remove it
+                        if (content_str[0] == '\n')
+                            content_str++;
+                        answer = strdup(content_str);
                     }
-                    else
-                    {
-                        json_object *jobj4 = json_object_object_get(first_choice, "message");
-                        json_object *jobj5 = json_object_object_get(jobj4, "content");
-                        data = json_object_get_string(jobj5);
+
+                    // Token usage monitoring: extract usage.total_tokens
+                    json_object *jobj_usage = json_object_object_get(jobj, "usage");
+                    if (jobj_usage != NULL) {
+                        json_object *jobj_total_tokens = json_object_object_get(jobj_usage, "total_tokens");
+                        if (jobj_total_tokens != NULL) {
+                            int total_tokens = json_object_get_int(jobj_total_tokens);
+                            printf("[DEBUG] Token usage: %d total_tokens\n", total_tokens);
+                        }
                     }
-                    if (data[0] == '\n')
-                        data++;
-                    answer = strdup(data);
                 }
                 else
                 {
