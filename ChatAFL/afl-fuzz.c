@@ -444,6 +444,7 @@ void setup_llm_grammars()
   {
     klist_t(gram) *grammar_list = kl_init(gram);
 
+    set_llm_stage("Grammar-S_A-1");
     char *templates_answer = chat_with_llm(templates_prompt, "turbo", GRAMMAR_RETRIES, 0.5);
     if (templates_answer == NULL)
       goto free_templates_answer;
@@ -451,6 +452,7 @@ void setup_llm_grammars()
     // printf("## Answer from LLM:\n %s\n", templates_answer);
     char *remaining_prompt = construct_prompt_for_remaining_templates(protocol_name, first_question, templates_answer);
     // printf("remaining prompt is:\n %s\n", remaining_prompt);
+    set_llm_stage("Grammar-S_A-2");
     char *remaining_templates = chat_with_llm(remaining_prompt, "turbo", GRAMMAR_RETRIES, 0.5);
     if (remaining_templates == NULL)
       goto free_remaining;
@@ -2716,7 +2718,7 @@ void get_seeds_with_messsage_types(const char *in_dir, khash_t(strSet) * message
 
     message_set_list message_subsets = message_combinations(messages,MAX_ENRICHMENT_MESSAGE_TYPES);
 
-    for(int i = 0;i < kv_size(message_subsets);i++) {
+    for(int i = 0; i < kv_size(message_subsets);i++) {
 
       khash_t(strSet)* subset = kv_A(message_subsets,i); 
 
@@ -6946,6 +6948,7 @@ AFLNET_REGIONS_SELECTION:;
 
         char *stall_prompt = construct_prompt_stall(protocol_name, examples, history);
         // printf("Got prompt:\n\n%s\n",stall_prompt);
+        set_llm_stage("Stall-S_C");
         char *stall_response = chat_with_llm(stall_prompt, "turbo", STALL_RETRIES, 1.5);
         // printf("Got response:\n\n%s\n",stall_response);
 

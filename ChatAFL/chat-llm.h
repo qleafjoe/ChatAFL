@@ -12,7 +12,7 @@ We give at most 400 for the examples and 1300 for the stall prompt
 Similarly 1700 is for the example request in the seed enrichment
 */
 
-#define MINIMAX_TOKEN "sk-api-adJ3ML-ux_Ary01UQr8ehTDCoex9QhDJSln-9qQC49PvINgkw77-Vgtm7BZQSx3hHVzeQCr3K3FWD3hx-2uoG9S2kKdoYS4Q0akTfhMXDzSJR7cY08LiEJs"
+#define MINIMAX_TOKEN "sk-cp-EK3rwNPjpttunXcODVKSpsvJh4dySqRdtbgbjcmLxdlSHRyoIuWJzFPXFUr8I8rponL4y-xwRMMcO3eodW7dwfO2hqL3G6cCQBtIufVHuRX11_JV1YK5YFs"
 #define MINIMAX_MODEL "MiniMax-M2.7"
 
 #define MAX_PROMPT_LENGTH 2048
@@ -92,4 +92,7 @@ void write_new_seeds(char *enriched_file, char *contents);
 char *unescape_string(const char *input);
 char *format_string(char *state_string);
 message_set_list message_combinations(khash_t(strSet)* sequence, int size);
+
+// LLM 响应格式验证
+void set_llm_stage(const char *stage);
 #endif // __CHAT_LLM_H

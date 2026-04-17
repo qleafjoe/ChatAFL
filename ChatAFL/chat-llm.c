@@ -13,8 +13,11 @@
 // -lcurl -ljson-c -lpcre2-8
 // apt install libcurl4-openssl-dev libjson-c-dev libpcre2-dev libpcre2-8-0
 
-#define MAX_TOKENS 2048
-#define CONFIDENT_TIMES 3
+#define MAX_TOKENS 10240
+#define CONFIDENT_TIMES 2
+
+// 全局变量：追踪当前 LLM 调用阶段，用于日志输出
+static const char *g_current_llm_stage = "unknown";
 
 struct MemoryStruct
 {
@@ -42,6 +45,98 @@ static size_t chat_with_llm_helper(void *contents, size_t size, size_t nmemb, vo
     return realsize;
 }
 
+// 验证 LLM 返回内容格式是否包含 markdown 包装
+// 返回: 0 = 合规, 1 = 不合规(markdown或结构错误), -1 = 内容为空
+static int validate_llm_response_format(const char *content)
+{
+    const char *stage_name = g_current_llm_stage ? g_current_llm_stage : "unknown";
+
+    if (content == NULL) {
+        printf("[LLM FORMAT] Stage=%s: content is NULL\n", stage_name);
+        return -1;
+    }
+
+    int has_markdown = 0;
+    size_t len = strlen(content);
+
+    // 检测 markdown 代码块包装
+    if (len > 7 && strncmp(content, "```json", 7) == 0) {
+        has_markdown = 1;
+    } else if (len > 3 && strncmp(content, "```", 3) == 0) {
+        has_markdown = 1;
+    }
+
+    // 检测结尾的 ```
+    if (!has_markdown && len > 4) {
+        const char *end = content + len - 1;
+        // 跳过可能的换行符
+        while (end > content && (*end == '\n' || *end == ' ' || *end == '\r' || *end == '\t')) {
+            end--;
+        }
+        if (end - content >= 3 && strncmp(end - 2, "```", 3) == 0) {
+            has_markdown = 1;
+        }
+    }
+
+    // 输出格式分析日志
+    if (has_markdown) {
+        // 截取前100字符用于日志显示
+        char preview[101] = {0};
+        size_t preview_len = len > 100 ? 100 : len;
+        strncpy(preview, content, preview_len);
+        preview[preview_len] = '\0';
+        printf("[LLM FORMAT] Stage=%s: INVALID (markdown detected) | Preview: %.100s...\n", stage_name, preview);
+        return 1;
+    } else {
+        // 跳过前导空白字符，找到第一个实际字符
+        const char *ptr = content;
+        while (*ptr == '\n' || *ptr == '\r' || *ptr == ' ' || *ptr == '\t') {
+            ptr++;
+        }
+
+        if (*ptr == '[' || *ptr == '{') {
+            // 尝试解析 JSON 以检查结构
+            json_object *jobj = json_tokener_parse(content);
+            if (jobj == NULL) {
+                printf("[LLM FORMAT] Stage=%s: INVALID (malformed JSON)\n", stage_name);
+                return 1;
+            }
+
+            // 对于 Grammar 阶段（S_A），期望 JSON 数组格式
+            if (strncmp(stage_name, "Grammar", 7) == 0) {
+                if (json_object_get_type(jobj) == json_type_array) {
+                    printf("[LLM FORMAT] Stage=%s: VALID (JSON array)\n", stage_name);
+                    json_object_put(jobj);
+                    return 0;
+                } else {
+                    // JSON 对象格式（如 {"CMD": [...]}）不符合预期
+                    printf("[LLM FORMAT] Stage=%s: INVALID (expected JSON array, got object)\n", stage_name);
+                    json_object_put(jobj);
+                    return 1;
+                }
+            }
+
+            // 对于其他阶段，对象或数组都可以
+            printf("[LLM FORMAT] Stage=%s: VALID (pure JSON)\n", stage_name);
+            json_object_put(jobj);
+            return 0;
+        } else {
+            // 非JSON格式（如纯文本消息类型），也认为是合规的
+            char preview[101] = {0};
+            size_t preview_len = len > 100 ? 100 : len;
+            strncpy(preview, content, preview_len);
+            preview[preview_len] = '\0';
+            printf("[LLM FORMAT] Stage=%s: VALID (non-JSON text) | Preview: %.100s...\n", stage_name, preview);
+        }
+        return 0;
+    }
+}
+
+// 设置当前 LLM 调用阶段名称（用于日志）
+void set_llm_stage(const char *stage) {
+    g_current_llm_stage = stage;
+}
+
 char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
 {
     CURL *curl;
@@ -51,8 +146,26 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
     char *auth_header = "Authorization: Bearer " MINIMAX_TOKEN;
     char *content_header = "Content-Type: application/json";
     char *accept_header = "Accept: application/json";
-    char *data = NULL;
-    asprintf(&data, "{\"model\": \"" MINIMAX_MODEL "\", \"messages\": %s, \"max_tokens\": %d, \"temperature\": %f}", prompt, MAX_TOKENS, temperature);
+
+    // ✅ 【核心修复】：使用 json-c 安全地构建发出的请求体，自动处理 prompt 中的各种特殊字符转义！
+    struct json_object *req_json = json_object_new_object();
+    json_object_object_add(req_json, "model", json_object_new_string(MINIMAX_MODEL));
+    
+    struct json_object *messages_array = json_object_new_array();
+    struct json_object *msg_obj = json_object_new_object();
+    json_object_object_add(msg_obj, "role", json_object_new_string("user"));
+    json_object_object_add(msg_obj, "name", json_object_new_string("User"));
+    // 这里非常关键：传入纯文本 prompt，json-c 会自动为其加上双引号并转义内部的特殊字符
+    json_object_object_add(msg_obj, "content", json_object_new_string(prompt)); 
+    json_object_array_add(messages_array, msg_obj);
+    
+    json_object_object_add(req_json, "messages", messages_array);
+    json_object_object_add(req_json, "max_tokens", json_object_new_int(MAX_TOKENS));
+    json_object_object_add(req_json, "temperature", json_object_new_double(temperature));
+
+    // 生成安全的 payload 字符串
+    const char *data = json_object_to_json_string(req_json);
+
     curl_global_init(CURL_GLOBAL_DEFAULT);
     do
     {
@@ -75,49 +188,68 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, chat_with_llm_helper);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);
 
-            printf("[DEBUG] JSON payload: %s\n", data);
+            // printf("[DEBUG] Safe JSON payload generated.\n");
             res = curl_easy_perform(curl);
 
             if (res == CURLE_OK)
             {
+                // printf("\n====== MINIMAX RAW RESPONSE ======\n%s\n===================================\n", chunk.memory);
                 json_object *jobj = json_tokener_parse(chunk.memory);
 
-                // Check if the "choices" key exists
-                if (json_object_object_get_ex(jobj, "choices", NULL))
-                {
-                    json_object *choices = json_object_object_get(jobj, "choices");
-                    json_object *first_choice = json_object_array_get_idx(choices, 0);
-
-                    // Extract message content
-                    json_object *jobj4 = json_object_object_get(first_choice, "message");
-                    json_object *jobj5 = json_object_object_get(jobj4, "content");
-                    const char *content_str = json_object_get_string(jobj5);
-
-                    if (content_str == NULL) {
-                        printf("Error: content is NULL\n");
-                    } else {
-                        // The answer begins with a newline character, so we remove it
-                        if (content_str[0] == '\n')
-                            content_str++;
-                        answer = strdup(content_str);
-                    }
-
-                    // Token usage monitoring: extract usage.total_tokens
-                    json_object *jobj_usage = json_object_object_get(jobj, "usage");
-                    if (jobj_usage != NULL) {
-                        json_object *jobj_total_tokens = json_object_object_get(jobj_usage, "total_tokens");
-                        if (jobj_total_tokens != NULL) {
-                            int total_tokens = json_object_get_int(jobj_total_tokens);
-                            printf("[DEBUG] Token usage: %d total_tokens\n", total_tokens);
-                        }
-                    }
+                // ✅ 增加了一层防崩溃判断：如果大模型返回非 JSON（如 502 Bad Gateway 报错网页）
+                if (jobj == NULL) {
+                    printf("Error: Failed to parse JSON response: %s\n", chunk.memory);
                 }
                 else
                 {
-                    printf("Error response is: %s\n", chunk.memory);
-                    sleep(2); // Sleep for a small amount of time to ensure that the service can recover
+                    // Check if the "choices" key exists
+                    if (json_object_object_get_ex(jobj, "choices", NULL))
+                    {
+                        json_object *choices = json_object_object_get(jobj, "choices");
+                        
+                        // 确保它是数组且有内容，防断言崩溃
+                        if (json_object_get_type(choices) == json_type_array && json_object_array_length(choices) > 0) 
+                        {
+                            json_object *first_choice = json_object_array_get_idx(choices, 0);
+
+                            // Extract message content
+                            json_object *jobj4 = json_object_object_get(first_choice, "message");
+                            json_object *jobj5 = json_object_object_get(jobj4, "content");
+                            const char *content_str = json_object_get_string(jobj5);
+
+                            if (content_str == NULL) {
+                                printf("Error: content is NULL\n");
+                            } else {
+                                // The answer begins with a newline character, so we remove it
+                                if (content_str[0] == '\n')
+                                    content_str++;
+                                answer = strdup(content_str);
+                                // 验证返回内容格式，如果不合规则清空 answer 触发重试
+                                if (validate_llm_response_format(answer) != 0) {
+                                    printf("[LLM] Response format invalid, will retry...\n");
+                                    free(answer);
+                                    answer = NULL;
+                                }
+                            }
+
+                            // Token usage monitoring: extract usage.total_tokens
+                            json_object *jobj_usage = json_object_object_get(jobj, "usage");
+                            if (jobj_usage != NULL) {
+                                json_object *jobj_total_tokens = json_object_object_get(jobj_usage, "total_tokens");
+                                if (jobj_total_tokens != NULL) {
+                                    int total_tokens = json_object_get_int(jobj_total_tokens);
+                                    printf("[MiniMax API] Token usage: %d total_tokens\n", total_tokens);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        printf("Error response is: %s\n", chunk.memory);
+                        sleep(2); // Sleep for a small amount of time to ensure that the service can recover
+                    }
+                    json_object_put(jobj);
                 }
-                json_object_put(jobj);
             }
             else
             {
@@ -131,18 +263,17 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
         free(chunk.memory);
     } while ((res != CURLE_OK || answer == NULL) && (--tries > 0));
 
-    if (data != NULL)
-    {
-        free(data);
-    }
-
+    // ✅ 释放我们一开始构建的安全请求体内存
+    json_object_put(req_json);
+    
     curl_global_cleanup();
     return answer;
 }
 
 char *construct_prompt_stall(char *protocol_name, char *examples, char *history)
 {
-    char *template = "In the %s protocol, the communication history between the %s client and the %s server is as follows."
+    char *template = "CRITICAL INSTRUCTION: You are a strict JSON data API. You must output ONLY valid JSON without any markdown formatting, code blocks, or additional text. Do not wrap the response in ```json``` or any other code blocks.\n\n"
+                     "In the %s protocol, the communication history between the %s client and the %s server is as follows."
                      "The next proper client request that can affect the server's state are:\\n\\n"
                      "Desired format of real client requests:\\n%sCommunication History:\\n\\\"\\\"\\\"\\n%s\\\"\\\"\\\"";
 
@@ -182,7 +313,7 @@ char *construct_prompt_for_templates(char *protocol_name, char **final_msg)
      **/
     char *prompt_grammars = NULL;
 
-    asprintf(&prompt_grammars, "[{\"role\": \"system\", \"content\": \"You are a helpful assistant.\"}, {\"role\": \"user\", \"content\": \"%s\"}]", msg);
+    asprintf(&prompt_grammars, "[{\"role\": \"system\", \"content\": \"CRITICAL INSTRUCTION: You are a strict JSON data API. You must output ONLY valid JSON without any markdown formatting, code blocks, or additional text. Do not wrap the response in ```json``` or any other code blocks.\"}, {\"role\": \"user\", \"content\": \"%s\"}]", msg);
 
     return prompt_grammars;
 }
@@ -202,7 +333,7 @@ char *construct_prompt_for_remaining_templates(char *protocol_name, char *first_
 
     asprintf(&prompt,
              "["
-             "{\"role\": \"system\", \"content\": \"You are a helpful assistant.\"},"
+             "{\"role\": \"system\", \"content\": \"CRITICAL INSTRUCTION: You are a strict JSON data API. You must output ONLY valid JSON without any markdown formatting, code blocks, or additional text. Do not wrap the response in ```json``` or any other code blocks.\"},"
              "{\"role\": \"user\", \"content\": \"%s\"},"
              "{\"role\": \"assistant\", \"content\": %s },"
              "{\"role\": \"user\", \"content\": \"%s\"}"
@@ -306,7 +437,8 @@ char *construct_prompt_for_protocol_message_types(char *protocol_name)
     char *prompt = NULL;
 
     // transfer the prompt into string
-    asprintf(&prompt, "In the %s protocol, the message types are: \\n\\nDesired format:\\n<comma_separated_list_of_states_in_uppercase_and_without_whitespaces>", protocol_name);
+    asprintf(&prompt, "CRITICAL INSTRUCTION: You are a strict JSON data API. You must output ONLY valid JSON without any markdown formatting, code blocks, or additional text. Do not wrap the response in ```json``` or any other code blocks.\n\n"
+                     "In the %s protocol, the message types are: \\n\\nDesired format:\\n<comma_separated_list_of_states_in_uppercase_and_without_whitespaces>", protocol_name);
 
     return prompt;
 }
@@ -354,6 +486,7 @@ char *construct_prompt_for_requests_to_states(const char *protocol_name,
     }
 
     asprintf(&prompt,
+             "CRITICAL INSTRUCTION: You are a strict JSON data API. You must output ONLY valid JSON without any markdown formatting, code blocks, or additional text. Do not wrap the response in ```json``` or any other code blocks.\n\n"
              "In the %s protocol, if the server just starts, to reach the INIT state, the sequence of client requests can be:\\n"
              "%.*s\\nSimilarly, in the %s protocol, if the server just starts, to reach the %.*s state, the sequence of client requests can be:\\n",
              protocol_name,
@@ -772,6 +905,7 @@ void get_protocol_message_types(char *state_prompt, khash_t(strSet) * states_set
 
     for (int i = 0; i < CONFIDENT_TIMES; i++)
     {
+        set_llm_stage("MessageTypes-S_B");
         char *state_answer = chat_with_llm(state_prompt, "instruct", MESSAGE_TYPE_RETRIES, 0.5);
         if (state_answer == NULL)
             continue;
@@ -909,6 +1043,7 @@ int min(int a, int b) {
 char *enrich_sequence(char *sequence, khash_t(strSet) * missing_message_types)
 {
     const char *prompt_template =
+        "CRITICAL INSTRUCTION: You are a strict JSON data API. You must output ONLY valid JSON without any markdown formatting, code blocks, or additional text. Do not wrap the response in ```json``` or any other code blocks.\n\n"
         "The following is one sequence of client requests:\\n"
         "%.*s\\n"
         "Please add the %.*s client requests in the proper locations, and the modified sequence of client requests is:";
@@ -958,6 +1093,7 @@ char *enrich_sequence(char *sequence, khash_t(strSet) * missing_message_types)
     ck_free(missing_fields_seq);
     json_object_put(sequence_escaped);
 
+    set_llm_stage("Enrichment-S_B");
     char *response = chat_with_llm(prompt, "instruct", ENRICHMENT_RETRIES, 0.5);
 
     free(prompt);
