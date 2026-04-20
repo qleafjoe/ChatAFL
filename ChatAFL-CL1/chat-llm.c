@@ -13,7 +13,7 @@
 // -lcurl -ljson-c -lpcre2-8
 // apt install libcurl4-openssl-dev libjson-c-dev libpcre2-dev libpcre2-8-0
 
-#define MAX_TOKENS 2048
+#define MAX_TOKENS 4096
 #define CONFIDENT_TIMES 3
 
 struct MemoryStruct
@@ -47,27 +47,43 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
     CURL *curl;
     CURLcode res = CURLE_OK;
     char *answer = NULL;
-    char *url = NULL;
-    if (strcmp(model, "instruct") == 0)
-    {
-        url = "https://api.openai.com/v1/completions";
-    }
-    else
-    {
-        url = "https://api.openai.com/v1/chat/completions";
-    }
-    char *auth_header = "Authorization: Bearer " OPENAI_TOKEN;
+    
+    // Read environments
+    const char *url_env = getenv("LLM_URL");
+    const char *token_env = getenv("LLM_TOKEN");
+    const char *model_env = getenv("LLM_MODEL");
+
+    if (!url_env) url_env = "https://api.minimaxi.com/v1/text/chatcompletion_v2";
+    if (!token_env) token_env = "";
+    if (!model_env) model_env = "MiniMax-M2.7";
+
+    char *auth_header = NULL;
+    asprintf(&auth_header, "Authorization: Bearer %s", token_env);
+    
     char *content_header = "Content-Type: application/json";
     char *accept_header = "Accept: application/json";
     char *data = NULL;
+    
+    char *messages_json = NULL;
     if (strcmp(model, "instruct") == 0)
     {
-        asprintf(&data, "{\"model\": \"gpt-3.5-turbo-instruct\", \"prompt\": \"%s\", \"max_tokens\": %d, \"temperature\": %f}", prompt, MAX_TOKENS, temperature);
+        json_object *escaped = json_object_new_string(prompt);
+        const char *escaped_str = json_object_to_json_string(escaped);
+        asprintf(&messages_json, "[{\"role\": \"user\", \"content\": %s}]", escaped_str);
+        json_object_put(escaped);
     }
     else
     {
-        asprintf(&data, "{\"model\": \"gpt-3.5-turbo\",\"messages\": %s, \"max_tokens\": %d, \"temperature\": %f}", prompt, MAX_TOKENS, temperature);
+        messages_json = prompt;
     }
+    
+    asprintf(&data, "{\"model\": \"%s\",\"messages\": %s, \"max_tokens\": %d, \"temperature\": %f}", model_env, messages_json, MAX_TOKENS, temperature);
+
+    if (strcmp(model, "instruct") == 0)
+    {
+        free(messages_json);
+    }
+
     curl_global_init(CURL_GLOBAL_DEFAULT);
     do
     {
@@ -86,7 +102,7 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
 
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
             curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data);
-            curl_easy_setopt(curl, CURLOPT_URL, url);
+            curl_easy_setopt(curl, CURLOPT_URL, url_env);
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, chat_with_llm_helper);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);
 
@@ -97,34 +113,31 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
                 json_object *jobj = json_tokener_parse(chunk.memory);
 
                 // Check if the "choices" key exists
-                if (json_object_object_get_ex(jobj, "choices", NULL))
+                if (jobj && json_object_object_get_ex(jobj, "choices", NULL))
                 {
                     json_object *choices = json_object_object_get(jobj, "choices");
                     json_object *first_choice = json_object_array_get_idx(choices, 0);
-                    const char *data;
+                    const char *data_str = NULL;
 
-                    // The answer begins with a newline character, so we remove it
-                    if (strcmp(model, "instruct") == 0)
-                    {
-                        json_object *jobj4 = json_object_object_get(first_choice, "text");
-                        data = json_object_get_string(jobj4);
-                    }
-                    else
-                    {
-                        json_object *jobj4 = json_object_object_get(first_choice, "message");
+                    json_object *jobj4 = json_object_object_get(first_choice, "message");
+                    if (jobj4) {
                         json_object *jobj5 = json_object_object_get(jobj4, "content");
-                        data = json_object_get_string(jobj5);
+                        if (jobj5) {
+                            data_str = json_object_get_string(jobj5);
+                        }
                     }
-                    if (data[0] == '\n')
-                        data++;
-                    answer = strdup(data);
+                    
+                    if (data_str && data_str[0] == '\n')
+                        data_str++;
+                    if (data_str)
+                        answer = strdup(data_str);
                 }
                 else
                 {
                     printf("Error response is: %s\n", chunk.memory);
                     sleep(2); // Sleep for a small amount of time to ensure that the service can recover
                 }
-                json_object_put(jobj);
+                if (jobj) json_object_put(jobj);
             }
             else
             {
@@ -142,6 +155,10 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
     {
         free(data);
     }
+    if (auth_header != NULL)
+    {
+        free(auth_header);
+    }
 
     curl_global_cleanup();
     return answer;
@@ -151,14 +168,15 @@ char *construct_prompt_stall(char *protocol_name, char *examples, char *history)
 {
     char *template = "In the %s protocol, the communication history between the %s client and the %s server is as follows."
                      "The next proper client request that can affect the server's state are:\\n\\n"
-                     "Desired format of real client requests:\\n%sCommunication History:\\n\\\"\\\"\\\"\\n%s\\\"\\\"\\\"";
+                     "Desired format of real client requests:\\n%sCommunication History:\\n\\\"\\\"\\\"\\n%s\\\"\\\"\\\"\\n"
+                     "(System constraint: Output ONLY one single client request line. NO markdown, NO formatting, NO explanations.)";
 
     char *prompt = NULL;
     asprintf(&prompt, template, protocol_name, protocol_name, protocol_name, examples, history);
 
     char *final_prompt = NULL;
 
-    asprintf(&final_prompt, "[{\"role\": \"system\", \"content\": \"You are a helpful assistant.\"}, {\"role\": \"user\", \"content\": \"%s\"}]", prompt);
+    asprintf(&final_prompt, "[{\"role\": \"system\", \"content\": \"You are a network protocol expert assistant. Output ONLY the raw required protocol command.\"}, {\"role\": \"user\", \"content\": \"%s\"}]", prompt);
 
     free(prompt);
 
@@ -224,23 +242,25 @@ char *construct_prompt_for_remaining_templates(char *protocol_name, char *first_
 
 char *extract_stalled_message(char *message, size_t message_len)
 {
-
-    int errornumber;
-    size_t erroroffset;
-    // After a lot of iterations, the model consistently responds with an empty line and then a line of text
-    pcre2_code *extracter = pcre2_compile("\r?\n?.*?\r?\n", PCRE2_ZERO_TERMINATED, 0, &errornumber, &erroroffset, NULL);
-    pcre2_match_data *match_data = pcre2_match_data_create_from_pattern(extracter, NULL);
-    int rc = pcre2_match(extracter, message, message_len, 0, 0, match_data, NULL);
-    char *res = NULL;
-    if (rc >= 0)
-    {
-        size_t *ovector = pcre2_get_ovector_pointer(match_data);
-        res = strdup(message + ovector[1]);
+    if (message == NULL || message_len == 0) return NULL;
+    
+    char *start = message;
+    while (*start == '\r' || *start == '\n' || *start == ' ' || *start == '`') start++;
+    if (strncmp(start, "ftp", 3) == 0 || strncmp(start, "txt", 3) == 0) {
+        start += 3;
     }
+    while (*start == '\r' || *start == '\n' || *start == ' ') start++;
 
-    pcre2_match_data_free(match_data);
-    pcre2_code_free(extracter);
+    if (*start == '\0') return NULL;
 
+    char *res = strdup(start);
+    // Remove trailing markdown
+    char *end = res + strlen(res) - 1;
+    while (end >= res && (*end == '\r' || *end == '\n' || *end == ' ' || *end == '`')) {
+        *end = '\0';
+        end--;
+    }
+    
     return res;
 }
 
@@ -918,7 +938,8 @@ char *enrich_sequence(char *sequence, khash_t(strSet) * missing_message_types)
     const char *prompt_template =
         "The following is one sequence of client requests:\\n"
         "%.*s\\n"
-        "Please add the %.*s client requests in the proper locations, and the modified sequence of client requests is:";
+        "Please add the %.*s client requests in the proper locations, and the modified sequence of client requests is: "
+        "(System constraint: Output ONLY the raw protocol commands. NO markdown code blocks, NO explanations, NO intro text. ONLY output the raw TCP sequence.)";
 
     int missing_fields_len = 0;
     int missing_fields_capacity = 100;

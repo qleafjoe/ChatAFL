@@ -5,11 +5,7 @@ if [ -z $KEY ]; then
     exit 0
 fi
 
-# Update the openAI key
-for x in ChatAFL ChatAFL-CL1 ChatAFL-CL2;
-do
-  sed -i "s/#define OPENAI_TOKEN \".*\"/#define OPENAI_TOKEN \"$KEY\"/" $x/chat-llm.h
-done
+# No need to inject OPENAI_TOKEN anymore; LLM settings use env variables at runtime
 
 # Copy the different versions of ChatAFL to the benchmark directories
 for subject in ./benchmark/subjects/*/*; do
@@ -26,8 +22,4 @@ for subject in ./benchmark/subjects/*/*; do
   cp -r ChatAFL-CL2 $subject/chatafl-cl2
 done;
 
-# Build the docker images
-
-PFBENCH="$PWD/benchmark"
-cd $PFBENCH
-PFBENCH=$PFBENCH scripts/execution/profuzzbench_build_all.sh
+# Build the docker images manually per subject to save time

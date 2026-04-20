@@ -12,12 +12,13 @@ We give at most 400 for the examples and 1300 for the stall prompt
 Similarly 1700 is for the example request in the seed enrichment
 */
 
-#define OPENAI_TOKEN "1"
+// LLM settings are now loaded via environment variables:
+// LLM_URL, LLM_TOKEN, LLM_MODEL
 
-#define MAX_PROMPT_LENGTH 2048
-#define EXAMPLES_PROMPT_LENGTH 400
-#define HISTORY_PROMPT_LENGTH 1300
-#define EXAMPLE_SEQUENCE_PROMPT_LENGTH 1700
+#define MAX_PROMPT_LENGTH 8192
+#define EXAMPLES_PROMPT_LENGTH 2000
+#define HISTORY_PROMPT_LENGTH 4000
+#define EXAMPLE_SEQUENCE_PROMPT_LENGTH 4000
 
 #define TEMPLATE_CONSISTENCY_COUNT 5
 
