@@ -48,14 +48,18 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
     CURLcode res = CURLE_OK;
     char *answer = NULL;
     
-    // Read environments
+    // Read environments (treat both NULL and empty string as unset)
     const char *url_env = getenv("LLM_URL");
     const char *token_env = getenv("LLM_TOKEN");
     const char *model_env = getenv("LLM_MODEL");
 
-    if (!url_env) url_env = "https://api.minimaxi.com/v1/text/chatcompletion_v2";
-    if (!token_env) token_env = "";
-    if (!model_env) model_env = "MiniMax-M2.7";
+    if (!url_env || url_env[0] == '\0') url_env = "https://api.minimaxi.com/v1/text/chatcompletion_v2";
+    if (!token_env || token_env[0] == '\0') token_env = "sk-cp-EK3rwNPjpttunXcODVKSpsvJh4dySqRdtbgbjcmLxdlSHRyoIuWJzFPXFUr8I8rponL4y-xwRMMcO3eodW7dwfO2hqL3G6cCQBtIufVHuRX11_JV1YK5YFs";
+    if (!model_env || model_env[0] == '\0') model_env = "MiniMax-M2.7";
+
+    // Debug: print which LLM endpoint is being used
+    printf("[LLM] Using URL: %s\n", url_env);
+    printf("[LLM] Using Model: %s\n", model_env);
 
     char *auth_header = NULL;
     asprintf(&auth_header, "Authorization: Bearer %s", token_env);
@@ -64,25 +68,42 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
     char *accept_header = "Accept: application/json";
     char *data = NULL;
     
-    char *messages_json = NULL;
-    if (strcmp(model, "instruct") == 0)
-    {
-        json_object *escaped = json_object_new_string(prompt);
-        const char *escaped_str = json_object_to_json_string(escaped);
-        asprintf(&messages_json, "[{\"role\": \"user\", \"content\": %s}]", escaped_str);
-        json_object_put(escaped);
-    }
-    else
-    {
-        messages_json = prompt;
-    }
+    json_object *root_obj = json_object_new_object();
+    json_object *messages_array = NULL;
     
-    asprintf(&data, "{\"model\": \"%s\",\"messages\": %s, \"max_tokens\": %d, \"temperature\": %f}", model_env, messages_json, MAX_TOKENS, temperature);
-
-    if (strcmp(model, "instruct") == 0)
-    {
-        free(messages_json);
+    if (strcmp(model, "instruct") == 0) {
+        messages_array = json_tokener_parse(prompt);
+        if (!messages_array || json_object_get_type(messages_array) != json_type_array) {
+            if (messages_array) json_object_put(messages_array);
+            // Fallback: wrap raw prompt in a user message
+            messages_array = json_object_new_array();
+            json_object *msg_obj = json_object_new_object();
+            json_object_object_add(msg_obj, "role", json_object_new_string("user"));
+            json_object_object_add(msg_obj, "content", json_object_new_string(prompt));
+            json_object_array_add(messages_array, msg_obj);
+        }
+    } else {
+        // Prompt is already a JSON array string? No, let's be safe.
+        // In the current codebase, prompt is usually a JSON string for chat models.
+        messages_array = json_tokener_parse(prompt);
+        if (!messages_array || json_object_get_type(messages_array) != json_type_array) {
+            if (messages_array) json_object_put(messages_array);
+            messages_array = json_object_new_array();
+            json_object *msg_obj = json_object_new_object();
+            json_object_object_add(msg_obj, "role", json_object_new_string("user"));
+            json_object_object_add(msg_obj, "content", json_object_new_string(prompt));
+            json_object_array_add(messages_array, msg_obj);
+        }
     }
+
+    json_object_object_add(root_obj, "model", json_object_new_string(model_env));
+    json_object_object_add(root_obj, "messages", messages_array);
+    json_object_object_add(root_obj, "max_tokens", json_object_new_int(MAX_TOKENS));
+    json_object_object_add(root_obj, "temperature", json_object_new_double(temperature));
+
+    data = strdup(json_object_to_json_string(root_obj));
+    json_object_put(root_obj);
+
 
     curl_global_init(CURL_GLOBAL_DEFAULT);
     do
@@ -110,32 +131,47 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
 
             if (res == CURLE_OK)
             {
+                printf("[LLM] Raw Response: %s\n", chunk.memory);
                 json_object *jobj = json_tokener_parse(chunk.memory);
 
-                // Check if the "choices" key exists
-                if (jobj && json_object_object_get_ex(jobj, "choices", NULL))
+                if (jobj && json_object_get_type(jobj) == json_type_object)
                 {
-                    json_object *choices = json_object_object_get(jobj, "choices");
-                    json_object *first_choice = json_object_array_get_idx(choices, 0);
-                    const char *data_str = NULL;
-
-                    json_object *jobj4 = json_object_object_get(first_choice, "message");
-                    if (jobj4) {
-                        json_object *jobj5 = json_object_object_get(jobj4, "content");
-                        if (jobj5) {
-                            data_str = json_object_get_string(jobj5);
+                    json_object *choices = NULL;
+                    if (json_object_object_get_ex(jobj, "choices", &choices) && 
+                        json_object_get_type(choices) == json_type_array &&
+                        json_object_array_length(choices) > 0)
+                    {
+                        json_object *first_choice = json_object_array_get_idx(choices, 0);
+                        if (first_choice && json_object_get_type(first_choice) == json_type_object)
+                        {
+                            json_object *msg_obj = NULL;
+                            if (json_object_object_get_ex(first_choice, "message", &msg_obj) &&
+                                json_object_get_type(msg_obj) == json_type_object)
+                            {
+                                json_object *content_obj = NULL;
+                                if (json_object_object_get_ex(msg_obj, "content", &content_obj) &&
+                                    json_object_get_type(content_obj) == json_type_string)
+                                {
+                                    const char *data_str = json_object_get_string(content_obj);
+                                    if (data_str) {
+                                        if (data_str[0] == '\n') data_str++;
+                                        answer = strdup(data_str);
+                                    }
+                                }
+                            }
                         }
                     }
                     
-                    if (data_str && data_str[0] == '\n')
-                        data_str++;
-                    if (data_str)
-                        answer = strdup(data_str);
+                    if (!answer)
+                    {
+                        printf("LLM Response parsed but no valid answer found in 'choices'. Raw: %s\n", chunk.memory);
+                        sleep(1);
+                    }
                 }
                 else
                 {
-                    printf("Error response is: %s\n", chunk.memory);
-                    sleep(2); // Sleep for a small amount of time to ensure that the service can recover
+                    printf("Error: LLM returned invalid JSON or error: %s\n", chunk.memory);
+                    sleep(2);
                 }
                 if (jobj) json_object_put(jobj);
             }
@@ -174,9 +210,20 @@ char *construct_prompt_stall(char *protocol_name, char *examples, char *history)
     char *prompt = NULL;
     asprintf(&prompt, template, protocol_name, protocol_name, protocol_name, examples, history);
 
-    char *final_prompt = NULL;
+    json_object *messages = json_object_new_array();
+    
+    json_object *sys_msg = json_object_new_object();
+    json_object_object_add(sys_msg, "role", json_object_new_string("system"));
+    json_object_object_add(sys_msg, "content", json_object_new_string("You are a network protocol expert assistant. Output ONLY the raw required protocol command."));
+    json_object_array_add(messages, sys_msg);
 
-    asprintf(&final_prompt, "[{\"role\": \"system\", \"content\": \"You are a network protocol expert assistant. Output ONLY the raw required protocol command.\"}, {\"role\": \"user\", \"content\": \"%s\"}]", prompt);
+    json_object *user_msg = json_object_new_object();
+    json_object_object_add(user_msg, "role", json_object_new_string("user"));
+    json_object_object_add(user_msg, "content", json_object_new_string(prompt));
+    json_object_array_add(messages, user_msg);
+
+    char *final_prompt = strdup(json_object_to_json_string(messages));
+    json_object_put(messages);
 
     free(prompt);
 
@@ -205,9 +252,20 @@ char *construct_prompt_for_templates(char *protocol_name, char **final_msg)
         {"role": "user", "content": msg}
     ]
      **/
-    char *prompt_grammars = NULL;
+    json_object *messages = json_object_new_array();
+    
+    json_object *sys_msg = json_object_new_object();
+    json_object_object_add(sys_msg, "role", json_object_new_string("system"));
+    json_object_object_add(sys_msg, "content", json_object_new_string("You are a helpful assistant."));
+    json_object_array_add(messages, sys_msg);
 
-    asprintf(&prompt_grammars, "[{\"role\": \"system\", \"content\": \"You are a helpful assistant.\"}, {\"role\": \"user\", \"content\": \"%s\"}]", msg);
+    json_object *user_msg = json_object_new_object();
+    json_object_object_add(user_msg, "role", json_object_new_string("user"));
+    json_object_object_add(user_msg, "content", json_object_new_string(msg));
+    json_object_array_add(messages, user_msg);
+
+    char *prompt_grammars = strdup(json_object_to_json_string(messages));
+    json_object_put(messages);
 
     return prompt_grammars;
 }
@@ -221,18 +279,32 @@ char *construct_prompt_for_remaining_templates(char *protocol_name, char *first_
     // printf("The First Question\n%s\n\n", first_question);
     // printf("The First Answer\n%s\n\n", first_answer);
     // printf("The Second Question\n%s\n\n", second_question);
-    const char *answer_str_escaped = json_object_to_json_string(answer_str);
+    json_object_to_json_string(answer_str); // keep the call if needed for side effects, but actually it's just getting a string. I'll remove it.
 
-    char *prompt = NULL;
+    json_object *messages = json_object_new_array();
+    
+    json_object *sys_msg = json_object_new_object();
+    json_object_object_add(sys_msg, "role", json_object_new_string("system"));
+    json_object_object_add(sys_msg, "content", json_object_new_string("You are a helpful assistant."));
+    json_object_array_add(messages, sys_msg);
 
-    asprintf(&prompt,
-             "["
-             "{\"role\": \"system\", \"content\": \"You are a helpful assistant.\"},"
-             "{\"role\": \"user\", \"content\": \"%s\"},"
-             "{\"role\": \"assistant\", \"content\": %s },"
-             "{\"role\": \"user\", \"content\": \"%s\"}"
-             "]",
-             first_question, answer_str_escaped, second_question);
+    json_object *user_msg1 = json_object_new_object();
+    json_object_object_add(user_msg1, "role", json_object_new_string("user"));
+    json_object_object_add(user_msg1, "content", json_object_new_string(first_question));
+    json_object_array_add(messages, user_msg1);
+
+    json_object *ast_msg = json_object_new_object();
+    json_object_object_add(ast_msg, "role", json_object_new_string("assistant"));
+    json_object_object_add(ast_msg, "content", json_object_new_string(first_answer));
+    json_object_array_add(messages, ast_msg);
+
+    json_object *user_msg2 = json_object_new_object();
+    json_object_object_add(user_msg2, "role", json_object_new_string("user"));
+    json_object_object_add(user_msg2, "content", json_object_new_string(second_question));
+    json_object_array_add(messages, user_msg2);
+
+    char *prompt = strdup(json_object_to_json_string(messages));
+    json_object_put(messages);
 
     json_object_put(answer_str);
     free(second_question);
@@ -416,16 +488,22 @@ void extract_message_grammars(char *answers, klist_t(gram) * grammar_list)
         temp[count] = '\0';
         ptr = end + 1;
 
-        // conver temp to json object and save it to the list
+        // convert temp to json object and save it to the list
         json_object *jobj = json_tokener_parse(temp);
-        *kl_pushp(gram, grammar_list) = jobj;
-
-        // printf("%s\n", temp);
+        if (jobj && json_object_get_type(jobj) == json_type_array) {
+            *kl_pushp(gram, grammar_list) = jobj;
+            printf("Found valid grammar array: %s\n", temp);
+        } else {
+            printf("Skipping invalid grammar snippet (not an array): %s\n", temp);
+            if (jobj) json_object_put(jobj);
+        }
+        ck_free(temp);
     }
 }
 
 int parse_pattern(pcre2_code *replacer, pcre2_match_data *match_data, const char *str, size_t len, char *pattern)
 {
+    printf("[Grammar] Building pattern for: %.*s\n", (int)len, str);
     strcat(pattern, "(?:");
     // offset == 3;
     int rc = pcre2_match(replacer, str, len, 0, 0, match_data, NULL);
@@ -482,8 +560,8 @@ char *extract_message_pattern(const char *header_str, khash_t(field_table) * fie
 {
     int errornumber;
     size_t erroroffset;
-    char header_pattern[128] = {0};
-    char fields_pattern[1024] = {0};
+    char header_pattern[1024] = {0};
+    char fields_pattern[8192] = {0};
     pcre2_code *replacer = pcre2_compile("(?:(.*)(?:<<(.*)>>)(.*))|(.+)", PCRE2_ZERO_TERMINATED, PCRE2_DOTALL, &errornumber, &erroroffset, NULL);
     pcre2_match_data *match_data = pcre2_match_data_create_from_pattern(replacer, NULL);
     char *message_type = NULL;

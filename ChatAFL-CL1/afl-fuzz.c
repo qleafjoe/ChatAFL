@@ -474,11 +474,19 @@ void setup_llm_grammars()
     for (iter = kl_begin(grammar_list); iter != kl_end(grammar_list); iter = kl_next(iter))
     {
       json_object *jobj = kl_val(iter);
+      printf("[Consistency] Analyzing grammar template for fields...\n");
+
+      // Robustness check: Ensure jobj is actually an array before operations
+      if (!jobj || json_object_get_type(jobj) != json_type_array || json_object_array_length(jobj) == 0)
+      {
+        printf("Skipping invalid or empty grammar entry in consistency loop.\n");
+        continue;
+      }
 
       json_object *header = json_object_array_get_idx(jobj, 0);
+      if (!header || json_object_get_type(header) != json_type_string) continue;
 
       int absent;
-
       const char *header_str = json_object_get_string(header);
 
       khiter_t k = kh_put(consistency_table, const_table, header_str, &absent);
@@ -490,7 +498,10 @@ void setup_llm_grammars()
 
       for (int i = 1; i < json_object_array_length(jobj); i++)
       {
-        const char *v = json_object_get_string(json_object_array_get_idx(jobj, i));
+        json_object *field_obj = json_object_array_get_idx(jobj, i);
+        if (!field_obj || json_object_get_type(field_obj) != json_type_string) continue;
+        
+        const char *v = json_object_get_string(field_obj);
         khash_t(field_table) *field_table = kh_value(const_table, k);
         khiter_t field_k = kh_put(field_table, field_table, v, &absent);
         if (absent)
@@ -499,6 +510,7 @@ void setup_llm_grammars()
         }
         kh_value(field_table, field_k)++;
       }
+
     }
     kl_destroy_gram(grammar_list);
 
@@ -2697,7 +2709,7 @@ void get_seeds_with_messsage_types(const char *in_dir, khash_t(strSet) * message
 
     ck_free(regions);
 
-    if(kh_size(messages) == 0)
+    if(kh_size(messages) == 0) 
     {
       kh_destroy(strSet,messages);
       // No missing message types, cannot enrich
@@ -10684,7 +10696,7 @@ int main(int argc, char **argv)
     message_types_set = kh_init(strSet);
 
     setup_llm_grammars();
-    //enrich_testcases();
+    enrich_testcases();
   }
   read_testcases();
   load_auto();

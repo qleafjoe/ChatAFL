@@ -44,7 +44,7 @@ Similarly 1700 is for the example request in the seed enrichment
 #include <pcre2.h>
 
 // Init KLIST with JSON object
-#define __grammar_t_free(x)
+#define __grammar_t_free(x) if (x && x->data) json_object_put(x->data);
 #define __rang_t_free(x)
 #define __khash_t_free(x) 
 KHASH_SET_INIT_STR(strSet);
