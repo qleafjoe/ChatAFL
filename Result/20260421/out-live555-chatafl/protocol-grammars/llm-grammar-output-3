@@ -1,0 +1,145 @@
+# RTSP Client Request Templates
+
+Based on the DESCRIBE template you provided, here are all the common RTSP client request templates:
+
+## 1. OPTIONS
+```
+OPTIONS <<URL>> RTSP/1.0\r\n
+CSeq: <<VALUE>>\r\n
+User-Agent: <<VALUE>>\r\n
+\r\n
+```
+
+## 2. DESCRIBE
+```
+DESCRIBE <<URL>> RTSP/1.0\r\n
+CSeq: <<VALUE>>\r\n
+User-Agent: <<VALUE>>\r\n
+Accept: <<VALUE>>\r\n
+\r\n
+```
+
+## 3. SETUP
+```
+SETUP <<URL>> RTSP/1.0\r\n
+CSeq: <<VALUE>>\r\n
+User-Agent: <<VALUE>>\r\n
+Transport: <<VALUE>>\r\n
+\r\n
+```
+
+## 4. PLAY
+```
+PLAY <<URL>> RTSP/1.0\r\n
+CSeq: <<VALUE>>\r\n
+User-Agent: <<VALUE>>\r\n
+Session: <<VALUE>>\r\n
+Range: <<VALUE>>\r\n
+\r\n
+```
+
+## 5. PAUSE
+```
+PAUSE <<URL>> RTSP/1.0\r\n
+CSeq: <<VALUE>>\r\n
+User-Agent: <<VALUE>>\r\n
+Session: <<VALUE>>\r\n
+\r\n
+```
+
+## 6. TEARDOWN
+```
+TEARDOWN <<URL>> RTSP/1.0\r\n
+CSeq: <<VALUE>>\r\n
+User-Agent: <<VALUE>>\r\n
+Session: <<VALUE>>\r\n
+\r\n
+```
+
+## 7. GET_PARAMETER
+```
+GET_PARAMETER <<URL>> RTSP/1.0\r\n
+CSeq: <<VALUE>>\r\n
+User-Agent: <<VALUE>>\r\n
+Session: <<VALUE>>\r\n
+\r\n
+```
+
+## 8. SET_PARAMETER
+```
+SET_PARAMETER <<URL>> RTSP/1.0\r\n
+CSeq: <<VALUE>>\r\n
+User-Agent: <<VALUE>>\r\n
+Session: <<VALUE>>\r\n
+Content-Type: <<VALUE>>\r\n
+Content-Length: <<VALUE>>\r\n
+\r\n
+```
+
+**Key Notes:**
+- `<<URL>>` - typically the RTSP stream URL
+- `CSeq` - increments with each request
+- `Session` - obtained from SETUP response, required for PLAY/PAUSE/TEARDOWN
+- `Transport` - specifies RTP profile (e.g., RTP/AVP/TCP or RTP/AVP/UDP)
+- `Range` - playback time range (e.g., npt=0.0-10.0)
+# RTSP Client Request Templates
+
+## OPTIONS
+
+```
+OPTIONS: ["OPTIONS <<URL>> RTSP/1.0\\r\\n","CSeq: <<VALUE>>\\r\\n","User-Agent: <<VALUE>>\\r\\n","\\r\\n"]
+```
+
+## SETUP
+
+```
+SETUP: ["SETUP <<URL>> RTSP/1.0\\r\\n","CSeq: <<VALUE>>\\r\\n","User-Agent: <<VALUE>>\\r\\n","Transport: <<VALUE>>\\r\\n","\\r\\n"]
+```
+
+## PLAY
+
+```
+PLAY: ["PLAY <<URL>> RTSP/1.0\\r\\n","CSeq: <<VALUE>>\\r\\n","User-Agent: <<VALUE>>\\r\\n","Session: <<VALUE>>\\r\\n","Range: <<VALUE>>\\r\\n","\\r\\n"]
+```
+
+## PAUSE
+
+```
+PAUSE: ["PAUSE <<URL>> RTSP/1.0\\r\\n","CSeq: <<VALUE>>\\r\\n","User-Agent: <<VALUE>>\\r\\n","Session: <<VALUE>>\\r\\n","\\r\\n"]
+```
+
+## TEARDOWN
+
+```
+TEARDOWN: ["TEARDOWN <<URL>> RTSP/1.0\\r\\n","CSeq: <<VALUE>>\\r\\n","User-Agent: <<VALUE>>\\r\\n","Session: <<VALUE>>\\r\\n","\\r\\n"]
+```
+
+## GET_PARAMETER
+
+```
+GET_PARAMETER: ["GET_PARAMETER <<URL>> RTSP/1.0\\r\\n","CSeq: <<VALUE>>\\r\\n","User-Agent: <<VALUE>>\\r\\n","Session: <<VALUE>>\\r\\n","\\r\\n"]
+```
+
+## SET_PARAMETER
+
+```
+SET_PARAMETER: ["SET_PARAMETER <<URL>> RTSP/1.0\\r\\n","CSeq: <<VALUE>>\\r\\n","User-Agent: <<VALUE>>\\r\\n","Session: <<VALUE>>\\r\\n","Content-Type: <<VALUE>>\\r\\n","Content-Length: <<VALUE>>\\r\\n","\\r\\n"]
+```
+
+## ANNOUNCE
+
+```
+ANNOUNCE: ["ANNOUNCE <<URL>> RTSP/1.0\\r\\n","CSeq: <<VALUE>>\\r\\n","User-Agent: <<VALUE>>\\r\\n","Content-Type: <<VALUE>>\\r\\n","Content-Length: <<VALUE>>\\r\\n","\\r\\n"]
+```
+
+## RECORD
+
+```
+RECORD: ["RECORD <<URL>> RTSP/1.0\\r\\n","CSeq: <<VALUE>>\\r\\n","User-Agent: <<VALUE>>\\r\\n","Session: <<VALUE>>\\r\\n","Range: <<VALUE>>\\r\\n","\\r\\n"]
+```
+
+## REDIRECT
+
+```
+REDIRECT: ["REDIRECT <<URL>> RTSP/1.0\\r\\n","CSeq: <<VALUE>>\\r\\n","User-Agent: <<VALUE>>\\r\\n","Location: <<VALUE>>\\r\\n","\\r\\n"]
+```

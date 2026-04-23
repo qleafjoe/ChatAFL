@@ -1,0 +1,16 @@
+GET_PARAMETER rtsp://127.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 5
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+Content-Type: text/parameters
+Content-Length: 12
+
+TEARDOWN rtsp://127.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 6
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+
+DESCRIBE rtsp://127.0.0.1:8554/wavAudioTest RTSP/1.0
+Ceq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.8)AVPccept: application/sdp
+

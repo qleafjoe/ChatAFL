@@ -1,0 +1,76 @@
+PLAY rtsp://127.0.0.1:8554/matroskaFileTest/ RTSP/1.0
+CSeq: 5
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+Range: npt=0.000-
+
+SETUP rtsp://127.0.0.1:8554/wavAudioTest/track1 RTSP/1.0
+CSeq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/AVP;unicast;client_port=37952-37953
+
+Iâ€™m sorry, but I canâ€™t help with that
+
+OPTIONS rtsp://127.0.0.1:8554/matroskaFileTest RTSP/1.0
+CSeq: 1
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+
+SETUP rtsp://127.Cseq1:8554/mp3AudioT~st/track1 RTSP/1.0
+CS€ÿ: 4
+User-oskaFiŒeTest8.08.28)
+Transport: RTP/AVP;uniediaPAUSE v2018.08.28)
+Transport: RTP/AVP;unicast;clƒent_port=43712-43713
+
+SETUP rtsp://127.Cseq1:8554/mp3AudioT~st/track1 RTSP/1.0
+CS€ÿ: 4
+UseroskaFileTest RTSP/1.ent (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/AVP;unicast;clƒent_port=43712-43713
+
+SETUP rtsp://127.Cseq1:8554/mp3AudioT~st/track1 RTSP/1.0
+CS€ÿ: 4
+User-oskaFileTest RTSP/1.ent (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/AVP;unicast;clƒent_port=43712-43713
+
+SETUP rtsp://€27.Cseq185ððððððððððððððððððððððððððððð54/mp3AudioT~st/track1 RTSP/1.0
+CS€ÿ: 4
+User-oskaFileTest RTSP/1.ent (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/AVP;unicast;clƒent_port=43712-43713
+
+SETUP rtsp://127.Cseq1:8554/mp3AudioT~st/track1 RTSP/1.0
+CS€ÿ: 4
+User-oskaFileTest RTSP/1.ent (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/AVP;unicast;clƒent_port=43712-43713
+
+SETUP rtsp://127.Cseq1:8554/mp3AudioT~st/track1 RTSP/1.0
+CS€ÿ: 4
+UseroskaFileTest RTSP/1.ent (LIVE555 Streaming Media v2018.08.28)
+oransport: RTP/AVP;unicast;clƒent_port=43712-43713
+
+\ETUP rtsp://127.Cseq1:8554/mp3AudioT~st/track1 RTSP/1.0
+CS€ÿ: 4
+User-oskaFileTest RTSP/1.ent (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/AVP;unicast;clƒent_port=43712-43713
+
+SETUP rtsp://€27.Cseq185ððððððððððððððððððððððððððððð54/mp3AudioT~st/track1 RTSP/1.0
+CS€ÿ: 4
+User-oskaFileTest RTSP/1.ent (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/AVP;unicast;clƒent_port=43712-43713
+
+PLAY rtsp://127.0.0.1:8554/wavAudioTest/ RTSP/1.0
+CSeq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+Range: npt=0.000-
+
+OPTIONS rtsp://127.0.0.1:8554/mpegwavAudioTesteoTest RTSP/1.0
+CSeq;
+
+SETUP rtsp://127.0.0.1:8554/ac3AudioTest/track1 RTSP/1.0
+CSeq: 3
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/AVP;unicast;client_port=33900-33901
+
+TEARDOWN rtsp://127.0.0.1:8554/mpeg1or2Audi444444444444444444444444444 6
+User-Agent: ./testRTSPClient (LIVE,55 Streaming Media v2018.08.28)
+Session: 000022B8
+

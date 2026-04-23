@@ -1,0 +1,153 @@
+Below is a complete set of **client‑to‑server** request templates for the standard RTSP methods (mirroring the format you gave for `DESCRIBE`).  
+Each template is an array of strings that are concatenated to form the raw RTSP request.  Replace the `<<…>>` placeholders with the appropriate values for your session.
+
+```json
+{
+  "OPTIONS": [
+    "OPTIONS <<URI>> RTSP/1.0\r\n",
+    "CSeq: <<CSeq>>\r\n",
+    "User-Agent: <<User-Agent>>\r\n",
+    "Accept: <<Accept>>\r\n",
+    "\r\n"
+  ],
+
+  "DESCRIBE": [
+    "DESCRIBE <<URI>> RTSP/1.0\r\n",
+    "CSeq: <<CSeq>>\r\n",
+    "User-Agent: <<User-Agent>>\r\n",
+    "Accept: <<Accept>>\r\n",
+    "\r\n"
+  ],
+
+  "SETUP": [
+    "SETUP <<URI>> RTSP/1.0\r\n",
+    "CSeq: <<CSeq>>\r\n",
+    "User-Agent: <<User-Agent>>\r\n",
+    "Transport: <<Transport>>\r\n",
+    "\r\n"
+  ],
+
+  "PLAY": [
+    "PLAY <<URI>> RTSP/1.0\r\n",
+    "CSeq: <<CSeq>>\r\n",
+    "User-Agent: <<User-Agent>>\r\n",
+    "Session: <<Session>>\r\n",
+    "Range: <<Range>>\r\n",
+    "\r\n"
+  ],
+
+  "PAUSE": [
+    "PAUSE <<URI>> RTSP/1.0\r\n",
+    "CSeq: <<CSeq>>\r\n",
+    "User-Agent: <<User-Agent>>\r\n",
+    "Session: <<Session>>\r\n",
+    "Range: <<Range>>\r\n",
+    "\r\n"
+  ],
+
+  "TEARDOWN": [
+    "TEARDOWN <<URI>> RTSP/1.0\r\n",
+    "CSeq: <<CSeq>>\r\n",
+    "User-Agent: <<User-Agent>>\r\n",
+    "Session: <<Session>>\r\n",
+    "\r\n"
+  ],
+
+  "GET_PARAMETER": [
+    "GET_PARAMETER <<URI>> RTSP/1.0\r\n",
+    "CSeq: <<CSeq>>\r\n",
+    "User-Agent: <<User-Agent>>\r\n",
+    "Session: <<Session>>\r\n",
+    "Content-Type: <<Content-Type>>\r\n",
+    "Content-Length: <<Content-Length>>\r\n",
+    "\r\n"
+  ],
+
+  "SET_PARAMETER": [
+    "SET_PARAMETER <<URI>> RTSP/1.0\r\n",
+    "CSeq: <<CSeq>>\r\n",
+    "User-Agent: <<User-Agent>>\r\n",
+    "Session: <<Session>>\r\n",
+    "Content-Type: <<Content-Type>>\r\n",
+    "Content-Length: <<Content-Length>>\r\n",
+    "\r\n"
+  ],
+
+  "REDIRECT": [
+    "REDIRECT <<URI>> RTSP/1.0\r\n",
+    "CSeq: <<CSeq>>\r\n",
+    "User-Agent: <<User-Agent>>\r\n",
+    "Location: <<Location>>\r\n",
+    "Session: <<Session>>\r\n",
+    "\r\n"
+  ],
+
+  "ANNOUNCE": [
+    "ANNOUNCE <<URI>> RTSP/1.0\r\n",
+    "CSeq: <<CSeq>>\r\n",
+    "User-Agent: <<User-Agent>>\r\n",
+    "Content-Type: <<Content-Type>>\r\n",
+    "Content-Length: <<Content-Length>>\r\n",
+    "\r\n"
+  ],
+
+  "RECORD": [
+    "RECORD <<URI>> RTSP/1.0\r\n",
+    "CSeq: <<CSeq>>\r\n",
+    "User-Agent: <<User-Agent>>\r\n",
+    "Session: <<Session>>\r\n",
+    "Range: <<Range>>\r\n",
+    "Transport: <<Transport>>\r\n",
+    "\r\n"
+  ]
+}
+```
+
+### How to use these templates
+1. **Pick the method** you need (e.g., `PLAY`).
+2. **Replace each placeholder** with the actual value for your session:  
+
+   | Placeholder | Typical value (example) |
+   |-------------|--------------------------|
+   | `<<URI>>` | `rtsp://192.168.1.10/media.mp4` |
+   | `<<CSeq>>` | `2` (increment for each request) |
+   | `<<User-Agent>>` | `MyRTSPClient/1.0` |
+   | `<<Accept>>` | `application/sdp` (used only in `OPTIONS`/`DESCRIBE`)
+Here are the remaining RTSP client request templates in the same format:
+
+```
+OPTIONS: ["OPTIONS <<URI>> RTSP/1.0\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","\r\n"]
+
+SETUP: ["SETUP <<URI>> RTSP/1.0\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Transport: <<VALUE>>\r\n","\r\n"]
+
+PLAY: ["PLAY <<URI>> RTSP/1.0\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","Range: <<VALUE>>\r\n","\r\n"]
+
+PAUSE: ["PAUSE <<URI>> RTSP/1.0\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","\r\n"]
+
+TEARDOWN: ["TEARDOWN <<URI>> RTSP/1.0\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","\r\n"]
+
+GET_PARAMETER: ["GET_PARAMETER <<URI>> RTSP/1.0\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","\r\n"]
+
+SET_PARAMETER: ["SET_PARAMETER <<URI>> RTSP/1.0\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","Content-Type: <<VALUE>>\r\n","Content-Length: <<VALUE>>\r\n","\r\n"]
+
+REDIRECT: ["REDIRECT <<URI>> RTSP/1.0\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Location: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","\r\n"]
+
+ANNOUNCE: ["ANNOUNCE <<URI>> RTSP/1.0\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Content-Type: <<VALUE>>\r\n","Content-Length: <<VALUE>>\r\n","\r\n"]
+
+RECORD: ["RECORD <<URI>> RTSP/1.0\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","Range: <<VALUE>>\r\n","\r\n"]
+```
+
+### Placeholder Values Reference
+
+| Placeholder | Description | Example |
+|-------------|-------------|---------|
+| `<<URI>>` | RTSP resource URL | `rtsp://192.168.1.10/media.mp4` |
+| `<<CSeq>>` | Sequence number | `1`, `2`, `3`... |
+| `<<User-Agent>>` | Client identifier | `RTSPClient/1.0` |
+| `<<Accept>>` | Accepted content type | `application/sdp` |
+| `<<Transport>>` | Transport protocol | `RTP/AVP;unicast;client_port=5000-5001` |
+| `<<Session>>` | Session identifier | `12345678` |
+| `<<Range>>` | Time range | `npt=0-10` |
+| `<<Content-Type>>` | Body content type | `text/parameters` |
+| `<<Content-Length>>` | Body length in bytes | `0` |
+| `<<Location>>` | Redirect URL | `rtsp://newserver/media.mp4` |

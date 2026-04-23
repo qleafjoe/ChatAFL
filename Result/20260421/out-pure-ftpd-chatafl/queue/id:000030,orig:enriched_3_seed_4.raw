@@ -1,0 +1,14 @@
+USER fuzzing
+PASS fuzzing
+SYST
+FEAT
+MKD todeletenow
+XMKD todeletetoo
+OPTS UTF8 ON
+LIST
+RMD todeletenow
+XRMD todeletetoo
+OPTS UTF8 ON
+LIST
+QUIT
+

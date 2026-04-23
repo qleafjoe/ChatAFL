@@ -1,0 +1,76 @@
+OPTIONS rtsp://127.0.0.1:8554/mp3AudioTest RTSP/1.0
+CSeq: 1
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+
+DESCRIBE rtsp://127.0.0.1:8554/mp3AudioTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+SETUP rtsp://127.0.0.1:8554/mp3AudioTest/track1 RTSP/1.0
+CSeq: 3
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/AVP;unicast;client_port=43712-43713
+
+PLAY rtsp://127.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+Range: npt=0.000-
+
+GET_PARAMETER rtsp://127.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 5
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+
+OPTIONS rtsp://127.0.0.1:8554/mpegwavAudioTesteoTest RTSP/1.0
+CSeq;
+
+SETUP r†sp://127.0.0.1:8554/matroskaFileTest/track2 RTSP/1.0
+CSeq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/Aÿÿÿnicast;client_port=49022-49023
+Session: 000022B8
+
+SETUP rtsp://127.0.0.1:8554/matroskaFileTkst/track2 RTSP/1.0
+CSeq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media „2018.08.28)
+Transport: RTP/AVP;unicast;client_port=49022-49023
+Session: 000022B8
+
+SETUP r†sp://127.0.0.1:8554/matroskaFileTest/track2 RTSP/1.0
+CSeq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Transport: R127.0.0.1TP/Aÿÿÿnicast;client_port=49022-49023
+Session: 000022B8
+
+SETUP rtsp://127.0.0.1:8554/matroskaFileTkst/track2 RTSP/1.0
+CSeq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media „2018.08.28)
+Transport: RTP/AVP;unicast;client_port=49022-49023
+Session: 000022B8
+
+SETUP r†sp://127.0.0.1:8554/matroskaFileTest/track2 RTSP/1.0
+CSeq: 4
+User-Agen: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/Aÿÿÿnicast;client_port=49022-49023
+Session: 000022B8
+
+SETUP rtsp://127.0.0.1:8554/matroskaFilGET_PARAMETEReTkst/track2 RTSP/1.0
+CSeq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media „2018.08.28)
+Transport: RTP/AVP;unicast;client_port=49022-49023
+Session: 000022B8
+
+SETUP r†sp://127.0.0.1:8554/matroskaFileTest/track2 RTSP/1.0
+CSeq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Transport: R127.0.0.1TP/Aÿÿÿnicast;client_port=49022-49023
+Session: 000022B8
+
+SETUP rtsp://127.0.0.1:8554/matroskaFileTkst/track2 RTSP/1.0
+CSeq: 4
+User-AgRnt: ./testRTSPClient (LIVE555 Streaming Media „2018.08.28)
+Transport: RTP/AVP;unicast;client_port=49022-49023
+Session: 000022B8
+

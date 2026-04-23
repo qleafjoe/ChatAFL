@@ -1,0 +1,12 @@
+
+
+PLAY rtsp://127.0.0.1:8554/ac3AudioTest/ st/ RTSP/10
+
+
+
+PRTSP/10
+
+
+
+PLAY rtsp://127.0.0.1:8554/ac3AudioTess/ RTSP/10
+

@@ -1,0 +1,26 @@
+[
+  ["OPTIONS <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","\r\n"],
+  ["DESCRIBE <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Accept: <<VALUE>>\r\n","\r\n"],
+  ["SETUP <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Transport: <<VALUE>>\r\n","\r\n"],
+  ["PLAY <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","Range: <<VALUE>>\r\n","\r\n"],
+  ["PAUSE <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","\r\n"],
+  ["TEARDOWN <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","\r\n"],
+  ["GET_PARAMETER <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","\r\n"],
+  ["SET_PARAMETER <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","Content-Type: <<VALUE>>\r\n","Content-Length: <<VALUE>>\r\n","\r\n"],
+  ["REDIRECT <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","Location: <<VALUE>>\r\n","\r\n"],
+  ["ANNOUNCE <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","Content-Type: <<VALUE>>\r\n","Content-Length: <<VALUE>>\r\n","\r\n"],
+  ["RECORD <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","Range: <<VALUE>>\r\n","\r\n"]
+]
+[
+  ["OPTIONS <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Accept: <<VALUE>>\r\n","Require: <<VALUE>>\r\n","Proxy-Require: <<VALUE>>\r\n","\r\n"],
+  ["DESCRIBE <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Accept: <<VALUE>>\r\n","Authorization: <<VALUE>>\r\n","\r\n"],
+  ["SETUP <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Transport: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","Conference: <<VALUE>>\r\n","Predicted-By: <<VALUE>>\r\n","Proxy-Require: <<VALUE>>\r\n","Bandwidth: <<VALUE>>\r\n","\r\n"],
+  ["PLAY <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","Range: <<VALUE>>\r\n","Scale: <<VALUE>>\r\n","Speed: <<VALUE>>\r\n","RTP-Info: <<VALUE>>\r\n","\r\n"],
+  ["PAUSE <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","\r\n"],
+  ["TEARDOWN <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","\r\n"],
+  ["GET_PARAMETER <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","Content-Type: <<VALUE>>\r\n","Content-Length: <<VALUE>>\r\n","\r\n"],
+  ["SET_PARAMETER <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","Content-Type: <<VALUE>>\r\n","Content-Length: <<VALUE>>\r\n","\r\n"],
+  ["REDIRECT <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","Location: <<VALUE>>\r\n","\r\n"],
+  ["ANNOUNCE <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","Content-Type: <<VALUE>>\r\n","Content-Length: <<VALUE>>\r\n","\r\n"],
+  ["RECORD <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Session: <<VALUE>>\r\n","Range: <<VALUE>>\r\n","Conference: <<VALUE>>\r\n","\r\n"]
+]

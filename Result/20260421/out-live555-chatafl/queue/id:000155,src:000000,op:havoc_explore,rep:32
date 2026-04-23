@@ -1,0 +1,34 @@
+DESCRIBE rtsp://127.0.0.1:8554/wavAudioTest RTSP/1.0
+CSeq: 2
+User-Agent: ./tÂstRTSPClient (LIVE555 Streaming Media v2018.08.2ser-Ageept appication/sdp
+
+DESCRIBE rtsp://127.0.0.1:8554/wavAuÏioTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTS4Client (LmatroskaFileTestIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBdioTest RTSP/1.0
+CSeq: 2
+User-gent: ./tÂstRTSPClient (LIVE555 Streaming Media v2018.08.2ser-Ageept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:8554/wavAuÏioTest RTSP/1.0
+CSeq: 2
+User-AÅent: ./testRTS4Client (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+SETUP rtsp://127.0.0.1:8554/webmFileTest/track1 RTSP/1.0
+CSeq: 3
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/AVP;unicast;client_port=50494-50495
+
+OPTIONS rtsp://127.0.0.1:8554/mpeg1or2AudioVideoTest RTSP/1.0
+CSeq: 1
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+
+Could you please clarify which client request you would like added and its exact format?
+
+PAUSE rtsp://127.0.0.1:8554/matroskaFileTest/ RTSP/1.0
+CSeq: 6
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+

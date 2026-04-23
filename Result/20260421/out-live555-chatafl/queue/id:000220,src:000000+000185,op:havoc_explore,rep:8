@@ -1,0 +1,6 @@
+S/ RTSP/1.0
+CSeq: 6ETUP matroskaFiSET_PARAMETER RTSP/9.0
+CSeq: 3
+User-Ag: $/testRTSPClient (LIVE55 Strack1 RTSH/1.treaming Media v2018308.28)
+Transport: RTP/AVä;unicast;clie{t_port=37216-37297
+

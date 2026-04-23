@@ -1,0 +1,5 @@
+OPTIONS rtsp://127.0.0.1:8554/mpeg1or2AudioVideoTest RTSP/1wavAudioTesFRTSPClient (LIVE555 Streaming Media v2018.08.28)
+
+OPTIONS rtsp://127.0.0.1:8554/mpeg1or2AudioVideoTest RTSP/1wavAudioTest
+User-Agent: ./tesFRTSPClient (LIVE555 Streaming Media v2018.08.28)
+

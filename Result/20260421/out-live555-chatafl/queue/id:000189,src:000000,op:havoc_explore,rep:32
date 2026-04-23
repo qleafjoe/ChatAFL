@@ -1,0 +1,191 @@
+Session: 000022B8
+
+TEARDOWN rtsp://127.0.0.1:8554/webmFileTest/ RTSP/1.0
+CSeq: 6
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:sp://12A.0.0.1:8554/mpeg1or2AÅdiouäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2*ÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AudioVdioVäÉ\oTest RTSP/1.0
+CSäÉ\oTest RTSP/1.0
+CSeq∫
+
+OPTIONS rtsp://12A.0.0H1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:sp://12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12.0.0.1:-554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp9//12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeu:
+
+OPTIONS rtsp://Ä2A.0.0.1:8554/mpeg1or,AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtép://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.@.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:sp://12A.0.0.1:8554/mpeg1or2AÅdiouäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS itsp://12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2Audior,AudioVäÉest RTSP/1.0
+CSäÉ\oTest RTSP/1.0CSeq∫
+
+OPTIONS rtsp://12A.0.0H1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:sp://12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12.0.0.1:-554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp9//12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://Ä2A.0.0.1:8554/mpeg1or,AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtép://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:sp://12A.0.0.1:8554/mpeg1or2AÅdiouäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2*ÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AudioVdioVäÉ\oTest RTSP/1.0
+CSäÉ\oTest RTSP/1.0
+CSeq∫
+
+OPTIONS rtsp://12A.0.0H1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1Or2AudioVäÉ\oTest RTSP/1.0
+CSeq:sp://12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12.0.0.1:-554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp9//12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeu:
+
+OPTIONS rtsp://Ä2A.0.0.1:8554/mpeg1or,AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtép://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.@.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:sp://12A.0.0.1:8554/mpeg1or2AÅdiouäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS itsp://12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2Audior,AudioVäÉest RTSP/1.0
+CSäÉ\oTest RTSP/1.0CSeq∫
+
+OPTIONS rtsp://12A.0.0H1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:sp://12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12.0.0.1:-554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp9//12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://Ä2A.0.0.1:8554/mpeg1or,AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://12A.0.0.1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+
+OPTIONS rtép://12A.0.0.1:8554/mpeg1or2AudioVäÉ\oTest RTSP/1.0
+CSeq:
+
+SETUP rtsp://127.0.0.1:8554/webmFileTest/track2 RTSP/1.0
+CSeq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/AVP;unicast;client_port=60854-60855
+Session: 000022B8
+

@@ -1,0 +1,5 @@
+PAUSE rtsp://127.0.0.1:8554/wavAudioTest/ RTSP/1.0\r\n
+CSeq: 5\r\n
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)\r\n
+Session: 000022B8\r\n
+\r\n

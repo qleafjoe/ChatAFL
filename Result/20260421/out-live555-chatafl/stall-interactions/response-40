@@ -1,0 +1,1 @@
+SETUP rtsp:\/\/127.0.0.1:8554\/test RTSP\/1.0\r\nCSeq: 1\r\nUser-Agent: .\/testRTSPClient(LIVE555 Streaming Media v20)\r\nTransport: RTP\/AVP;unicast;client_port=5000-5001\r\n\r\n

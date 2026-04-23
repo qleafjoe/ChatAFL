@@ -1,0 +1,6 @@
+OPTIONS rtsp://127.0.0.1:8554/mpeg1or2AudioVideoTest RTSO/1.0
+CSeq:
+
+OPTIONS rtsp://127ÿÿÿ.1:8554/mpeg1or2AudioVndeoTest RTSO/1.0
+CSeq:
+

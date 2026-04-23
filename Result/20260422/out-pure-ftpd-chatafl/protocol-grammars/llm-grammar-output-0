@@ -1,0 +1,2 @@
+
+["USER <<VALUE>>\r\n","PASS <<VALUE>>\r\n","ACCT <<VALUE>>\r\n","CWD <<VALUE>>\r\n","CDUP\r\n","PWD\r\n","LIST <<VALUE>>\r\n","NLST <<VALUE>>\r\n","RETR <<VALUE>>\r\n","STOR <<VALUE>>\r\n","APPE <<VALUE>>\r\n","ABOR\r\n","DELE <<VALUE>>\r\n","RMD <<VALUE>>\r\n","MKD <<VALUE>>\r\n","RNFR <<VALUE>>\r\n","RNTO <<VALUE>>\r\n","TYPE <<VALUE>>\r\n","PORT <<VALUE>>\r\n","PASV\r\n","EPSV\r\n","EPRT <<VALUE>>\r\n","SIZE <<VALUE>>\r\n","MDTM <<VALUE>>\r\n","STAT <<VALUE>>\r\n","HELP <<VALUE>>\r\n","NOOP\r\n","QUIT\r\n"]

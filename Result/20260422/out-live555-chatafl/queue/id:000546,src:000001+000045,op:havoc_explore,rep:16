@@ -1,0 +1,47 @@
+OPTIONS rtsp://127.0.0.1:8554/webmFileTest RTSP/1.0
+CSeq: 1
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+
+PDacOPTIONSes?SET_PARAMETERq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+Range: npt=0.000-
+
+
+TEARDOWN rtspS//1)7.0.wavAAVP RTSP/1v0
+CSeq:            þ                                             20ü8.08.28)
+Sxssion: 000022B8127.0.wavAud/ RTSP/1v0
+CSeq: 5
+User-Agent: ./testRTSXClient (LIVE5Rang~: npt=9 MediwavAudioTesta v2018.08.28)
+Session: 00022B8)
+
+
+TEARDOWN rtspS//1)7.0.wavAAVP RTSP/1v0
+CSeq:            þ                                             20ü8.08.28)
+Sxssion: 000022B8127.0.wavAud/ RTSP/1v0
+CSeq: 5
+User-Agent: ./testRTSXClient (LIVE5Rang~: npt=9 MediwavAudioTesta v2018.08.28)
+Session: 00022B8)
+
+SETUP rtsp://127.0.0.1:8554/webmFileTest/track1 RTSP/1.0
+CSeq: 3
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/AVP;unicast;client_port=50494-50495
+
+SETUP rtsp://127.0.0.1:8554/webmFileTest/track2 RTSP/1.0
+CSeq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/AVP;unicast;client_port=60854-60855
+Session: 000022B8
+
+PLAY rtsp://127.0.0.1:8554/webmFileTest/ RTSP/1.0
+CSeq: 5
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+Range: npt=0.000-
+
+TEARDOWN rtsp://127.0.0.1:8554/webmFileTest/ RTSP/1.0
+CSeq: 6
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+

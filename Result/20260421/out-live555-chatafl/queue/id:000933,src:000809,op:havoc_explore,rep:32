@@ -1,0 +1,442 @@
+DESCRIBE rtsp://127.0.0.1:8554/mp3AudioTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+GET_PARAMETER rtsp://127.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 5
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+Content-Type: text/parameters
+Content-Length: 12
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: 2/testRTSTEARDOWN(DIVE555 Streaming Media v2018.08.28)
+
+S‡ssion: 000022B8
+RangLIVE555 Ste: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: /testRTSPClient (LIVEJ55 Streaming Media v2018.08.28)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: .//1.0
+CSeq: 	
+User-Age Streaming Media v2018.08A28)
+
+S‡ssion: 000022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (LIVEJ55 Streaming Media v2018.08.28Range)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: 2/testRTSTEARDOWN(DIVE555 Streaming Media v2018.08.28)
+
+S‡ssion: 000022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: /testRTSPClient (LIVEJ55 Streaming Media v2018.08.28)
+
+Session: 000022Bÿ%
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (DIVE555 Streaming Media v2018.08A28)
+
+S‡ssion: 0000.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: 2/testRTSTEARDOWN(DIVE555 Streaming Media v2018.08.28)
+
+S‡ssion: 000022B022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (LIVEJ55 Streaming Media v2018.08.28Range)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: 2/testRTSTEARDOWN(DIVE555 Streaming Media •2018.08.28)
+
+S‡ssion: 000022B8
+RangLIVE555 Ste: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: /teTSPClient (LIVEJ55 Streaming Media v2018.08.28Range)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1o8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: 2/testRTSTEARDOWN(DIVE555 Streaming Media v2018.08.28)
+
+S‡ssion: 000022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: /testRTSPClient (LIVEJ55 Streaming MeUser-Agentdia v2018.08.28)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mSETUPioTest/ RTSPAUSE
+CSeq: 	
+User-Agent: ./testRTSPClient (DIVE555 Streaming Media v2018.08A28)
+
+S‡ssion: 000022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (LIVEJ55 Streaming Media v2018.08.28Range)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: 2/testRTSTEARDOWN(DIVE555 Streaming Media v2018.08.28)
+
+S‡ssion: 000022B8
+RangLIVE555 Ste: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AustRTSPClient (LIVEJ55 Streaming Media v2018.08.28)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (DIVE555 Streaming Media v2018.08A28)
+
+S‡ssion: 000022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (LIVEJ55 Streaming Media v2018.08.28Range)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: 2/testRTSTEARDOWN(DIVE555 Streaming Media v2018.08.28)
+
+S‡ssion: 000022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: /testRTSPClient (LIVEJ55 Streaming Media v2018.08.28)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8nnnnnnnnnnnnnest/ RTSP/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (DIVE555 Streaming Media v2018.08A28)
+
+S‡ssion: 000022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (LIVEJ55 Streaming Media v2018.08.28Range)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: 2/testRTSTEARDOWN(DIVE555 Streaming Media v2018.08.28)
+
+S‡ssion: 000022B8
+RangLIVE555 Ste: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: /testRTSPClient (LIVEJ55 Streaming Media v2018.08.28)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: .//1.0
+CSeq: 	
+User-Age Streaming Media v2018.08A28)
+
+S‡ssion: 000022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (LIVEJ55 Streaming Media v2018.08.28Range)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: 2/testRTSTEARDOWN(DIVE555 Streaming Media v2018.08.28)
+
+S‡ssion: 000022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: /testRTSPClient (LIVEJ55 Streaming Media v2018.08.28)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (DOWN(DIVE555 Streaming Media v2018.08.28)
+
+S‡ssion: 000022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: /testRTSPClient (LIVEJ55 Streaming Media v2018.08.28)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (DIVE555 Streaming Media v2018.08A28)
+
+S‡ssion: 000022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (LIVEJ55 Streaming Media v2018.08.28Range)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: 2/testRTSTEARDOWN(DIVE555 Streaming Media v2018.08.28)
+
+S‡ssion: 000022B8
+RangLIVE555 Ste: npt=0.000
+
+PLAY IVE555 Streaming Media v2018.08A28)
+
+S‡ssion: 000022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (LIVEJ55 Streaming Media v2018.08.28Range)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: 2/testRTSTEARDOWN(DIVE555 Streaming Media v2018.08.28)
+
+S‡ssion: 000022B8
+RangLIVE555 Ste: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: /teTSPClient (LIVEJ55 Streaming Media v2018.08.28Range)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1o8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: 2/testRTSTEARDOWN(DIVE555 Streaming Media v2018.08.28)
+
+S‡ssion: 000022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: /testRTSPClient (LIVEJ55 Streaming Media v2018.08.28)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSPAUSE
+CSeq: 	
+User-Agent: ./testRTSPClient (DIVE555 Streaming Media v2018.08A28)
+
+S‡ssion: 000022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (LIVEJ55 Streaming Media v2018.08.28Range)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: 2/testRTSTEARDOWN(DIVE555 Streaming Media v2018.08.28)
+
+S‡ssion: 000022B8
+RangLIVE555 Ste: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AustRTSPClient (LIVEJ55 Streaming Media v2018.08.28)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (DIVE555 Streaming Media v2018.08A28)
+
+S‡ssion: 000022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (LIVEJ55 Streaming Media v2018.08.28Range)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 	
+User-Agent: 2/testRTSTEARDOWN(DIVE555 Streaming Media v2018.08.28)
+
+S‡ssion: 000022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: /testRTSPClient (000022B8LIVEJ55 Streaming Media v2018.08.28)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8nnnnnnnnnnnnnest/ RTSP/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (DIVE555 Streaming Media v2018.08A28)
+
+S‡ssion: 000022B8
+Range: npt=0.000
+
+PLAY rtsp://27.0.0.1:8554/mp3AudioTest/ RTS@/1.0
+CSeq: 	
+User-Agent: ./testRTSPClient (LIVEJ55 Streaming Media v2018.08.28Range)
+
+Session: 000022Bÿ
+Range: npt=0.000
+
+DESCRIBE rtsp://127.0.0.1:8554/wavAudioTest RnSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+OPTIONS rtsp://127.0.0.1:8554/mp3AudioTest RTSP/1.0
+CSeq: 1
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+
+PLAY rtsp://127.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+Range: npt=0.000-
+
+OPTIONS rtsp://127..0.0.1:8554/webmFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:8554/aacAudioTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+PLAY rtsp://127.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+Range: npt=0.000-
+
+SETUP rtsp://127.0.0.1:8554/webmFileTest/track2 RTSP/1.0
+CSeq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+Transport: RTP/AVP;unicast;client_port=60854-60855
+Session: 000022B8
+
+PAUSE rtsp://127.0.0.1:8554/webmFileTest/ RTS 1.0
+000022B8000022B8ÿÿUser-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.2?)
+
+ 127.0.0.1bsion: 000022B8 bsion: 000022B8 127.0.0.1bsion: 000022B8 bsion: 000022B8
+
+RTSP/1.0 rtsp://127.rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr.....Q.................../÷
+CSeq: 6
+User-Agent
+
+PLAY rtsp://127.0.0.1:8554/matroskaFileTest/ RTSP/1.0
+CSeq: 7
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+Range: npt=0.000-
+
+DESCRIBE rtsp://127.0.0.1:8554/webmFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+SETUP rtsp://127.0.0.1:8554/webmFileTest/track1 RTSP/1.0
+CSeq: 3
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/AVP;unicast;client_port=50494-50495
+
+SETUP rtsp://127.0.0.1:8554/webmFileTest/track2 RTSP/1.0
+CSeq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+Transport: RTP/AVP;unicast;client_port=60854-60855
+
+PLAY rtsp://127.0.0.1:8554/webmFileTest/ RTSP/1.0
+CSeq: 5
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+Range: npt=0.000-
+
+PAUSE rtsp://127.0.0.1:8554/webmFileTest/ RTSP/1.0
+CSeq: 6
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+
+TEARDOWN rtsp://127.0.0.1:8554/webmFileTest/ RTSP/1.0
+CSeq: 7
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+

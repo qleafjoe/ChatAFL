@@ -1,0 +1,52 @@
+Here are the standard **RTSP client request templates** (excluding the `DESCRIBE` example you already provided):
+
+```
+OPTIONS: ["OPTIONS <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","\r\n"]
+DESCRIBE: ["DESCRIBE <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Accept: <<VALUE>>\r\n","\r\n"]
+ANNOUNCE: ["ANNOUNCE <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Content-Length: <<VALUE>>\r\n","\r\n"]
+SETUP: ["SETUP <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Transport: <<VALUE>>\r\n","\r\n"]
+PLAY: ["PLAY <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Range: <<VALUE>>\r\n","\r\n"]
+PAUSE: ["PAUSE <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","\r\n"]
+TEARDOWN: ["TEARDOWN <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","\r\n"]
+GET_PARAMETER: ["GET_PARAMETER <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","\r\n"]
+SET_PARAMETER: ["SET_PARAMETER <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Content-Length: <<VALUE>>\r\n","\r\n"]
+REDIRECT: ["REDIRECT <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","\r\n"]
+```
+
+**Note:**  
+- `<<VALUE>>` placeholders should be replaced with actual values (URL, sequence numbers, transport parameters, etc.).  
+- `CSeq` (Command Sequence) increments with each request.  
+- `Transport` header is critical for `SETUP` to specify RTP/RTCP details.  
+- `Range` header in `PLAY` specifies playback start/end time.  
+
+This covers all standard RTSP 1.0/2.0 client request methods.
+Here are all the **other RTSP client request templates**:
+
+```
+OPTIONS: ["OPTIONS <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","\r\n"]
+ANNOUNCE: ["ANNOUNCE <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Content-Type: <<VALUE>>\r\n","Content-Length: <<VALUE>>\r\n","\r\n"]
+SETUP: ["SETUP <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Transport: <<VALUE>>\r\n","\r\n"]
+PLAY: ["PLAY <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Range: <<VALUE>>\r\n","\r\n"]
+PAUSE: ["PAUSE <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","\r\n"]
+TEARDOWN: ["TEARDOWN <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","\r\n"]
+GET_PARAMETER: ["GET_PARAMETER <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","\r\n"]
+SET_PARAMETER: ["SET_PARAMETER <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Content-Length: <<VALUE>>\r\n","\r\n"]
+REDIRECT: ["REDIRECT <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","\r\n"]
+RECORD: ["RECORD <<VALUE>>\r\n","CSeq: <<VALUE>>\r\n","User-Agent: <<VALUE>>\r\n","Range: <<VALUE>>\r\n","\r\n"]
+```
+
+**Summary of RTSP methods:**
+
+| Method | Purpose |
+|--------|---------|
+| OPTIONS | Query server capabilities |
+| DESCRIBE | Get media description (SDP) |
+| ANNOUNCE | Send session description to server |
+| SETUP | Establish video/audio transport |
+| PLAY | Start playback |
+| PAUSE | Pause playback |
+| TEARDOWN | Close session |
+| GET_PARAMETER | Retrieve parameter value |
+| SET_PARAMETER | Set parameter value |
+| REDIRECT | Redirect client to another server |
+| RECORD | Start recording |

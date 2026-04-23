@@ -1,0 +1,17 @@
+Could you please clarify which client request you would like added and its exact format?
+
+OPTIONS rtsp://127.0.0.1:8554/mpeg1or4AudioVideoTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://127.0.0.1:8554/mpeg1or2AudiXVideoTest RTSP/1.0
+CSeq:
+
+ideoTest RTSP/1.0
+CSeq:
+
+OPTIOPTIONS rtsp://127.0.0.1:8554/mpeg1or4AudioV|deoTest RTSP/1.0
+CSeq:
+
+OPTIONS rtsp://127.0.0.1:8554/m…eg1or2AudiXVideoTest RTSP/1.0
+CSeq:
+

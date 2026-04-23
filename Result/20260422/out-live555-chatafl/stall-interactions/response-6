@@ -1,0 +1,1 @@
+DESCRIBE rtsp://127.0.0.1:8554/mp3AudioTest RTSP/1.0\r\nCSeq: 2\r\nAccept: application/sdp\r\nUser-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)\r\n\r\n

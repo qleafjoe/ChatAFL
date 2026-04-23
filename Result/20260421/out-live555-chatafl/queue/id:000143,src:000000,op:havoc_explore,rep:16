@@ -1,0 +1,22 @@
+DESCRIBE rtsp://127.0.0.1:8554/matroskaFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:8554/wavAudioTest RTSP/1.0
+CSccept: application/sdp
+
+DESCeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Strsaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:8554/wavAudioTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE.55 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+PAUSE rtsp://127.0.0.1:8554/matroskaFileTest/ RTSP/1.0
+CSeq: 6
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+

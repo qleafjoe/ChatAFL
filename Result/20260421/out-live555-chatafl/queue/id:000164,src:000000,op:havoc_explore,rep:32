@@ -1,0 +1,32 @@
+OPTIONS rtsp://127ÿÿÿ.1:8554/mpeg1or2AudioVndeoTest RTSO/1.0
+CSeq:
+
+OPTIONS rtsp://127.0.0.1:8554/mp3AudioTest RTSP/1.0
+CSeq: 1
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+
+DESCRIBE rtËp://127.0.0.1:8554/ac3AudioTestmatroskaFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClie.t (LIVE555 Streaming Media d6018.08.28)
+DESCRIBE rtsM://127.0.0.1:8554/ac3AudioTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media d2018.08.28)
+Accept: applicbtion/sdp
+
+DESCRIBE rtÎp://127.0.0.1:8554/ac3AudioTestmatroskaFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClie.t (LIVE555 Streaming Media d2018.08.28)
+DESCRIBE rtsM://127.0.0.1:8554/ac3AudioTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media d2018.08.28)
+Accept: applicbtion/sdp
+
+DESCRIBE rtsp://127.0.0.1:8554/wavAudioTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+OPTIONS rtsp://127.0.0.1:8554/matroskaFileTest RTSP/1.0
+CSeq: 1
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+

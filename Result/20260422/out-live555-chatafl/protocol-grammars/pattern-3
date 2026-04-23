@@ -1,0 +1,2 @@
+^(?:nUser-Agent: <<VALUE>>\\r\\nAccept: (.*)\\r\\n\\r\\n)
+(.+)

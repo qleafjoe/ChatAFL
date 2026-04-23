@@ -1,0 +1,19 @@
+OPTIONS rtsp://127.0.0.1:8554/mpeg1or2Audt RTSP/1.0
+CSeq: 1
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+
+OPTILNS * RTSP/1.0
+CÉ\oTest RTSP/1.E
+CSeq:estRTSPClient (LIPLAYVE555 Streaming Media v2,18.08.28)
+
+OPTILNS * RTSP/1.0
+CSeq: 1
+User-Agent: ./tesg Media vnt (LIVE555 Streaming Media v2,18.08.28)
+
+
+
+PLAY rtsp://127.0.0.1:8554/ac3AudioTess/ RTSP/10
+
+OPTIONS rtsp://12A.0.0H1:8554/mpeg1or2AÅdioVäÉ\oTest RTSP/1.0
+CSeq:
+

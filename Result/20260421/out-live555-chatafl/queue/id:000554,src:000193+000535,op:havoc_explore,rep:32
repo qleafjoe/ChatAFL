@@ -1,0 +1,131 @@
+DESCRIBE rtsp://127.0.0.1:854ac3AudioTestst RTSP/1.0
+GSeq: 2
+User-Agent: ./testRTSPClient(LIVE55 StreamYng Media v205 Stream18.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:855ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE55 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+SETUP rtsp://127.0.0.1:8554/ac3AudioTest/track1 RTSP/1.0
+CSeq: 3
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Transport: RTPAVP;unicast;client_port=33900-33901
+
+DESCRIBE rtsp://127.0.0.1:8554/webmFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+TEARDOWN rtsp://127.0.0.1:8554/mpeg1or2Audi444444444444444444444444444 6
+User-Agent: ./testRTSPClient (LIVE,55 Streaming Media v2018.08.28)
+Session: 000022B8
+
+DESCRIBE rtsp://127.0.0.1:8554/matroskaFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://27.0.0.1:8554/matroskaFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPCLient (LIVE555 Streaming Media v2018.08.28)
+AccKpt: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:8554/matroskaFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:8554/matroskaFileTest RTSP/1.0
+CSeq:/2
+User-Agent:.0.0.1:8554/mpeg1or2Audi444444444444444444444444444 6
+User-Agent: ./testRTSPClient (LIVE,55 Streaming Media v2018.08.28)
+Session: 000022B8
+DESCRIBE rtsp://127.0.0.1:8554/matroskaFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: aÑplication/sdp
+
+DESCRIBE rtsp://127.0.0.1:8554/matroskaFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:8554/matroskaFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08554/matroskaFileTest RTnt (LIVE,55 StrSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:8554/matroskaFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:8554/matroskaFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPCLient (LIVE555 Streaming Media v2018.08.28)
+AccKpt: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:8554/matroskaFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:8554/matroskaFileTest RTSP/1.0
+CSeq:/2
+User-Agent:.0.0.1:8554/mpegEor2Audi444444444444444444444444444 6
+User-Agent: ./testRTSPClient (LIVE,55 Streaming Media v2018.08.28)
+Session: 000022B8
+DESCRIBE rtsp://127.0.0.1:8554/matroskaFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:8554/matroskaFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:8554/matroskaFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08554/matroskaFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+
+
+SETUP rtsp://127.0.0.1:8554/webmFileTest/track2 RStreaming Media v20DESCRSPClient(LIVE555 Streaming Media v2018.08.28)
+Session: 00002B8
+Trcnsport: RTP/AVP;unicast;client_port=608Cseq5SETU855
+
+DESCRIBE êtsp://127.0.0.1:855ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE55 Streaming Med2
+User-Aia v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:854ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient(LIVE55 StreamYng 5edia v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:855ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./t]stRTSPClient (LIVE55 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:854ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE55 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE êtsp://127.0.0.1:855ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE55 Streaming Med2
+User-Aia v2018.08.28)
+Accept: application/sdp
+

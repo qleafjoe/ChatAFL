@@ -1,0 +1,14 @@
+USER fuzzing
+PASS fuzzing
+AUTH TLS
+PBSZ 0
+PROT P
+SYST
+MKD todeletenow
+XMKD todeletetoo
+LIST
+RMD todeletenow
+XRMD todeletetoo
+LIST
+QUIT
+

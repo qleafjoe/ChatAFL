@@ -1,0 +1,1 @@
+PLAY rtsp://127.0.0.1:8554/mpeg1or2AudioVideoTest RTSP/1.0

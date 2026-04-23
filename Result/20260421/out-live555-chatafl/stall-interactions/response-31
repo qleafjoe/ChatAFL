@@ -1,0 +1,1 @@
+PLAY rtsp://127.0.0.1:8554/ac3AudioTest/ RTSP/1.0

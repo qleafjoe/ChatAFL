@@ -1,0 +1,18 @@
+USER fuzzing
+PASS fuzzing
+SYST
+�A~}L, a
+MKD todeletenow
+�A~}L, a
+XMKD todeletetoo
+�A~}L, a
+LIST
+�A~}L, a
+RMD todeletenow
+�A~}L, a
+XRMD todeletetoo
+�A~}L, a
+LIST
+�A~}L, a
+QUIT
+

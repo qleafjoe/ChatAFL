@@ -1,0 +1,125 @@
+# FTP Protocol Client Request Templates
+
+For the FTP protocol, the client request templates include all the common FTP commands. Here are the main ones:
+
+```
+FTP: {
+    "USER": ["USER <<VALUE>>\r\n"],
+    "PASS": ["PASS <<VALUE>>\r\n"],
+    "CWD": ["CWD <<VALUE>>\r\n"],
+    "PWD": ["PWD\r\n"],
+    "LIST": ["LIST <<VALUE>>\r\n"],
+    "RETR": ["RETR <<VALUE>>\r\n"],
+    "STOR": ["STOR <<VALUE>>\r\n"],
+    "DELE": ["DELE <<VALUE>>\r\n"],
+    "QUIT": ["QUIT\r\n"],
+    "TYPE": ["TYPE <<VALUE>>\r\n"],
+    "PASV": ["PASV\r\n"],
+    "PORT": ["PORT <<VALUE>>\r\n"],
+    "RMD": ["RMD <<VALUE>>\r\n"],
+    "MKD": ["MKD <<VALUE>>\r\n"],
+    "RNFR": ["RNFR <<VALUE>>\r\n"],
+    "RNTO": ["RNTO <<VALUE>>\r\n"],
+    "SYST": ["SYST\r\n"],
+    "NOOP": ["NOOP\r\n"],
+    "FEAT": ["FEAT\r\n"],
+    "SIZE": ["SIZE <<VALUE>>\r\n"]
+}
+```
+
+## Common FTP Commands
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| USER | Username | `USER anonymous\r\n` |
+| PASS | Password | `PASS user@example.com\r\n` |
+| LIST | List directory | `LIST -la\r\n` |
+| RETR | Download file | `RETR filename.txt\r\n` |
+| STOR | Upload file | `STOR upload.txt\r\n` |
+| CWD | Change directory | `CWD /public\r\n` |
+| PWD | Print working directory | `PWD\r\n` |
+| DELE | Delete file | `DELE unwanted.txt\r\n` |
+| QUIT | Disconnect | `QUIT\r\n` |
+
+All FTP commands follow the same format: **Command + optional parameters + \r\n**
+# Complete FTP Client Request Templates
+
+Here are all the FTP client request templates organized by category:
+
+## Access Commands
+
+```
+USER: ["USER <<VALUE>>\r\n"]
+PASS: ["PASS <<VALUE>>\r\n"]
+ACCT: ["ACCT <<VALUE>>\r\n"]
+REIN: ["REIN\r\n"]
+QUIT: ["QUIT\r\n"]
+```
+
+## Directory Commands
+
+```
+CWD:  ["CWD <<VALUE>>\r\n"]
+CDUP: ["CDUP\r\n"]
+PWD:  ["PWD\r\n"]
+MKD:  ["MKD <<VALUE>>\r\n"]
+RMD:  ["RMD <<VALUE>>\r\n"]
+LIST: ["LIST <<VALUE>>\r\n"]
+NLST: ["NLST <<VALUE>>\r\n"]
+```
+
+## File Transfer Commands
+
+```
+RETR: ["RETR <<VALUE>>\r\n"]
+STOR: ["STOR <<VALUE>>\r\n"]
+STOU: ["STOU <<VALUE>>\r\n"]
+APPE: ["APPE <<VALUE>>\r\n"]
+DELE: ["DELE <<VALUE>>\r\n"]
+RNFR: ["RNFR <<VALUE>>\r\n"]
+RNTO: ["RNTO <<VALUE>>\r\n"]
+```
+
+## Transfer Parameter Commands
+
+```
+TYPE: ["TYPE <<VALUE>>\r\n"]
+STRU: ["STRU <<VALUE>>\r\n"]
+MODE: ["MODE <<VALUE>>\r\n"]
+PORT: ["PORT <<VALUE>>\r\n"]
+PASV: ["PASV\r\n"]
+EPSV: ["EPSV\r\n"]
+EPRT: ["EPRT <<VALUE>>\r\n"]
+```
+
+## Service Commands
+
+```
+ABOR: ["ABOR\r\n"]
+STAT: ["STAT <<VALUE>>\r\n"]
+NOOP: ["NOOP\r\n"]
+HELP: ["HELP <<VALUE>>\r\n"]
+SYST: ["SYST\r\n"]
+FEAT: ["FEAT\r\n"]
+OPTS: ["OPTS <<VALUE>>\r\n"]
+SITE: ["SITE <<VALUE>>\r\n"]
+SIZE: ["SIZE <<VALUE>>\r\n"]
+MDTM: ["MDTM <<VALUE>>\r\n"]
+MLST: ["MLST <<VALUE>>\r\n"]
+MLSD: ["MLSD <<VALUE>>\r\n"]
+REST: ["REST <<VALUE>>\r\n"]
+```
+
+## Summary Table
+
+| Command | Purpose | Example |
+|---------|---------|---------|
+| USER/PASS | Authentication | `USER anonymous\r\n` |
+| CWD/CDUP | Navigation | `CWD /public\r\n` |
+| MKD/RMD | Directory ops | `MKD newfolder\r\n` |
+| RETR/STOR | File transfer | `RETR file.txt\r\n` |
+| DELE/RNFR | File ops | `DELE old.txt\r\n` |
+| LIST/NLST | Directory listing | `LIST -la\r\n` |
+| PASV/PORT | Data connection | `PASV\r\n` |
+| TYPE | Transfer mode | `TYPE I\r\n` |
+| QUIT | Disconnect | `QUIT\r\n` |

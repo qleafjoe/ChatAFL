@@ -1,0 +1,26 @@
+USER fuzzing
+the ����", 0��k�s
+PASS fuzzing
+the ����", 0��k�s
+STAT
+the ����", 0��k�s
+PORT 127,0,0,1,14,178
+the ����", 0��k�s
+EPRT ,2,0:0:0:0:0:0:0:0,1025,
+the ����", 0��k�s
+LIST
+the ����", 0��k�s
+MLST /
+the ����", 0��k�s
+s
+the ����", 0��k�s
+STAT
+the ����", 0��k�s
+LIST
+the ����", 0��k�s
+NLST
+the ����", 0��k�s
+MLSD /
+the ����", 0��k�s
+QUIT
+

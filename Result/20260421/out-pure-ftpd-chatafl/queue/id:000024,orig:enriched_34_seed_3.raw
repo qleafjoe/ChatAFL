@@ -1,0 +1,8 @@
+USER fuzzing
+PASS fuzzing
+AUTH TLS
+PBSZ 0
+PROT P
+STAT
+PORT 127,0,0,1,
+

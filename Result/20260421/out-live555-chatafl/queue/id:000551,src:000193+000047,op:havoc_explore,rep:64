@@ -1,0 +1,76 @@
+DESCRIBE rtsp://127.0.0.1:854ac3AudioTestst RTSP/1.0
+GSeq: 2
+User-Agent: ./testRTSPClient(LIVE55 StreamYng Media v205 Stream18.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:855ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE55 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+OPTIONS rtsp://127.0.00.1:8554/webmFileTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRESPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:8554/wavAudioTest RnSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+šššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššš2018.0828)
+Session: 000222B8
+
+TEARDqqqqqqqqqqqqqqqqqqqqqqqqqqqqqOWN rtsp://127.0.0.1:8554/webmFileest/ RTSP/1.0
+CSeq: 7
+User-Agent: ./testRTSPClient (LIVE555 Streaming Medi5 Streaming Mediaa v2018.08.28)
+Session: 000022B8
+
+TEARDOWN rtsp://127.0.0.1:8p54/webmFileTest/ RTSP/1.0
+CSÿq: 7
+User-Agent: ./testRTSPClient (LIVE555 Strea`ing Media v2018.08.28)
+Session: 000222B8
+
+˜ššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššššš2018.08.28)
+Session: 000222B8
+
+TEARDqqqqqqqqqqqqqqqqqqqqqqqqqqqqqOWN rtsp://127.0.0.1:8554/webmFileestRangeP/1.0
+CSeq: 7
+User-Agent: ./testRTSPClient (LIVE555 Str†aming Medi5 StrPaming Mediaa v2018.08.28)
+Session: 000022B8
+
+TEARDOWN rtsp://127.0.0.1:8p54/webmFileTest/ RTSP/1.0
+CSÿq: 7
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000222B8
+
+OPTIONS rtsp://127.0.0.1:8554/mpeg1or2AudioVideoTest RTSP/1wavAudioTest
+User-Agent: ./tesFRTSPClient (LIVE555 Streaming Media v2018.08.28)
+
+DESCRIBE tsp://127.0.0.1:855ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE55 Streaming Med2
+User-Aia v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:854ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient(LIVE55 StreamYng 5edia v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:855ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./t]stRTSPClient (LIVE55 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:854ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE55 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE tsp://127.0.0.1:855ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE55 Streaming Med2
+User-Aia v2018.08.28)
+Accept: application/sdp
+

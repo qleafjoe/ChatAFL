@@ -1,0 +1,30 @@
+start_time        : 1776710097
+last_update       : 1776753157
+fuzzer_pid        : 9
+cycles_done       : 154
+execs_done        : 139686
+execs_per_sec     : 0.88
+paths_total       : 971
+paths_favored     : 60
+paths_found       : 879
+paths_imported    : 0
+max_depth         : 8
+cur_path          : 550
+pending_favs      : 0
+pending_total     : 759
+variable_paths    : 971
+stability         : 15.10%
+bitmap_cvg        : 9.92%
+unique_crashes    : 0
+unique_hangs      : 42
+last_path         : 1776752042
+last_crash        : 0
+last_hang         : 1776743918
+execs_since_crash : 139686
+exec_timeout      : 200
+afl_banner        : testOnDemandRTSPServer
+afl_version       : 2.56b
+target_mode       : default
+command_line      : /home/ubuntu/chatafl/afl-fuzz -d -i /home/ubuntu/experiments/in-rtsp -x /home/ubuntu/experiments/rtsp.dict -o out-live555-chatafl -N tcp://127.0.0.1/8554 -P RTSP -D 10000 -q 3 -s 3 -E -K -R -m none ./testOnDemandRTSPServer 8554
+slowest_exec_ms   : 0
+peak_rss_mb       : not available while afl is running

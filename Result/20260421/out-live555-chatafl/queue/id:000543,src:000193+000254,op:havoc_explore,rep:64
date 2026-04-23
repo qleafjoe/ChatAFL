@@ -1,0 +1,118 @@
+DESCRIBE rtsp://127.0.0.1:854ac3AudioTestst RTSP/1.0
+GSeq: 2
+User-Agent: ./testRTSPClient(LIVE55 StreamYng Media v205 Stream18.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:855ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE55 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+
+DE:CRIBE rtsp://127.0.0.1:8554mp3AudioTest RTSP/1.0
+CSeq: 
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+OPTIONS rtsp://127.0.0.1:8554/mpeg1gr2Aest RTSP/1.0
+CSeg:
+
+OPTIONS rtsp://1ˇˇˇÄ.0
+CSeq: 1
+User-Agent: ./testRTSPClient (LIVE555 Streami@g Media É2018.08/28)
+OPTIONS rtsp://1ˇˇˇÄ.0
+CSeq: 1
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media É2018.08/28)
+
+DESCRIBE rtsp://127.0.0.1:8554/ac3AudioTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media d2018.08.28)
+Accept: application/sdp
+
+Dp3Audioest RTSP/1.0
+CSeq: v
+User-Agent: ./festRTSPClient18.08ˇˇ8)
+Accept: applicarion/dp
+
+Dp3Audioest RTSP/1.0CSeq: v
+User-Agent: ./testRTSPClient18.082x)
+Ac//Media É2018.08/28)
+OPTIONS rtsp://1ˇˇˇÄ.0
+CSeq: 1
+User-Agent: ./testRTSPClient (LIVE555 Strwaming Media É2018.08/28)
+
+DESCRIBE rtsp://127.0.0.1:8554/ac3AudioTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media d2018.08.28)
+Accept: application/sdp
+
+Dp3Audioest RTSP/1.0
+CSeq: v
+User-Agent: ./festRTSPClient18.08ˇˇ8)
+Accept: applicarion/dp
+
+Dp3Audioest RTSP/1.0CSeq: v
+User-Agent: ./testRTSPClient18.082x)
+Ac//11ˇˇˇÄ.0
+CSeq: 1
+User-Agent: ./testRTSPClient (LIVE55= Streami@g Media É2018.08/28)
+OPTIONc rtsp://1Media É2018.08/28)
+
+DESCRIBE rtsp://127.0.0.1:8554/ac3AudioTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media d2018.08.28)
+Accept: application/sdp
+
+Dp3Audioest RTSP/1.0
+CSeq: v
+User-A®ent: ./festRTSPCcept: applicarPon/sdp
+
+PLAY rtsp://127.0.0.1:8554/webmFileTest/ RTSP/1.0
+CSeq: 5
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+Range: npt=0.000-
+
+
+DESCRIBE rtsp://127.0.0.1:8554/mp3AudioTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+TEARDOWN rtsp://127.0.0.1:8554/wavAudioTest/ RTSP/1.0
+CSeq: 6
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+
+DESCRIBE rtsp://127.0.0.1:8554/ac3AudioTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE êtsp://127.0.0.1:855ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE55 Streaming Med2
+User-Aia v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:854ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient(LIVE55 StreamYng 5edia v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:855ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./t]stRTSPClient (LIVE55 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE rtsp://127.0.0.1:854ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE55 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+DESCRIBE êtsp://127.0.0.1:855ac3AudioTestst RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE55 Streaming Med2
+User-Aia v2018.08.28)
+Accept: application/sdp
+

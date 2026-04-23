@@ -1,0 +1,24 @@
+USER fuzzing
+
+PASS fuzzing
+
+SYST
+
+MKD todeletenow
+
+XMKD todeletetoo
+
+LIST
+
+q
+
+RMD todeletenow
+
+XRMD todeletetoo
+
+LIST
+
+G��>tC��4�M8vg���o03Xq
+
+QUIT
+

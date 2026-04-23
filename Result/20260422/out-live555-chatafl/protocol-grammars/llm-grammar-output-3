@@ -1,0 +1,11 @@
+
+{
+  "OPTIONS": ["OPTIONS <<VALUE>> <<VALUE>>\r\n", "CSeq: <<VALUE>>\r\n", "User-Agent: <<VALUE>>\r\n", "\r\n"],
+  "DESCRIBE": ["DESCRIBE <<VALUE>> <<VALUE>>\r\n", "CSeq: <<VALUE>>\r\n", "User-Agent: <<VALUE>>\r\n", "Accept: <<VALUE>>\r\n", "\r\n"],
+  "SETUP": ["SETUP <<VALUE>> <<VALUE>>\r\n", "CSeq: <<VALUE>>\r\n", "User-Agent: <<VALUE>>\r\n", "Transport: <<VALUE>>\r\n", "\r\n"],
+  "PLAY": ["PLAY <<VALUE>> <<VALUE>>\r\n", "CSeq: <<VALUE>>\r\n", "User-Agent: <<VALUE>>\r\n", "Session: <<VALUE>>\r\n", "Range: <<VALUE>>\r\n", "\r\n"],
+  "PAUSE": ["PAUSE <<VALUE>> <<VALUE>>\r\n", "CSeq: <<VALUE>>\r\n", "User-Agent: <<VALUE>>\r\n", "Session: <<VALUE>>\r\n", "\r\n"],
+  "TEARDOWN": ["TEARDOWN <<VALUE>> <<VALUE>>\r\n", "CSeq: <<VALUE>>\r\n", "User-Agent: <<VALUE>>\r\n", "Session: <<VALUE>>\r\n", "\r\n"],
+  "GET_PARAMETER": ["GET_PARAMETER <<VALUE>> <<VALUE>>\r\n", "CSeq: <<VALUE>>\r\n", "User-Agent: <<VALUE>>\r\n", "Session: <<VALUE>>\r\n", "\r\n"],
+  "SET_PARAMETER": ["SET_PARAMETER <<VALUE>> <<VALUE>>\r\n", "CSeq: <<VALUE>>\r\n", "User-Agent: <<VALUE>>\r\n", "Session: <<VALUE>>\r\n", "Content-Length: <<VALUE>>\r\n", "\r\n"]
+}

@@ -154,8 +154,7 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
                                 {
                                     const char *data_str = json_object_get_string(content_obj);
                                     if (data_str) {
-                                        if (data_str[0] == '\n') data_str++;
-                                        answer = strdup(data_str);
+                                        answer = clean_llm_response(data_str);
                                     }
                                 }
                             }
@@ -164,7 +163,7 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
                     
                     if (!answer)
                     {
-                        printf("LLM Response parsed but no valid answer found in 'choices'. Raw: %s\n", chunk.memory);
+                        printf("LLM Response parsed but no valid answer found (refused or malformed). Raw: %s\n", chunk.memory);
                         sleep(1);
                     }
                 }
@@ -200,12 +199,64 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
     return answer;
 }
 
+char *clean_llm_response(const char *raw_response) {
+    if (!raw_response) return NULL;
+    
+    // 1. Check for refusal keywords
+    const char *refusals[] = {"sorry", "As an AI", "cannot fulfill", "can't help", "unable to", "policy", NULL};
+    for (int i = 0; refusals[i]; i++) {
+        if (strcasestr(raw_response, refusals[i])) {
+            printf("[LLM] Refusal detected: %s\n", refusals[i]);
+            return NULL;
+        }
+    }
+
+    // 2. Try to extract JSON/Array if it looks like one (for grammar extraction)
+    // We prioritize JSON extraction for grammar modules
+    char *json_start = strpbrk(raw_response, "{[");
+    char *json_end = NULL;
+    if (json_start) {
+        if (*json_start == '{') json_end = strrchr(json_start, '}');
+        else json_end = strrchr(json_start, ']');
+    }
+
+    if (json_start && json_end && json_end > json_start) {
+        size_t len = json_end - json_start + 1;
+        char *cleaned = malloc(len + 1);
+        memcpy(cleaned, json_start, len);
+        cleaned[len] = '\0';
+        return cleaned;
+    }
+
+    // 3. For raw protocol data (stall breaking/enrichment), strip markdown and leading/trailing noise
+    char *res = strdup(raw_response);
+    char *ptr = res;
+
+    // Skip leading markdown code blocks (e.g., ```rtsp, ```text)
+    if (strncmp(ptr, "```", 3) == 0) {
+        ptr += 3;
+        while (*ptr && isalpha(*ptr)) ptr++; // skip language tag like 'rtsp'
+        while (*ptr && isspace(*ptr)) ptr++;
+    }
+
+    // Strip trailing markdown backticks
+    char *end = ptr + strlen(ptr) - 1;
+    while (end >= ptr && (isspace(*end) || *end == '`')) {
+        *end = '\0';
+        end--;
+    }
+
+    char *final_res = strdup(ptr);
+    free(res);
+    return final_res;
+}
+
 char *construct_prompt_stall(char *protocol_name, char *examples, char *history)
 {
     char *template = "In the %s protocol, the communication history between the %s client and the %s server is as follows."
                      "The next proper client request that can affect the server's state are:\\n\\n"
                      "Desired format of real client requests:\\n%sCommunication History:\\n\\\"\\\"\\\"\\n%s\\\"\\\"\\\"\\n"
-                     "(System constraint: Output ONLY one single client request line. NO markdown, NO formatting, NO explanations.)";
+                     "(System constraint: Output exactly ONE complete client request message. MUST include headers and MUST end with \\\\r\\\\n\\\\r\\\\n. NO markdown, NO formatting, NO explanations.)";
 
     char *prompt = NULL;
     asprintf(&prompt, template, protocol_name, protocol_name, protocol_name, examples, history);
@@ -244,7 +295,10 @@ char *construct_prompt_for_templates(char *protocol_name, char **final_msg)
                                 "GET: [\\\"GET <<VALUE>>\\\\r\\\\n\\\"]";
 
     char *msg = NULL;
-    asprintf(&msg, "%s\\n%s\\nFor the %s protocol, all of client request templates are :", prompt_rtsp_example, prompt_http_example, protocol_name);
+    asprintf(&msg, "%s\\n%s\\nFor the %s protocol, output ALL client request templates. "
+                   "Output ONLY strictly valid JSON. NO markdown, NO code blocks, NO explanations. "
+                   "The templates must be comprehensive and follow the list-of-strings format.", 
+                   prompt_rtsp_example, prompt_http_example, protocol_name);
     *final_msg = msg;
     /** Format of prompt_grammars
     prompt_grammars = [
@@ -405,7 +459,9 @@ char *construct_prompt_for_protocol_message_types(char *protocol_name)
     char *prompt = NULL;
 
     // transfer the prompt into string
-    asprintf(&prompt, "In the %s protocol, the message types are: \\n\\nDesired format:\\n<comma_separated_list_of_states_in_uppercase_and_without_whitespaces>", protocol_name);
+    asprintf(&prompt, "In the %s protocol, the message types are: \\n\\n"
+                      "Desired format: <comma_separated_list_of_states_in_uppercase_and_without_whitespaces>\\n"
+                      "Constraint: Output ONLY the list. No explanations.", protocol_name);
 
     return prompt;
 }
@@ -1065,6 +1121,16 @@ char *enrich_sequence(char *sequence, khash_t(strSet) * missing_message_types)
     json_object_put(sequence_escaped);
 
     char *response = chat_with_llm(prompt, "instruct", ENRICHMENT_RETRIES, 0.5);
+    if (response) {
+        // Step 3: Sanity check for enriched message
+        if (strstr(response, "\r\n\r\n") == NULL) {
+            printf("[LLM] Enriched message missing \\r\\n\\r\\n, appending...\n");
+            char *new_resp = NULL;
+            asprintf(&new_resp, "%s\r\n\r\n", response);
+            free(response);
+            response = new_resp;
+        }
+    }
 
     free(prompt);
 

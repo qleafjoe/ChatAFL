@@ -1,0 +1,32 @@
+PAUSE rtsp://127.0.0.1:8554/webmFileTest/ RTSP/1.0
+CSeq: 6
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+
+OPTIONS rtsp://127.0.0.1:8554/wavAudioTest RTSP/1.0
+CSeq: 1
+User-Agent: ./test
+
+SETUP rtsp://127.0.0.1:8554/mpeg1or2AudioVideoTest/track1 RTSP/1.0
+CSeq: 3
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/AVP;unicast;client_port=50778-50779
+
+DESCRIBE rtsp://127.0.0.1:8554/mp3AudioTest RTSP/1.0
+CSeq: 2
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Accept: application/sdp
+
+PAUSE rtsp:554/wavAudioTest/ RTSP/1.0AUSE rtsp:554/wavAudioTest/ RTSP/1.0
+
+Cu: 5Cu: 5t/track1 RTSP/9.0
+CSeq: 3
+Us
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v20E8.08.28)Sient_poression: 000022B8
+
+
+iSETUP rtsp://127.0.0.1:8554/wavAudioTest/track1 RTSP/1.0
+CSeq: 3
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/AVP;unicast;client_port=37952-37953
+

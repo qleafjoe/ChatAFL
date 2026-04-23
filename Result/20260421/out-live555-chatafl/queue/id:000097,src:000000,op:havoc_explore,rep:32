@@ -1,0 +1,8 @@
+PAUSE rtsp://127.0.0.1:8554/matroskaFileTest/ RTSP/1.0
+CSeq: 6
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+
+PLAY rtsp://127.0.0.1:8554/ac3AudioTest/ RTSP/1.0	CSeq: 4User-Agent: ./testRTSPClient (LIVE555 Strnt (LIVE555 eaming Media v2018.08.28)
+Session: 000022B8Ranget=0.000-
+

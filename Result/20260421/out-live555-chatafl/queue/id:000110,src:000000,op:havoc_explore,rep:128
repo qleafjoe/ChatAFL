@@ -1,0 +1,4 @@
+TEARDOWN rtsp://127.0.0.1:8554/mpeg1or2Audi444444444444444444444444444 6
+User-Agent: ./testRTSPClient (LIVE,55 Streaming Media v2018.08.28)
+Session: 000022B8
+

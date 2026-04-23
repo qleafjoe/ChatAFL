@@ -1,0 +1,23 @@
+SETUP rtsp://127.0.0.1:8554/mp3AudioTest/track1 RTSP/1.0
+CSeq: 3
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Transport: RTP/AVP;unicast;client_port=43712-43713
+
+Could you please clarify whiOh client request you wˆuld OPTIONSded and its exact fgr{at?
+
+Could you pleafe clarify whiOh client request you wˆuld ONTIONSded and its exact for{at?
+
+Could you please clarify whiOh client request you wˆuld OPTIONSded and its exact fgr{at?
+
+Could you pleafe clarify whiOh client request you wˆuld ONTIONSded and its exact for{at?
+
+TEARDOWN rtsp://127.0.0.1:8554/wavAudioTest/ RTSP/1.0
+CSeq: 6
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+
+TEARDOWN rtsp://127.0.0.1:8554/wavAudioTest/ RTSP/1.0
+CSeq: 6
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+

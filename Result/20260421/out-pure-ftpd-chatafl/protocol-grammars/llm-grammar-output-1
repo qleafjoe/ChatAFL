@@ -1,0 +1,148 @@
+Below is a complete set of **FTP client‑request templates** written in the same “list‑of‑strings” style you used for the RTSP DESCRIBE and HTTP GET examples.  
+Each template is a one‑line command (terminated with `\r\n`) that you can populate by replacing the `<<…>>` placeholders with the actual values you need.
+
+```python
+FTP_CLIENT_REQUEST_TEMPLATES = {
+    # --- Authentication ---
+    "USER": ["USER <<USERNAME>>\r\n"],
+    "PASS": ["PASS <<PASSWORD>>\r\n"],
+    "ACCT": ["ACCT <<ACCOUNT>>\r\n"],
+
+    # --- File‑system navigation ---
+    "CWD":  ["CWD <<PATH>>\r\n"],
+    "CDUP": ["CDUP\r\n"],
+    "PWD":  ["PWD\r\n"],
+
+    # --- Directory operations ---
+    "MKD":  ["MKD <<DIRNAME>>\r\n"],
+    "RMD":  ["RMD <<DIRNAME>>\r\n"],
+    "LIST": ["LIST <<PATH>>\r\n"],
+    "NLST": ["NLST <<PATH>>\r\n"],
+
+    # --- File transfer ---
+    "RETR": ["RETR <<FILENAME>>\r\n"],
+    "STOR": ["STOR <<FILENAME>>\r\n"],
+    "APPE": ["APPE <<FILENAME>>\r\n"],
+    "ALLO": ["ALLO <<SIZE>>\r\n"],
+    "REST": ["REST <<OFFSET>>\r\n"],
+
+    # --- File deletion & rename ---
+    "DELE": ["DELE <<FILENAME>>\r\n"],
+    "RNFR": ["RNFR <<FILENAME>>\r\n"],
+    "RNTO": ["RNTO <<FILENAME>>\r\n"],
+
+    # --- Connection mode ---
+    "PASV": ["PASV\r\n"],
+    "PORT": ["PORT <<IP>>,<<PORT>>\r\n"],
+
+    # --- Transfer parameters ---
+    "TYPE": ["TYPE <<TYPE>>\r\n"],          # e.g. A, I, E, L
+    "MODE": ["MODE <<MODE>>\r\n"],          # e.g. S, B, C
+    "STRU": ["STRU <<STRUCTURE>>\r\n"],    # e.g. F, R, P
+
+    # --- Miscellaneous ---
+    "QUIT": ["QUIT\r\n"],
+    "NOOP": ["NOOP\r\n"],
+    "SYST": ["SYST\r\n"],
+    "STAT": ["STAT <<PATH>>\r\n"],
+    "HELP": ["HELP <<COMMAND>>\r\n"],
+    "SITE": ["SITE <<STRING>>\r\n"],
+
+    # --- Extended commands (RFC 2389, RFC 4217, etc.) ---
+    "FEAT": ["FEAT\r\n"],
+    "OPTS": ["OPTS <<OPTIONS>>\r\n"],
+    "PBSZ": ["PBSZ <<SIZE>>\r\n"],
+    "PROT": ["PROT <<LEVEL>>\r\n"],        # e.g. C, P
+}
+```
+
+### How to use it
+1. **Select the command** you need (e.g., `"RETR"`).  
+2. **Fill in the placeholders** – e.g., `<<FILENAME>>` → `"myfile.txt"`.  
+3. **Send the resulting string** over the control‑connection (port 21 or the TLS‑wrapped port).  
+
+The templates follow the FTP specification (RFC 959) and the common extensions (RFC 2389, RFC 4217, etc.). Feel free to add or remove entries as your application requires. Happy coding!
+# FTP Client Request Templates
+
+## Access Control Commands
+
+| Command | Template |
+|---------|----------|
+| USER | `["USER <<USERNAME>>\r\n"]` |
+| PASS | `["PASS <<PASSWORD>>\r\n"]` |
+| ACCT | `["ACCT <<ACCOUNT>>\r\n"]` |
+| REIN | `["REIN\r\n"]` |
+| QUIT | `["QUIT\r\n"]` |
+
+## File System Commands
+
+| Command | Template |
+|---------|----------|
+| CWD | `["CWD <<PATH>>\r\n"]` |
+| CDUP | `["CDUP\r\n"]` |
+| PWD | `["PWD\r\n"]` |
+| MKD | `["MKD <<DIRNAME>>\r\n"]` |
+| RMD | `["RMD <<DIRNAME>>\r\n"]` |
+| DELE | `["DELE <<FILENAME>>\r\n"]` |
+| SMNT | `["SMNT <<PATH>>\r\n"]` |
+
+## Directory Listing Commands
+
+| Command | Template |
+|---------|----------|
+| LIST | `["LIST <<PATH>>\r\n"]` |
+| NLST | `["NLST <<PATH>>\r\n"]` |
+| STAT | `["STAT <<PATH>>\r\n"]` |
+
+## File Transfer Commands
+
+| Command | Template |
+|---------|----------|
+| RETR | `["RETR <<FILENAME>>\r\n"]` |
+| STOR | `["STOR <<FILENAME>>\r\n"]` |
+| STOU | `["STOU <<FILENAME>>\r\n"]` |
+| APPE | `["APPE <<FILENAME>>\r\n"]` |
+| ALLO | `["ALLO <<SIZE>>\r\n"]` |
+| REST | `["REST <<OFFSET>>\r\n"]` |
+
+## Rename Commands
+
+| Command | Template |
+|---------|----------|
+| RNFR | `["RNFR <<FILENAME>>\r\n"]` |
+| RNTO | `["RNTO <<FILENAME>>\r\n"]` |
+
+## Transfer Mode Commands
+
+| Command | Template |
+|---------|----------|
+| PASV | `["PASV\r\n"]` |
+| EPSV | `["EPSV <<EXTENDED_MODE>>\r\n"]` |
+| PORT | `["PORT <<IP>>,<<PORT>>\r\n"]` |
+| EPRT | `["EPRT <<IP>>,<<PORT>>\r\n"]` |
+| TYPE | `["TYPE <<TYPE>>\r\n"]` |
+| STRU | `["STRU <<STRUCTURE>>\r\n"]` |
+| MODE | `["MODE <<MODE>>\r\n"]` |
+
+## Miscellaneous Commands
+
+| Command | Template |
+|---------|----------|
+| ABOR | `["ABOR\r\n"]` |
+| NOOP | `["NOOP\r\n"]` |
+| SYST | `["SYST\r\n"]` |
+| HELP | `["HELP <<COMMAND>>\r\n"]` |
+| SITE | `["SITE <<STRING>>\r\n"]` |
+
+## Extended Commands (RFC 2389, 3659, 4217)
+
+| Command | Template |
+|---------|----------|
+| FEAT | `["FEAT\r\n"]` |
+| OPTS | `["OPTS <<COMMAND>> <<OPTIONS>>\r\n"]` |
+| SIZE | `["SIZE <<FILENAME>>\r\n"]` |
+| MDTM | `["MDTM <<FILENAME>>\r\n"]` |
+| MLST | `["MLST <<PATH>>\r\n"]` |
+| MLSD | `["MLSD <<PATH>>\r\n"]` |
+| PBSZ | `["PBSZ <<SIZE>>\r\n"]` |
+| PROT | `["PROT <<LEVEL>>\r\n"]` |

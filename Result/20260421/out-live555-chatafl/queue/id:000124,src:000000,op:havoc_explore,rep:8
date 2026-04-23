@@ -1,0 +1,29 @@
+PLAY rtsp://127.0.0.1:8554/mp3AudioTest/ RTSP/1.0
+CSeq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+Range: npt=0.000-
+
+PLAY rtsp://127.0.0.1:8554/wavAudioTest/ RTSP/1.0
+CSeq: 4
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+Range: npt=0.000-
+
+OPTIONS rtsp://127.0.0.1:8554/mpeg1gr2Aest RTSP/1.0
+CSeg:
+
+OPTIONS rtsp://127.0.0.1:8554/mpeg1gr2Aest RTSP/1.0
+CSeg:
+
+OPTIONS rtsp://127.0.0.1:8554/mpeg1gr2Aest RTSP/1.0
+CSeg:
+
+OPTIONS rtsp://127.0.0.1:8554/mpeg1gr2Aest RTSP/1.0
+CSeg:
+
+TEARDOWN rtsp://127.0.0.1:8554/wavAudioTest/ RTSP/1.0
+CSeq: 7
+User-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)
+Session: 000022B8
+

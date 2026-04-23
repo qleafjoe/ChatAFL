@@ -1,0 +1,129 @@
+For the RTSP protocol, the client request templates include the following methods:
+
+- **OPTIONS**: Used to request available options.
+- **DESCRIBE**: Used to retrieve the description of a media stream.
+- **SETUP**: Used to establish a transport session.
+- **PLAY**: Used to start playback.
+- **PAUSE**: Used to pause playback.
+- **TEARDOWN**: Used to terminate the session.
+- **GET_PARAMETER**: Used to retrieve parameter values.
+- **SET_PARAMETER**: Used to set parameter values.
+- **ANNOUNCE**: Used to update session descriptions.
+- **REDIRECT**: Used to redirect the client to another server.
+
+Each template follows the structure of an RTSP request, consisting of a request line and headers, with placeholders (`<<VALUE>>`) for dynamic values.
+
+Here are the templates:
+
+1. **OPTIONS**:
+   ```json
+   ["OPTIONS <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "\\r\\n"]
+   ```
+
+2. **DESCRIBE**:
+   ```json
+   ["DESCRIBE <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Accept: <<VALUE>>\\r\\n", "\\r\\n"]
+   ```
+
+3. **SETUP**:
+   ```json
+   ["SETUP <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Transport: <<VALUE>>\\r\\n", "\\r\\n"]
+   ```
+
+4. **PLAY**:
+   ```json
+   ["PLAY <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Range: <<VALUE>>\\r\\n", "\\r\\n"]
+   ```
+
+5. **PAUSE**:
+   ```json
+   ["PAUSE <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Range: <<VALUE>>\\r\\n", "\\r\\n"]
+   ```
+
+6. **TEARDOWN**:
+   ```json
+   ["TEARDOWN <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Session: <<VALUE>>\\r\\n", "\\r\\n"]
+   ```
+
+7. **GET_PARAMETER**:
+   ```json
+   ["GET_PARAMETER <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Session: <<VALUE>>\\r\\n", "\\r\\n"]
+   ```
+
+8. **SET_PARAMETER**:
+   ```json
+   ["SET_PARAMETER <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Session: <<VALUE>>\\r\\n", "\\r\\n"]
+   ```
+
+9. **ANNOUNCE**:
+   ```json
+   ["ANNOUNCE <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Content-Type: <<VALUE>>\\r\\n", "Content-Length: <<VALUE>>\\r\\n", "\\r\\n"]
+   ```
+
+10. **REDIRECT**:
+    ```json
+    ["REDIRECT <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Location: <<VALUE>>\\r\\n", "\\r\\n"]
+    ```
+
+These templates follow the RFC 2326 (RTSP 1.0) and RFC 7826 (RTSP 2.0) specifications, with placeholders for dynamic values like the request URI, CSeq number, User-Agent identifier, and method-specific headers.
+For the RTSP protocol, the other client request templates are:
+
+1. **OPTIONS**:
+
+```json
+["OPTIONS <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "\\r\\n"]
+```
+
+2. **SETUP**:
+
+```json
+["SETUP <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Transport: <<VALUE>>\\r\\n", "\\r\\n"]
+```
+
+3. **PLAY**:
+
+```json
+["PLAY <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Range: <<VALUE>>\\r\\n", "\\r\\n"]
+```
+
+4. **PAUSE**:
+
+```json
+["PAUSE <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Range: <<VALUE>>\\r\\n", "\\r\\n"]
+```
+
+5. **TEARDOWN**:
+
+```json
+["TEARDOWN <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Session: <<VALUE>>\\r\\n", "\\r\\n"]
+```
+
+6. **GET_PARAMETER**:
+
+```json
+["GET_PARAMETER <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Session: <<VALUE>>\\r\\n", "\\r\\n"]
+```
+
+7. **SET_PARAMETER**:
+
+```json
+["SET_PARAMETER <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Content-Type: <<VALUE>>\\r\\n", "Content-Length: <<VALUE>>\\r\\n", "\\r\\n"]
+```
+
+8. **ANNOUNCE**:
+
+```json
+["ANNOUNCE <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Content-Type: <<VALUE>>\\r\\n", "Content-Length: <<VALUE>>\\r\\n", "\\r\\n"]
+```
+
+9. **RECORD**:
+
+```json
+["RECORD <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Range: <<VALUE>>\\r\\n", "Session: <<VALUE>>\\r\\n", "\\r\\n"]
+```
+
+10. **REDIRECT**:
+
+```json
+["REDIRECT <<VALUE>>\\r\\n", "CSeq: <<VALUE>>\\r\\n", "User-Agent: <<VALUE>>\\r\\n", "Location: <<VALUE>>\\r\\n", "\\r\\n"]
+```

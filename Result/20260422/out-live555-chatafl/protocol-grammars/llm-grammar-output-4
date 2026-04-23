@@ -1,0 +1,13 @@
+
+[
+"OPTIONS <<VALUE>>\\r\\nCSeq: <<VALUE>>\\r\\nUser-Agent: <<VALUE>>\\r\\nRequire: <<VALUE>>\\r\\n\\r\\n",
+"DESCRIBE <<VALUE>>\\r\\nCSeq: <<VALUE>>\\r\\nUser-Agent: <<VALUE>>\\r\\nAccept: <<VALUE>>\\r\\n\\r\\n",
+"SETUP <<VALUE>>\\r\\nCSeq: <<VALUE>>\\r\\nUser-Agent: <<VALUE>>\\r\\nTransport: <<VALUE>>\\r\\n\\r\\n",
+"PLAY <<VALUE>>\\r\\nCSeq: <<VALUE>>\\r\\nUser-Agent: <<VALUE>>\\r\\nSession: <<VALUE>>\\r\\nRange: <<VALUE>>\\r\\n\\r\\n",
+"PAUSE <<VALUE>>\\r\\nCSeq: <<VALUE>>\\r\\nUser-Agent: <<VALUE>>\\r\\nSession: <<VALUE>>\\r\\n\\r\\n",
+"TEARDOWN <<VALUE>>\\r\\nCSeq: <<VALUE>>\\r\\nUser-Agent: <<VALUE>>\\r\\nSession: <<VALUE>>\\r\\n\\r\\n",
+"GET_PARAMETER <<VALUE>>\\r\\nCSeq: <<VALUE>>\\r\\nUser-Agent: <<VALUE>>\\r\\nSession: <<VALUE>>\\r\\nContent-Type: <<VALUE>>\\r\\nContent-Length: <<VALUE>>\\r\\n\\r\\n",
+"SET_PARAMETER <<VALUE>>\\r\\nCSeq: <<VALUE>>\\r\\nUser-Agent: <<VALUE>>\\r\\nSession: <<VALUE>>\\r\\nContent-Type: <<VALUE>>\\r\\nContent-Length: <<VALUE>>\\r\\n\\r\\n",
+"REDIRECT <<VALUE>>\\r\\nCSeq: <<VALUE>>\\r\\nUser-Agent: <<VALUE>>\\r\\nLocation: <<VALUE>>\\r\\nSession: <<VALUE>>\\r\\n\\r\\n",
+"ANNOUNCE <<VALUE>>\\r\\nCSeq: <<VALUE>>\\r\\nUser-Agent: <<VALUE>>\\r\\nContent-Type: <<VALUE>>\\r\\nContent-Length: <<VALUE>>\\r\\n\\r\\n"
+]

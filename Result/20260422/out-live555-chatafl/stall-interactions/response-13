@@ -1,0 +1,4 @@
+DESCRIBE rtsp://1 RTSP/1.0
+CSeq: 1
+Accept: application/sdp
+User-Agent: testRTSPClient

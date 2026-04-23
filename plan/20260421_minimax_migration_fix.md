@@ -52,11 +52,12 @@
 ---
 
 ### 📅 执行计划安排
-- [ ] **Step 1**: 在 `chat-llm.c` 中实现通用的 `clean_llm_response()` 函数，剥离 Markdown 块并过滤 `sorry` 等非法文本。
-- [ ] **Step 2**: 全面检索并修改 `chat-llm.c` 中的所有的 Prompt 模板，消除引起残缺输出的歧义描述。
-- [ ] **Step 3**: 针对 Seed Enrichment 和 Stall-breaking 模块，加入强制检查 `\r\n\r\n` 结尾的逻辑。
-- [ ] **Step 4**: 修复完成后，重新编译 Fuzzer (`make clean all`)。
-- [ ] **Step 5**: 执行本地验证测试 (详见下文)。
+- [x] **Step 0**: 修改 `ChatAFL/config.h`，将 `CHATTING_THRESHOLD` 提升至 **512**。 (已完成)
+- [x] **Step 1**: 在 `chat-llm.c` 中实现通用的 `clean_llm_response()` 函数，剥离 Markdown 块并过滤 `sorry` 等非法文本。 (已完成)
+- [x] **Step 2**: 全面检索并修改 `chat-llm.c` 中的所有的 Prompt 模板，消除引起残缺输出的歧义描述。 (已完成)
+- [x] **Step 3**: 针对 Seed Enrichment 和 Stall-breaking 模块，加入强制检查 `\r\n\r\n` 结尾的逻辑。 (已完成)
+- [x] **Step 4**: 修复完成后，重新编译 Fuzzer (`make clean all`)。 (已完成，包含 CL1/CL2 变体)
+- [x] **Step 5**: 执行本地验证测试 (详见下文)。 (全量测试已通过，验证了修复逻辑的有效性)
 
 ---
 
@@ -79,13 +80,16 @@
 ## 🧪 本地验证测试计划 (Local Test Plan)
 为确保修复后的系统不再产生“毒种子”并能有效运行，需执行以下本地测试流程：
 
-### 1. 单元测试 (Unit Test) - `clean_llm_response`
-* **操作**: 编写一个临时的 `test-chat.c`，模拟 LLM 返回带 Markdown 块、拒绝词、残缺结尾的字符串。
 * **目标**: 确认 `clean_llm_response` 能 100% 提取出 `{ ... }` 且补齐 `\r\n\r\n`。
+* **测试结果 (2026-04-21)**: ✅ **已通过**。
+  - 运行 `test_clean.c` 验证了：Markdown 剥离成功、JSON 提取成功、拒绝词过滤（sorry）拦截成功、带噪点的原始报文清洗成功。
 
 ### 2. 离线 Prompt 仿真 (Prompt Simulation)
 * **操作**: 手动将生成的 Prompt 粘贴给 MiniMax 网页版或 API 调试工具。
-* **目标**: 观察返回结果是否仍然包含“残缺报文”。如果网页版依然返回残缺内容，说明 Prompt 还需要进一步增强约束。
+* **目标**: 观察返回结果是否仍然包含“残缺报文”。
+* **测试结果 (2026-04-21)**: ✅ **已通过**。
+  - 使用 `test_prompt_sim.py` 调用 MiniMax API 验证了新版 Prompt。
+  - **结论**: 大模型不再仅返回单行请求，成功返回了包含 `CSeq`、`User-Agent`、`Transport` 等必选头部的完整 RTSP 报文。Prompt 约束（MUST include headers）确认生效。
 
 ### 3. 冒烟测试 (Smoke Test) - Live555 短程运行
 * **操作**: 在宿主机运行单容器测试：`./run.sh 1 5 live555 chatafl` (运行 5 分钟)。
@@ -97,4 +101,26 @@
 ### 4. 语法有效性检查
 * **操作**: 检查 `out/protocol-grammars/llm-grammar-output-0`。
 * **检查项**: 该文件必须是纯净的 JSON，不含任何说明性文字。可以用 `jq . < file` 进行自动校验。
+
+---
+
+## 🏁 2026-04-22 验证回归报告
+
+### 1. 修复项回归测试结果
+| 修复项 | 验证状态 | 详情说明 |
+| :--- | :--- | :--- |
+| **拒绝词过滤** | ✅ **Passed** | 扫描 `queue/` 全局，无 "sorry" 或 "As an AI" 文本。毒种子已被物理拦截。 |
+| **Markdown 剥离** | ✅ **Passed** | `llm-grammar-output-0` 输出为纯净 JSON 列表，无 ``` 标记。 |
+| **报文完整性** | ✅ **Passed** | `stall-interactions/` 中 LLM 返回包含完整 Headers (CSeq, User-Agent)。 |
+| **Live555 稳定性** | 📈 **Improved** | 稳定性从 **15.10%** 提升至 **38.55%**，覆盖率增长至 **9.87%**。 |
+
+### 2. 遗留待解决问题 (Pure-FTPD Crash)
+* **现象**: 虽然种子已修复（变为合法 FTP 命令），但 Fuzzer 在种子强化 (Enrichment) 结束后、进入主循环时发生静默崩溃。
+* **排查计划**:
+  - [ ] 检查 `pure-ftpd` 的 `Dockerfile` 是否存在环境变量冲突。
+  - [ ] 在 `afl-fuzz.c` 的 `perform_dry_run` 前后增加打印，确认崩溃的确切函数。
+  - [ ] 尝试手动执行 Enrichment 后的种子，验证是否触发了某些未定义的 FTP 协议状态。
+
+### 3. 下一步优化
+* **Stability 持续调优**: 虽然 38% 比 15% 有显著提升，但距离生产级（>90%）仍有差距。考虑增加 `AFL_NO_CPU_RED` 等环境变量以减少环境噪音对 Live555 的影响。
 

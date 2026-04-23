@@ -1,0 +1,1 @@
+SETUP rtsp://127.0.0.1:8554/matroskaFileTest/track1 RTSP/1.0\r\nCSeq: 3\r\nUser-Agent: ./testRTSPClient (LIVE555 Streaming Media v2018.08.28)\r\nTransport: RTP/AVP;unicast;client_port=5000-5001\r\n\r\n

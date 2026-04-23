@@ -1,0 +1,98 @@
+Below is a compact representation of every **client‑side FTP request** (the commands a client can send to an FTP server).  
+Each entry is shown as a **template string** that a client would send – i.e. the command name plus any required argument(s) – terminated with `\r\n` exactly as it appears on the wire.
+
+```json
+{
+  "FTP": [
+    "USER <<username>>\r\n",
+    "PASS <<password>>\r\n",
+    "ACCT <<account>>\r\n",
+    "CWD <<pathname>>\r\n",
+    "CDUP\r\n",
+    "QUIT\r\n",
+    "REIN\r\n",
+    "PORT <<host-port>>\r\n",
+    "PASV\r\n",
+    "TYPE <<type>>\r\n",
+    "STRU <<structure>>\r\n",
+    "MODE <<mode>>\r\n",
+    "RETR <<pathname>>\r\n",
+    "STOR <<pathname>>\r\n",
+    "STOU <<pathname>>\r\n",
+    "APPE <<pathname>>\r\n",
+    "ALLO <<size>>\r\n",
+    "REST <<marker>>\r\n",
+    "RNFR <<pathname>>\r\n",
+    "RNTO <<pathname>>\r\n",
+    "ABOR\r\n",
+    "DELE <<pathname>>\r\n",
+    "RMD <<pathname>>\r\n",
+    "MKD <<pathname>>\r\n",
+    "PWD\r\n",
+    "LIST <<pathname>>\r\n",
+    "NLST <<pathname>>\r\n",
+    "SITE <<string>>\r\n",
+    "SYST\r\n",
+    "STAT <<pathname>>\r\n",
+    "HELP <<command>>\r\n",
+    "NOOP\r\n"
+  ]
+}
+```
+
+### What the placeholders mean
+| Placeholder | Meaning (RFC 959) |
+|-------------|-------------------|
+| `<<username>>` | User identifier for the session. |
+| `<<password>>` | Password for the user (sent in clear‑text on a plain FTP connection). |
+| `<<account>>` | Account information (optional, used with `ACCT`). |
+| `<<pathname>>` | A file or directory name (relative or absolute). |
+| `<<host-port>>` | 32‑bit IP‑
+Below are additional FTP client request templates, including **extended/additional commands** that are commonly used beyond the core RFC 959 set:
+
+```json
+{
+  "FTP_EXTENDED": [
+    "FEAT\r\n",
+    "OPTS <<option>> <<value>>\r\n",
+    "PBSZ <<size>>\r\n",
+    "PROT <<level>>\r\n",
+    "EPRT <<extended-host-port>>\r\n",
+    "EPSV\r\n",
+    "EPSV <<mode>>\r\n",
+    "MDTM <<pathname>>\r\n",
+    "SIZE <<pathname>>\r\n",
+    "MLST <<pathname>>\r\n",
+    "MLSD <<pathname>>\r\n",
+    "AUTH <<auth-type>>\r\n",
+    "ADAT <<base64-data>>\r\n",
+    "CCC\r\n",
+    "MIC <<base64-command>>\r\n",
+    "CONF <<base64-command>>\r\n",
+    "ENC <<base64-command>>\r\n",
+    "SMNT <<pathname>>\r\n",
+    "XCUP\r\n",
+    "XPWD\r\n",
+    "XMKD <<pathname>>\r\n",
+    "XRMD <<pathname>>\r\n",
+    "XCWD <<pathname>>\r\n",
+    "XATM <<datetime>> <<pathname>>\r\n"
+  ]
+}
+```
+
+### Extended Commands Reference
+
+| Command | Description | RFC |
+|---------|-------------|-----|
+| `FEAT` | List protocol features server supports | 2389 |
+| `OPTS` | Set options for a command | 2389 |
+| `PBSZ` | Protection Buffer Size | 2228 |
+| `PROT` | Data channel protection level | 2228 |
+| `EPRT` | Extended PORT (IPv6 support) | 2428 |
+| `EPSV` | Extended PASV (IPv6 support) | 2428 |
+| `MDTM` | File modification time | 3659 |
+| `SIZE` | File size | 3659 |
+| `MLST/MLSD` | Machine-readable directory listing | 3659 |
+| `AUTH` | Authentication mechanism | 2228 |
+| `XCUP/XCWD/etc.` | Compatibility aliases (Unix-style) | — |

@@ -1,0 +1,30 @@
+USER fuzzing
+
+PASS fuzzing
+
+STAT
+
+q
+
+PORT 127,0,0,1,14,178
+
+EPRT ,2,0:0:0:0:0:0:0:0,1025,
+
+LIST
+
+�>�|�V
+
+MLST /
+
+s
+
+STAT
+
+LIST
+
+NLST
+
+MLSD /
+
+QUIT
+
