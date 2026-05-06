@@ -7,6 +7,8 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+#include <sys/stat.h>
+#include <errno.h>
 
 // 日志文件句柄
 static FILE *grammar_log = NULL;
@@ -16,6 +18,13 @@ static FILE *stall_log = NULL;
 // 初始化验证日志
 void init_validation_log(const char *out_dir) {
     char path[1024];
+    char dir_path[1024];
+
+    // Create llm-validation directory
+    snprintf(dir_path, sizeof(dir_path), "%s/llm-validation", out_dir);
+    if (mkdir(dir_path, 0755) && errno != EEXIST) {
+        return; // Failed to create directory
+    }
 
     snprintf(path, sizeof(path), "%s/llm-validation/grammar.csv", out_dir);
     grammar_log = fopen(path, "w");
@@ -104,17 +113,22 @@ llm_validation_result_t validate_llm_message(
 ) {
     if (!protocol || !msg || !ctx) return LLM_VALID_FORMAT_FAIL;
 
-    // 格式验证
+    // 基础格式验证
     if (strlen(msg) == 0) return LLM_VALID_FORMAT_FAIL;
-    if (!strstr(msg, "\r\n\r\n")) return LLM_VALID_FORMAT_FAIL;
 
-    // 协议级验证
+    // 协议级验证（包含协议特定的格式检查）
     int valid = 0;
     if (strcmp(protocol, "RTSP") == 0) {
+        // RTSP 需要 \r\n\r\n 终止符
+        if (!strstr(msg, "\r\n\r\n")) return LLM_VALID_FORMAT_FAIL;
         valid = validate_rtsp_request_message(msg, ctx);
     } else if (strcmp(protocol, "FTP") == 0) {
+        // FTP 命令以 \r\n 终止
+        if (!strstr(msg, "\r\n")) return LLM_VALID_FORMAT_FAIL;
         valid = validate_ftp_request_message(msg, ctx);
     } else if (strcmp(protocol, "HTTP") == 0) {
+        // HTTP 需要 \r\n\r\n 终止符
+        if (!strstr(msg, "\r\n\r\n")) return LLM_VALID_FORMAT_FAIL;
         valid = validate_http_request_message(msg, ctx);
     } else {
         return LLM_VALID_GRAMMAR_FAIL; // 不支持的协议
