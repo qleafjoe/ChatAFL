@@ -84,15 +84,15 @@ void log_llm_validation_record(const llm_validation_record_t *record) {
     }
 }
 
-// 规范化候选输入
+/* 规范化候选输入 */
 int llm_normalize_candidate(const char *raw, char **normalized) {
     if (!raw || !normalized) return -1;
 
     size_t len = strlen(raw);
-    *normalized = malloc(len + 1);
+    *normalized = ck_alloc(len + 1);
     if (!*normalized) return -1;
 
-    // 复制并清理
+    /* 复制并清理 */
     size_t j = 0;
     for (size_t i = 0; i < len; i++) {
         if (isprint((unsigned char)raw[i]) || raw[i] == '\r' || raw[i] == '\n') {
@@ -163,10 +163,14 @@ llm_validation_result_t validate_llm_sequence(
     if (!regions || region_count == 0) return LLM_VALID_FORMAT_FAIL;
 
     /*逐条验证 */
+    size_t seq_len = strlen(seq);
     for (unsigned int i = 0; i < region_count; i++) {
         /* Guard against malformed regions with negative indices */
         if (regions[i].start_byte < 0 || regions[i].end_byte < 0 ||
             regions[i].end_byte <= regions[i].start_byte) continue;
+
+        /* Defensive bounds check against sequence length */
+        if ((size_t)regions[i].end_byte > seq_len) continue;
 
         size_t msg_len = (size_t)(regions[i].end_byte - regions[i].start_byte);
         char *msg = ck_alloc(msg_len + 1);

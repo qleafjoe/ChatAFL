@@ -100,11 +100,11 @@ typedef struct {
 /*
  * llm_normalize_candidate - Normalize LLM output for validation
  * @raw: Raw LLM output string
- * @normalized: Output pointer (caller must free)
+ * @normalized: Output pointer (caller must free with ck_free)
  *
  * Returns: 0 on success, -1 on error
  *
- * Memory ownership: Caller must free *normalized.
+ * Memory ownership: Caller must free *normalized with ck_free().
  */
 int llm_normalize_candidate(const char *raw, char **normalized);
 
