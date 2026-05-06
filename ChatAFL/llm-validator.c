@@ -168,3 +168,27 @@ llm_validation_result_t validate_llm_sequence(
     free(regions);
     return LLM_VALID_OK;
 }
+
+// Protocol-level validators (stubs - will be implemented in Task 3-5)
+// These stubs allow the module to compile independently.
+
+int validate_rtsp_request_message(const char *message, protocol_context_t *ctx) {
+    // TODO: Implement in Task 3
+    (void)message;
+    (void)ctx;
+    return 1; // Temporarily accept all messages
+}
+
+int validate_ftp_request_message(const char *message, protocol_context_t *ctx) {
+    // TODO: Implement in Task 4
+    (void)message;
+    (void)ctx;
+    return 1; // Temporarily accept all messages
+}
+
+int validate_http_request_message(const char *message, protocol_context_t *ctx) {
+    // TODO: Implement in Task 5
+    (void)message;
+    (void)ctx;
+    return 1; // Temporarily accept all messages
+}

@@ -154,6 +154,6 @@ int validate_http_request_message(const char *message, protocol_context_t *ctx);
 // Logging interfaces
 void log_llm_validation_record(const llm_validation_record_t *record);
 void init_validation_log(const char *out_dir);
-void close_validation_log();
+void close_validation_log(void);
 
 #endif // LLM_VALIDATOR_H
