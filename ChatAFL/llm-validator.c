@@ -162,20 +162,21 @@ llm_validation_result_t validate_llm_sequence(
 
     if (!regions || region_count == 0) return LLM_VALID_FORMAT_FAIL;
 
-    // 逐条验证
+    /*逐条验证 */
     for (unsigned int i = 0; i < region_count; i++) {
-        // Guard against malformed regions
-        if (regions[i].end_byte <= regions[i].start_byte) continue;
+        /* Guard against malformed regions with negative indices */
+        if (regions[i].start_byte < 0 || regions[i].end_byte < 0 ||
+            regions[i].end_byte <= regions[i].start_byte) continue;
 
-        size_t msg_len = regions[i].end_byte - regions[i].start_byte;
-        char *msg = malloc(msg_len + 1);
+        size_t msg_len = (size_t)(regions[i].end_byte - regions[i].start_byte);
+        char *msg = ck_alloc(msg_len + 1);
         if (!msg) continue;
 
         memcpy(msg, seq + regions[i].start_byte, msg_len);
         msg[msg_len] = '\0';
 
         llm_validation_result_t result = validate_llm_message(protocol, stage, msg, ctx);
-        free(msg);
+        ck_free(msg);
 
         if (result != LLM_VALID_OK) {
             ck_free(regions);
