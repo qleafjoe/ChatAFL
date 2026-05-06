@@ -1,6 +1,7 @@
 // ChatAFL/llm-validator.c
 
 #include "llm-validator.h"
+#include "alloc-inl.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -149,6 +150,9 @@ llm_validation_result_t validate_llm_sequence(
 
     // 逐条验证
     for (unsigned int i = 0; i < region_count; i++) {
+        // Guard against malformed regions
+        if (regions[i].end_byte <= regions[i].start_byte) continue;
+
         size_t msg_len = regions[i].end_byte - regions[i].start_byte;
         char *msg = malloc(msg_len + 1);
         if (!msg) continue;
@@ -160,12 +164,12 @@ llm_validation_result_t validate_llm_sequence(
         free(msg);
 
         if (result != LLM_VALID_OK) {
-            free(regions);
+            ck_free(regions);
             return result;
         }
     }
 
-    free(regions);
+    ck_free(regions);
     return LLM_VALID_OK;
 }
 
