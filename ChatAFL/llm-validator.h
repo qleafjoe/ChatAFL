@@ -1,7 +1,7 @@
 // ChatAFL/llm-validator.h
 
-#ifndef LLN_VALIDATOR_H
-#define LLN_VALIDATOR_H
+#ifndef LLM_VALIDATOR_H
+#define LLM_VALIDATOR_H
 
 #include "types.h"
 #include "aflnet.h"
@@ -93,4 +93,4 @@ void log_llm_validation_record(const llm_validation_record_t *record);
 void init_validation_log(const char *out_dir);
 void close_validation_log();
 
-#endif // LLN_VALIDATOR_H
+#endif // LLM_VALIDATOR_H
