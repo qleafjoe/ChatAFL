@@ -171,9 +171,9 @@ llm_validation_result_t validate_llm_sequence(
             regions[i].end_byte <= regions[i].start_byte) continue;
 
         /* Defensive bounds check against sequence length */
-        if ((size_t)regions[i].end_byte > seq_len) continue;
+        if ((size_t)regions[i].end_byte >= seq_len) continue;
 
-        size_t msg_len = (size_t)(regions[i].end_byte - regions[i].start_byte);
+        size_t msg_len = (size_t)(regions[i].end_byte - regions[i].start_byte + 1);
         char *msg = ck_alloc(msg_len + 1);
         if (!msg) continue;
 

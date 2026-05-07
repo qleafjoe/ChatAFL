@@ -69,8 +69,11 @@ afl-as: afl-as.c afl-as.h $(COMM_HDR) | test_x86
 	$(CC) $(CFLAGS) $@.c -o $@ $(LDFLAGS)
 	ln -sf afl-as as
 
-afl-fuzz: afl-fuzz.c $(COMM_HDR) aflnet.o aflnet.h chat-llm.o chat-llm.h | test_x86
-	$(CC) $(CFLAGS) $@.c aflnet.o chat-llm.o -o $@ $(LDFLAGS) -lcurl -ljson-c -lpcre2-8
+afl-fuzz: afl-fuzz.c $(COMM_HDR) aflnet.o aflnet.h chat-llm.o chat-llm.h llm-validator.o llm-validator.h | test_x86
+	$(CC) $(CFLAGS) $@.c aflnet.o chat-llm.o llm-validator.o -o $@ $(LDFLAGS) -lcurl -ljson-c -lpcre2-8
+
+llm-validator.o: llm-validator.c llm-validator.h
+	$(CC) $(CFLAGS) -c llm-validator.c
 
 afl-replay: afl-replay.c $(COMM_HDR) aflnet.o aflnet.h | test_x86
 	$(CC) $(CFLAGS) $@.c aflnet.o -o $@ $(LDFLAGS)
