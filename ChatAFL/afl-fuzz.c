@@ -552,6 +552,9 @@ void setup_llm_grammars()
         if (afl_llm_validation && !validate_grammar_pattern(message_type, protocol_name)) {
           llm_validation_record_t record = {0};
           record.stage = LLM_STAGE_GRAMMAR;
+          if (strcmp(protocol_name, "RTSP") == 0) record.protocol_type = PROTOCOL_RTSP;
+          else if (strcmp(protocol_name, "FTP") == 0) record.protocol_type = PROTOCOL_FTP;
+          else if (strcmp(protocol_name, "HTTP") == 0) record.protocol_type = PROTOCOL_HTTP;
           snprintf(record.reason, sizeof(record.reason), "grammar_pattern_fail:%s", message_type);
           log_llm_validation_record(&record);
 
@@ -2780,6 +2783,10 @@ void get_seeds_with_messsage_types(const char *in_dir, khash_t(strSet) * message
         if (afl_llm_validation && unescaped_client_requests) {
           llm_validation_record_t record = {0};
           record.stage = LLM_STAGE_ENRICHMENT;
+          record.input_bytes = strlen(unescaped_client_requests);
+          if (strcmp(protocol_name, "RTSP") == 0) record.protocol_type = PROTOCOL_RTSP;
+          else if (strcmp(protocol_name, "FTP") == 0) record.protocol_type = PROTOCOL_FTP;
+          else if (strcmp(protocol_name, "HTTP") == 0) record.protocol_type = PROTOCOL_HTTP;
 
           protocol_context_t ctx = {0};
           if (strcmp(protocol_name, "RTSP") == 0) ctx.type = PROTOCOL_RTSP;
@@ -7045,6 +7052,10 @@ AFLNET_REGIONS_SELECTION:;
         if (stall_message != NULL && afl_llm_validation) {
           llm_validation_record_t record = {0};
           record.stage = LLM_STAGE_STALL;
+          record.input_bytes = strlen(stall_message);
+          if (strcmp(protocol_name, "RTSP") == 0) record.protocol_type = PROTOCOL_RTSP;
+          else if (strcmp(protocol_name, "FTP") == 0) record.protocol_type = PROTOCOL_FTP;
+          else if (strcmp(protocol_name, "HTTP") == 0) record.protocol_type = PROTOCOL_HTTP;
 
           protocol_context_t ctx = {0};
           if (strcmp(protocol_name, "RTSP") == 0) ctx.type = PROTOCOL_RTSP;

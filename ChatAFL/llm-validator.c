@@ -63,24 +63,24 @@ void log_llm_validation_record(const llm_validation_record_t *record) {
     }
 
     if (log) {
-        fprintf(log, "%u,%d,%d,%u,%u,%d,%s,%u,%u,%u,%u,%s,%u,%u,%u,%u,%u\n",
+        fprintf(log, "%u,%d,%u,%u,%u,%d,%s,%u,%u,%u,%u,%s,%u,%u,%u,%u,%u\n",
                 (unsigned)time(NULL),
                 record->stage,
-                0, // protocol type
-                0, // seed_id
-                0, // llm_call_id
+                record->protocol_type,
+                record->seed_id,
+                0, // llm_call_id (not tracked yet)
                 record->result,
                 record->reason,
-                0, // input_bytes
-                0, // normalized_bytes
+                record->input_bytes,
+                record->normalized_bytes,
                 record->region_count,
                 record->state_count,
-                "", // response_code_seq
+                "", // response_code_seq (not tracked yet)
                 record->has_new_cov,
                 record->has_new_state,
                 record->has_new_transition,
-                0, // fault
-                0  // exec_us
+                0, // fault (not tracked yet)
+                0  // exec_us (not tracked yet)
         );
     }
 }

@@ -86,6 +86,10 @@ typedef struct {
   llm_generation_stage_t stage;
   llm_validation_result_t result;
   char reason[128];
+  u32 protocol_type;        // PROTOCOL_RTSP, PROTOCOL_FTP, PROTOCOL_HTTP
+  u32 seed_id;              // Seed index (0 if unknown)
+  u32 input_bytes;          // Raw input size
+  u32 normalized_bytes;     // Normalized input size
   u32 region_count;
   u32 state_count;
   u8 has_new_cov;
