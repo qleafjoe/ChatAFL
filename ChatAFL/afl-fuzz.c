@@ -431,6 +431,7 @@ char *protocol_name;
 // Validation-driven LLM fuzzing flags
 u8 afl_llm_validation = 0;            // AFL_LLM_VALIDATION=0/1
 u8 afl_llm_validation_permissive = 0; // AFL_LLM_VALIDATION_PERMISSIVE=1
+u8 afl_llm_validation_strict = 0;     // AFL_LLM_VALIDATION_STRICT=0/1
 // Reward fields - To be used
 u32 reward_random;
 u32 reward_grammar;
@@ -10703,6 +10704,8 @@ int main(int argc, char **argv)
     afl_llm_validation = 1;
   if (getenv("AFL_LLM_VALIDATION_PERMISSIVE"))
     afl_llm_validation_permissive = 1;
+  if (getenv("AFL_LLM_VALIDATION_STRICT"))
+    afl_llm_validation_strict = 1;
 
   if (getenv("AFL_HANG_TMOUT"))
   {
