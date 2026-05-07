@@ -75,6 +75,19 @@ afl-fuzz: afl-fuzz.c $(COMM_HDR) aflnet.o aflnet.h chat-llm.o chat-llm.h llm-val
 llm-validator.o: llm-validator.c llm-validator.h
 	$(CC) $(CFLAGS) -c llm-validator.c
 
+test/test_llm_validator: test/test_llm_validator.c llm-validator.o aflnet.o
+	$(CC) $(CFLAGS) -o $@ $< llm-validator.o aflnet.o $(LDFLAGS)
+
+test/test_llm_integration: test/test_llm_integration.c llm-validator.o chat-llm.o aflnet.o
+	$(CC) $(CFLAGS) -o $@ $< llm-validator.o chat-llm.o aflnet.o $(LDFLAGS) -lcurl -ljson-c
+
+.PHONY: test test-integration
+test: test/test_llm_validator
+	./test/test_llm_validator
+
+test-integration: test/test_llm_integration
+	./test/test_llm_integration
+
 afl-replay: afl-replay.c $(COMM_HDR) aflnet.o aflnet.h | test_x86
 	$(CC) $(CFLAGS) $@.c aflnet.o -o $@ $(LDFLAGS)
 
