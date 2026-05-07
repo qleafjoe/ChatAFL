@@ -513,3 +513,22 @@ int validate_http_request_message(const char *message, protocol_context_t *ctx) 
 
     return 1; /* 合法 */
 }
+
+int validate_grammar_pattern(const char *message_type, const char *protocol) {
+    if (!message_type || !protocol) return 0;
+
+    if (strcmp(protocol, "RTSP") == 0) {
+        for (int i = 0; rtsp_methods[i]; i++) {
+            if (strcasecmp(message_type, rtsp_methods[i]) == 0) return 1;
+        }
+    } else if (strcmp(protocol, "FTP") == 0) {
+        for (int i = 0; ftp_commands[i]; i++) {
+            if (strcasecmp(message_type, ftp_commands[i]) == 0) return 1;
+        }
+    } else if (strcmp(protocol, "HTTP") == 0) {
+        for (int i = 0; http_methods[i]; i++) {
+            if (strcmp(message_type, http_methods[i]) == 0) return 1;
+        }
+    }
+    return 0;
+}

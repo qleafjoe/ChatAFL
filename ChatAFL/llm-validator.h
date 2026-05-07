@@ -152,6 +152,15 @@ int validate_ftp_request_message(const char *message, protocol_context_t *ctx);
 int validate_http_request_message(const char *message, protocol_context_t *ctx);
 
 /*
+ * validate_grammar_pattern - Validate a grammar pattern (message type)
+ * @message_type: The message type string (e.g., "OPTIONS", "USER", "GET")
+ * @protocol: Protocol name ("RTSP", "FTP", "HTTP")
+ *
+ * Return: 1 if valid, 0 if invalid
+ */
+int validate_grammar_pattern(const char *message_type, const char *protocol);
+
+/*
  * Backward compatibility wrapper
  *
  * Used by existing benchmark code that calls validate_protocol_request_message().
