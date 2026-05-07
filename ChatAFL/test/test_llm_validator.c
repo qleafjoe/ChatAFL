@@ -51,6 +51,26 @@ static int tests_failed = 0;
     else { TEST_FAIL(name, "expected failure, got LLM_VALID_OK"); } \
 } while (0)
 
+#define ASSERT_TRUE(cond) do { \
+    if ((cond)) { tests_passed++; } \
+    else { tests_failed++; printf("  FAIL: ASSERT_TRUE(%s) at %s:%d\n", #cond, __FILE__, __LINE__); } \
+} while (0)
+
+#define ASSERT_FALSE(cond) do { \
+    if (!(cond)) { tests_passed++; } \
+    else { tests_failed++; printf("  FAIL: ASSERT_FALSE(%s) at %s:%d\n", #cond, __FILE__, __LINE__); } \
+} while (0)
+
+#define ASSERT_EQ(a, b) do { \
+    if ((a) == (b)) { tests_passed++; } \
+    else { tests_failed++; printf("  FAIL: ASSERT_EQ(%s, %s) at %s:%d\n", #a, #b, __FILE__, __LINE__); } \
+} while (0)
+
+#define ASSERT_NEQ(a, b) do { \
+    if ((a) != (b)) { tests_passed++; } \
+    else { tests_failed++; printf("  FAIL: ASSERT_NEQ(%s, %s) at %s:%d\n", #a, #b, __FILE__, __LINE__); } \
+} while (0)
+
 /* ------------------------------------------------------------------ */
 /*  RTSP Tests                                                        */
 /* ------------------------------------------------------------------ */
@@ -525,6 +545,93 @@ static void test_normalizer(void) {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Grammar Pattern Tests                                             */
+/* ------------------------------------------------------------------ */
+
+static void test_grammar_pattern(void) {
+    printf("[Grammar Pattern Tests]\n");
+
+    // RTSP patterns (case-insensitive)
+    ASSERT_TRUE(validate_grammar_pattern("OPTIONS", "RTSP"));
+    ASSERT_TRUE(validate_grammar_pattern("options", "RTSP"));
+    ASSERT_TRUE(validate_grammar_pattern("PLAY", "RTSP"));
+    ASSERT_TRUE(validate_grammar_pattern("SETUP", "RTSP"));
+    ASSERT_FALSE(validate_grammar_pattern("INVALID", "RTSP"));
+    ASSERT_FALSE(validate_grammar_pattern("", "RTSP"));
+
+    // FTP patterns (case-insensitive)
+    ASSERT_TRUE(validate_grammar_pattern("USER", "FTP"));
+    ASSERT_TRUE(validate_grammar_pattern("user", "FTP"));
+    ASSERT_TRUE(validate_grammar_pattern("PASS", "FTP"));
+    ASSERT_TRUE(validate_grammar_pattern("RETR", "FTP"));
+    ASSERT_FALSE(validate_grammar_pattern("HACK", "FTP"));
+
+    // HTTP patterns (case-sensitive)
+    ASSERT_TRUE(validate_grammar_pattern("GET", "HTTP"));
+    ASSERT_TRUE(validate_grammar_pattern("POST", "HTTP"));
+    ASSERT_FALSE(validate_grammar_pattern("get", "HTTP"));  // case-sensitive
+    ASSERT_FALSE(validate_grammar_pattern("INVALID", "HTTP"));
+
+    // NULL inputs
+    ASSERT_FALSE(validate_grammar_pattern(NULL, "RTSP"));
+    ASSERT_FALSE(validate_grammar_pattern("OPTIONS", NULL));
+
+    printf("  PASS: All grammar pattern tests\n");
+}
+
+/* ------------------------------------------------------------------ */
+/*  FTP Sequence Tests                                                */
+/* ------------------------------------------------------------------ */
+
+static void test_ftp_sequence(void) {
+    printf("[FTP Sequence Tests]\n");
+    protocol_context_t ctx = {0};
+
+    // Valid FTP sequence: USER + PASS + RETR
+    const char *ftp_seq = "USER admin\r\nPASS secret\r\nRETR file.txt\r\n";
+    llm_validation_result_t result = validate_llm_sequence("FTP", LLM_STAGE_ENRICHMENT, ftp_seq, &ctx);
+    ASSERT_EQ(result, LLM_VALID_OK);
+    ASSERT_TRUE(ctx.ctx.ftp.is_authed);
+
+    // Invalid: PASS before USER
+    ctx = (protocol_context_t){0};
+    const char *ftp_invalid = "PASS secret\r\nUSER admin\r\n";
+    result = validate_llm_sequence("FTP", LLM_STAGE_ENRICHMENT, ftp_invalid, &ctx);
+    ASSERT_NEQ(result, LLM_VALID_OK);
+
+    // Invalid: RETR without auth
+    ctx = (protocol_context_t){0};
+    const char *ftp_no_auth = "RETR file.txt\r\n";
+    result = validate_llm_sequence("FTP", LLM_STAGE_ENRICHMENT, ftp_no_auth, &ctx);
+    ASSERT_NEQ(result, LLM_VALID_OK);
+
+    printf("  PASS: All FTP sequence tests\n");
+}
+
+/* ------------------------------------------------------------------ */
+/*  HTTP Sequence Tests                                               */
+/* ------------------------------------------------------------------ */
+
+static void test_http_sequence(void) {
+    printf("[HTTP Sequence Tests]\n");
+    protocol_context_t ctx = {0};
+
+    // Valid HTTP sequence: GET + POST (no body to avoid trailing region)
+    const char *http_seq = "GET /index.html HTTP/1.1\r\nHost: example.com\r\n\r\n"
+                           "POST /submit HTTP/1.1\r\nHost: example.com\r\n\r\n";
+    llm_validation_result_t result = validate_llm_sequence("HTTP", LLM_STAGE_ENRICHMENT, http_seq, &ctx);
+    ASSERT_EQ(result, LLM_VALID_OK);
+
+    // Invalid: missing separator
+    ctx = (protocol_context_t){0};
+    const char *http_invalid = "GET /index.html HTTP/1.1\r\nHost: example.com\r\n";
+    result = validate_llm_sequence("HTTP", LLM_STAGE_ENRICHMENT, http_invalid, &ctx);
+    ASSERT_NEQ(result, LLM_VALID_OK);
+
+    printf("  PASS: All HTTP sequence tests\n");
+}
+
+/* ------------------------------------------------------------------ */
 /*  main                                                              */
 /* ------------------------------------------------------------------ */
 
@@ -548,6 +655,15 @@ int main(void) {
     printf("\n");
 
     test_normalizer();
+    printf("\n");
+
+    test_grammar_pattern();
+    printf("\n");
+
+    test_ftp_sequence();
+    printf("\n");
+
+    test_http_sequence();
 
     printf("\n=== Results: %d passed, %d failed ===\n",
            tests_passed, tests_failed);
