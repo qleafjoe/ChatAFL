@@ -192,14 +192,69 @@ llm_validation_result_t validate_llm_sequence(
     return LLM_VALID_OK;
 }
 
-// Protocol-level validators (stubs - will be implemented in Task 3-5)
-// These stubs allow the module to compile independently.
+// Protocol-level validators
+// FTP and HTTP are stubs - will be implemented in Task 4-5
+
+/* 合法 RTSP 方法集合 */
+static const char *rtsp_methods[] = {
+    "OPTIONS", "DESCRIBE", "SETUP", "PLAY", "PAUSE",
+    "TEARDOWN", "ANNOUNCE", "RECORD", "GET_PARAMETER",
+    "SET_PARAMETER", "REDIRECT", NULL
+};
 
 int validate_rtsp_request_message(const char *message, protocol_context_t *ctx) {
-    // TODO: Implement in Task 3
-    (void)message;
-    (void)ctx;
-    return 1; // Temporarily accept all messages
+    if (!message || !ctx) return 0;
+
+    /* 1. 必须以 \r\n\r\n 结束 */
+    if (!strstr(message, "\r\n\r\n")) return 0;
+
+    /* 2. 解析请求行 */
+    char method[64] = {0};
+    char uri[1024] = {0};
+    char version[32] = {0};
+
+    if (sscanf(message, "%63s %1023s %31s", method, uri, version) != 3) return 0;
+
+    /* 3. 检查方法是否在合法集合中 */
+    int valid_method = 0;
+    for (int i = 0; rtsp_methods[i]; i++) {
+        if (strcmp(method, rtsp_methods[i]) == 0) {
+            valid_method = 1;
+            break;
+        }
+    }
+    if (!valid_method) return 0;
+
+    /* 4. 检查必需头字段 */
+    if (!strstr(message, "CSeq:")) return 0;
+
+    /* SETUP 必须有 Transport */
+    if (strcmp(method, "SETUP") == 0 && !strstr(message, "Transport:")) return 0;
+
+    /* PLAY/PAUSE/TEARDOWN 必须有 Session */
+    if ((strcmp(method, "PLAY") == 0 || strcmp(method, "PAUSE") == 0 || strcmp(method, "TEARDOWN") == 0) &&
+        !strstr(message, "Session:")) return 0;
+
+    /* 5. 更新上下文 */
+    ctx->type = PROTOCOL_RTSP;
+
+    /* 提取 CSeq */
+    const char *cseq_start = strstr(message, "CSeq:");
+    if (cseq_start) {
+        sscanf(cseq_start, "CSeq: %u", &ctx->ctx.rtsp.last_cseq);
+    }
+
+    /* 检查 Session */
+    if (strstr(message, "Session:")) {
+        ctx->ctx.rtsp.has_session = 1;
+    }
+
+    /* 检查 Transport */
+    if (strstr(message, "Transport:")) {
+        ctx->ctx.rtsp.has_transport = 1;
+    }
+
+    return 1;
 }
 
 int validate_ftp_request_message(const char *message, protocol_context_t *ctx) {
