@@ -194,7 +194,6 @@ llm_validation_result_t validate_llm_sequence(
 }
 
 // Protocol-level validators
-// HTTP is a stub - will be implemented in Task 5
 
 /* 合法 RTSP 方法集合 */
 static const char *rtsp_methods[] = {
@@ -325,6 +324,12 @@ static const char *ftp_commands[] = {
     "PASV", "PORT", "TYPE", "MODE", "STRU", "REST", NULL
 };
 
+/* 合法 HTTP 方法集合 (RFC 7230 - case-sensitive) */
+static const char *http_methods[] = {
+    "GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS",
+    "PATCH", "TRACE", "CONNECT", NULL
+};
+
 /* Check if a command string is in the FTP command whitelist (case-insensitive) */
 static int is_valid_ftp_command(const char *cmd, size_t cmd_len) {
     for (int i = 0; ftp_commands[i]; i++) {
@@ -424,8 +429,87 @@ int validate_ftp_request_message(const char *message, protocol_context_t *ctx) {
 }
 
 int validate_http_request_message(const char *message, protocol_context_t *ctx) {
-    // TODO: Implement in Task 5
-    (void)message;
-    (void)ctx;
-    return 1; // Temporarily accept all messages
+    if (!message || !ctx) return 0;
+
+    /* 1. 必须以 \r\n\r\n 分隔 header 和 body（或终止请求） */
+    if (!strstr(message, "\r\n\r\n")) return 0;
+
+    /* 2. 验证可打印字符（允许 \r\n） */
+    for (size_t i = 0; message[i]; i++) {
+        if (!isprint((unsigned char)message[i]) && message[i] != '\r' &&
+            message[i] != '\n') return 0;
+    }
+
+    /* 3. 解析请求行：METHOD URI HTTP/1.x */
+    char method[64] = {0};
+    char uri[2048] = {0};
+    char version[32] = {0};
+
+    if (sscanf(message, "%63s %2047s %31s", method, uri, version) != 3) return 0;
+
+    /* 4. 检查方法是否在合法集合中（HTTP 方法区分大小写，RFC 7230） */
+    int valid_method = 0;
+    for (int i = 0; http_methods[i]; i++) {
+        if (strcmp(method, http_methods[i]) == 0) {
+            valid_method = 1;
+            break;
+        }
+    }
+    if (!valid_method) return 0;
+
+    /* 5. 验证 HTTP 版本 */
+    if (strcmp(version, "HTTP/1.0") != 0 && strcmp(version, "HTTP/1.1") != 0) return 0;
+
+    /* 6. 定位 header 和 body 的分隔 */
+    const char *header_body_sep = strstr(message, "\r\n\r\n");
+    if (!header_body_sep) return 0;
+
+    /* 7. 验证 header 行格式（每行非空行必须包含 ':'） */
+    const char *line = strstr(message, "\r\n");
+    if (!line) return 0;
+    line += 2; /* 跳过请求行 */
+    while (line < header_body_sep) {
+        const char *eol = strstr(line, "\r\n");
+        if (!eol || eol > header_body_sep) return 0;
+
+        /* 空行（不应出现在 header 区域中间，但跳过分隔空行） */
+        if (eol == line) return 0; /* header 区域内的空行不合法 */
+
+        /* header 行必须包含 ':' */
+        if (!memchr(line, ':', (size_t)(eol - line))) return 0;
+
+        line = eol + 2;
+    }
+
+    /* 8. 检查 Content-Length 与 body 一致性 */
+    const char *cl_header = find_header(message, "content-length:");
+    if (cl_header) {
+        const char *cl_value = cl_header + 15; /* strlen("content-length:") */
+        /* 跳过冒号后的空格 */
+        while (*cl_value == ' ' || *cl_value == '\t') cl_value++;
+        long content_length = atol(cl_value);
+        if (content_length < 0) return 0;
+
+        /* body 起始位置在 \r\n\r\n 之后 */
+        const char *body_start = header_body_sep + 4;
+        const char *body_end = message + strlen(message);
+        long actual_body_len = (long)(body_end - body_start);
+
+        if (actual_body_len != content_length) return 0;
+    }
+
+    /* 9. 更新上下文 */
+    ctx->type = PROTOCOL_HTTP;
+
+    /* 检查 Host header（HTTP/1.1 必需） */
+    if (find_header(message, "host:")) {
+        ctx->ctx.http.has_host = 1;
+    }
+
+    /* 检查 Content-Length header */
+    if (cl_header) {
+        ctx->ctx.http.has_content_length = 1;
+    }
+
+    return 1; /* 合法 */
 }
