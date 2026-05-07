@@ -548,6 +548,26 @@ void setup_llm_grammars()
       char *message_type = extract_message_pattern(header_str, field_table, patterns, pattern_fd, pattern_path);
       if (message_type != NULL)
       {
+        /* Grammar validation: check if message type is in protocol whitelist */
+        if (afl_llm_validation && !validate_grammar_pattern(message_type, protocol_name)) {
+          llm_validation_record_t record = {0};
+          record.stage = LLM_STAGE_GRAMMAR;
+          snprintf(record.reason, sizeof(record.reason), "grammar_pattern_fail:%s", message_type);
+          log_llm_validation_record(&record);
+
+          if (!afl_llm_validation_permissive) {
+            ck_free(message_type);
+            // Free patterns (pcre2_code pointers)
+            if (patterns[0]) pcre2_code_free(patterns[0]);
+            if (patterns[1]) pcre2_code_free(patterns[1]);
+            ck_free(patterns);
+            json_object_put(header_v);
+            close(pattern_fd);
+            ck_free(pattern_path);
+            continue;
+          }
+        }
+
         int discard;
         kh_put(strSet, message_types_set, message_type, &discard);
         *kl_pushp(rang, protocol_patterns) = patterns;
