@@ -151,6 +151,14 @@ int validate_rtsp_request_message(const char *message, protocol_context_t *ctx);
 int validate_ftp_request_message(const char *message, protocol_context_t *ctx);
 int validate_http_request_message(const char *message, protocol_context_t *ctx);
 
+/*
+ * Backward compatibility wrapper
+ *
+ * Used by existing benchmark code that calls validate_protocol_request_message().
+ * Currently delegates to validate_rtsp_request_message().
+ */
+int validate_protocol_request_message(const char *message, protocol_context_t *ctx);
+
 // Logging interfaces
 void log_llm_validation_record(const llm_validation_record_t *record);
 void init_validation_log(const char *out_dir);

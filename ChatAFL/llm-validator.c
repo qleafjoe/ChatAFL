@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <ctype.h>
 #include <time.h>
 #include <sys/stat.h>
@@ -202,20 +203,61 @@ static const char *rtsp_methods[] = {
     "SET_PARAMETER", "REDIRECT", NULL
 };
 
+/* Case-insensitive substring search (RFC 2326 headers are case-insensitive) */
+static const char *strcasestr_local(const char *haystack, const char *needle) {
+    if (!haystack || !needle) return NULL;
+    size_t needle_len = strlen(needle);
+    if (needle_len == 0) return haystack;
+
+    for (const char *p = haystack; *p; p++) {
+        if (tolower((unsigned char)*p) == tolower((unsigned char)*needle) &&
+            strncasecmp(p, needle, needle_len) == 0) {
+            return p;
+        }
+    }
+    return NULL;
+}
+
+/* Find a header at the start of a line (not a substring of another header name) */
+static const char *find_header(const char *message, const char *header) {
+    const char *p = message;
+    while ((p = strcasestr_local(p, header)) != NULL) {
+        /* Check that match is at start of message or after \n */
+        if (p == message || p[-1] == '\n') {
+            return p;
+        }
+        p++; /* Skip this false match, continue searching */
+    }
+    return NULL;
+}
+
 int validate_rtsp_request_message(const char *message, protocol_context_t *ctx) {
     if (!message || !ctx) return 0;
 
     /* 1. 必须以 \r\n\r\n 结束 */
     if (!strstr(message, "\r\n\r\n")) return 0;
 
-    /* 2. 解析请求行 */
+    /* 2. 验证可打印字符（允许 \r\n） */
+    for (size_t i = 0; message[i]; i++) {
+        if (!isprint((unsigned char)message[i]) && message[i] != '\r' &&
+            message[i] != '\n') return 0;
+    }
+
+    /* 3. 解析请求行 */
     char method[64] = {0};
     char uri[1024] = {0};
     char version[32] = {0};
 
     if (sscanf(message, "%63s %1023s %31s", method, uri, version) != 3) return 0;
 
-    /* 3. 检查方法是否在合法集合中 */
+    /* 4. 验证 RTSP 版本 */
+    if (strcmp(version, "RTSP/1.0") != 0) return 0;
+
+    /* 5. 验证 URI 格式 */
+    if (strcmp(uri, "*") != 0 && strncmp(uri, "rtsp://", 7) != 0 &&
+        strncmp(uri, "rtsps://", 8) != 0) return 0;
+
+    /* 6. 检查方法是否在合法集合中 */
     int valid_method = 0;
     for (int i = 0; rtsp_methods[i]; i++) {
         if (strcmp(method, rtsp_methods[i]) == 0) {
@@ -225,36 +267,54 @@ int validate_rtsp_request_message(const char *message, protocol_context_t *ctx) 
     }
     if (!valid_method) return 0;
 
-    /* 4. 检查必需头字段 */
-    if (!strstr(message, "CSeq:")) return 0;
+    /* 7. 验证 header 行格式（每行必须是 Key: Value 或空行） */
+    const char *line = strstr(message, "\r\n");
+    if (!line) return 0;
+    line += 2; /* 跳过请求行 */
+    while (*line && strncmp(line, "\r\n", 2) != 0) {
+        const char *eol = strstr(line, "\r\n");
+        if (!eol) return 0;
+        /* header 行必须包含 ':' */
+        if (!memchr(line, ':', (size_t)(eol - line))) return 0;
+        line = eol + 2;
+    }
+
+    /* 8. 检查必需头字段（case-insensitive, at line start） */
+    if (!find_header(message, "cseq:")) return 0;
 
     /* SETUP 必须有 Transport */
-    if (strcmp(method, "SETUP") == 0 && !strstr(message, "Transport:")) return 0;
+    if (strcmp(method, "SETUP") == 0 && !find_header(message, "transport:")) return 0;
 
     /* PLAY/PAUSE/TEARDOWN 必须有 Session */
     if ((strcmp(method, "PLAY") == 0 || strcmp(method, "PAUSE") == 0 || strcmp(method, "TEARDOWN") == 0) &&
-        !strstr(message, "Session:")) return 0;
+        !find_header(message, "session:")) return 0;
 
-    /* 5. 更新上下文 */
+    /* 9. 更新上下文 */
     ctx->type = PROTOCOL_RTSP;
 
     /* 提取 CSeq */
-    const char *cseq_start = strstr(message, "CSeq:");
+    const char *cseq_start = find_header(message, "cseq:");
     if (cseq_start) {
-        sscanf(cseq_start, "CSeq: %u", &ctx->ctx.rtsp.last_cseq);
+        sscanf(cseq_start + 5, " %u", &ctx->ctx.rtsp.last_cseq);
     }
 
     /* 检查 Session */
-    if (strstr(message, "Session:")) {
+    if (find_header(message, "session:")) {
         ctx->ctx.rtsp.has_session = 1;
     }
 
     /* 检查 Transport */
-    if (strstr(message, "Transport:")) {
+    if (find_header(message, "transport:")) {
         ctx->ctx.rtsp.has_transport = 1;
     }
 
     return 1;
+}
+
+/* Backward compatibility wrapper for benchmark code */
+int validate_protocol_request_message(const char *message, protocol_context_t *ctx) {
+    if (!message || !ctx) return 0;
+    return validate_rtsp_request_message(message, ctx);
 }
 
 int validate_ftp_request_message(const char *message, protocol_context_t *ctx) {
