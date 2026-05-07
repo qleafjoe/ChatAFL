@@ -194,7 +194,7 @@ llm_validation_result_t validate_llm_sequence(
 }
 
 // Protocol-level validators
-// FTP and HTTP are stubs - will be implemented in Task 4-5
+// HTTP is a stub - will be implemented in Task 5
 
 /* 合法 RTSP 方法集合 */
 static const char *rtsp_methods[] = {
@@ -317,11 +317,110 @@ int validate_protocol_request_message(const char *message, protocol_context_t *c
     return validate_rtsp_request_message(message, ctx);
 }
 
+/* 合法 FTP 命令集合 (RFC 959, case-insensitive) */
+static const char *ftp_commands[] = {
+    "USER", "PASS", "PWD", "CWD", "CDUP", "LIST", "NLST",
+    "RETR", "STOR", "APPE", "DELE", "RNFR", "RNTO", "MKD",
+    "RMD", "SITE", "SYST", "STAT", "HELP", "NOOP", "QUIT",
+    "PASV", "PORT", "TYPE", "MODE", "STRU", "REST", NULL
+};
+
+/* Check if a command string is in the FTP command whitelist (case-insensitive) */
+static int is_valid_ftp_command(const char *cmd, size_t cmd_len) {
+    for (int i = 0; ftp_commands[i]; i++) {
+        if (strlen(ftp_commands[i]) == cmd_len &&
+            strncasecmp(cmd, ftp_commands[i], cmd_len) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 int validate_ftp_request_message(const char *message, protocol_context_t *ctx) {
-    // TODO: Implement in Task 4
-    (void)message;
-    (void)ctx;
-    return 1; // Temporarily accept all messages
+    if (!message || !ctx) return 0;
+
+    /* 1. 每行必须以 \r\n 结束：消息必须包含 \r\n */
+    if (!strstr(message, "\r\n")) return 0;
+
+    /* 2. 验证可打印字符（允许 \r\n） */
+    for (size_t i = 0; message[i]; i++) {
+        if (!isprint((unsigned char)message[i]) && message[i] != '\r' &&
+            message[i] != '\n') return 0;
+    }
+
+    /* 3. 解析 FTP 命令行
+     *    FTP commands are of the form: COMMAND [args]\r\n
+     *    A single message may contain multiple lines (e.g., multi-line commands),
+     *    but typically each message is one command.
+     */
+    const char *line = message;
+    while (*line) {
+        /* Find end of current line */
+        const char *eol = strstr(line, "\r\n");
+        if (!eol) {
+            /* Lines must end with \r\n; no bare \n or unterminated lines */
+            return 0;
+        }
+
+        /* Skip empty lines (just \r\n) */
+        if (eol == line) {
+            line = eol + 2;
+            continue;
+        }
+
+        /* Extract the command token (first word, up to space or \r) */
+        const char *space = memchr(line, ' ', (size_t)(eol - line));
+        size_t cmd_len;
+        if (space && space < eol) {
+            cmd_len = (size_t)(space - line);
+        } else {
+            cmd_len = (size_t)(eol - line);
+        }
+
+        if (cmd_len == 0) return 0;
+
+        /* 4. 检查命令是否在合法集合中 (case-insensitive) */
+        if (!is_valid_ftp_command(line, cmd_len)) return 0;
+
+        /* 5. 检查会话依赖 */
+        char cmd_buf[16] = {0};
+        if (cmd_len >= sizeof(cmd_buf)) return 0;
+        memcpy(cmd_buf, line, cmd_len);
+        cmd_buf[cmd_len] = '\0';
+
+        /* PASS cannot come before USER */
+        if (strcasecmp(cmd_buf, "PASS") == 0 && !ctx->ctx.ftp.has_user) {
+            return 0;
+        }
+
+        /* RETR/STOR/LIST require authentication (USER + PASS both sent) */
+        if ((strcasecmp(cmd_buf, "RETR") == 0 ||
+             strcasecmp(cmd_buf, "STOR") == 0 ||
+             strcasecmp(cmd_buf, "LIST") == 0) &&
+            !ctx->ctx.ftp.is_authed) {
+            return 0;
+        }
+
+        /* 6. 更新上下文 */
+        if (strcasecmp(cmd_buf, "USER") == 0) {
+            ctx->ctx.ftp.has_user = 1;
+            /* Reset auth state when a new USER is sent */
+            ctx->ctx.ftp.has_pass = 0;
+            ctx->ctx.ftp.is_authed = 0;
+        } else if (strcasecmp(cmd_buf, "PASS") == 0) {
+            ctx->ctx.ftp.has_pass = 1;
+            if (ctx->ctx.ftp.has_user) {
+                ctx->ctx.ftp.is_authed = 1;
+            }
+        }
+
+        line = eol + 2; /* Move past \r\n */
+    }
+
+    /* 7. 设置协议类型 */
+    ctx->type = PROTOCOL_FTP;
+
+    return 1; /* 合法 */
 }
 
 int validate_http_request_message(const char *message, protocol_context_t *ctx) {
