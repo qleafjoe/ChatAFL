@@ -248,6 +248,38 @@ char *clean_llm_response(const char *raw_response) {
 
     char *final_res = strdup(ptr);
     free(res);
+
+    /* Convert LF (\n) to CRLF (\r\n) for protocol messages
+     * LLM often generates Unix line endings, but RTSP/HTTP require CRLF */
+    if (final_res) {
+        /* First pass: count newlines to allocate correct size */
+        size_t newlines = 0;
+        for (char *p = final_res; *p; p++) {
+            if (*p == '\n' && (p == final_res || *(p-1) != '\r')) {
+                newlines++;
+            }
+        }
+
+        if (newlines > 0) {
+            size_t old_len = strlen(final_res);
+            size_t new_len = old_len + newlines + 1;
+            char *crlf_res = malloc(new_len);
+            if (crlf_res) {
+                /* Second pass: copy with \n -> \r\n conversion */
+                char *dst = crlf_res;
+                for (char *src = final_res; *src; src++) {
+                    if (*src == '\n' && (src == final_res || *(src-1) != '\r')) {
+                        *dst++ = '\r';
+                    }
+                    *dst++ = *src;
+                }
+                *dst = '\0';
+                free(final_res);
+                return crlf_res;
+            }
+        }
+    }
+
     return final_res;
 }
 
