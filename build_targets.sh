@@ -20,8 +20,13 @@ TARGETS=(
 FUZZERS=(
   "aflnet:aflnet"
   "ChatAFL:chatafl"
-  "ChatAFL-CL1:chatafl-cl1"
-  "ChatAFL-CL2:chatafl-cl2"
+  "ChatAFL-V0:chatafl-v0"
+)
+
+# V1 and V2 share ChatAFL source with only env.sh overlay
+OVERLAY_VARIANTS=(
+  "ChatAFL-V1:chatafl-v1"
+  "ChatAFL-V2:chatafl-v2"
 )
 
 for subject in "${TARGETS[@]}"; do
@@ -47,6 +52,34 @@ for subject in "${TARGETS[@]}"; do
       "$REPO_ROOT/$SRC/" "$subject/$DST/"
   done
 done
+
+# Overlay variants: rsync ChatAFL base first, then variant-specific files
+for subject in "${TARGETS[@]}"; do
+  subname=$(basename "$subject")
+  for pair in "${OVERLAY_VARIANTS[@]}"; do
+    SRC="${pair%%:*}"
+    DST="${pair##*:}"
+    echo "  [$subname] Overlaying ChatAFL -> $DST, then $SRC -> $DST"
+    # First: copy ChatAFL base source (same exclusions as above)
+    rsync -a \
+      --exclude='*.o' --exclude='*.so' \
+      --exclude='test_llm' --exclude='aflnet-client' \
+      --exclude='afl-fuzz' --exclude='afl-gcc' --exclude='afl-g++' \
+      --exclude='afl-clang' --exclude='afl-clang++' \
+      --exclude='afl-clang-fast' --exclude='afl-clang-fast++' \
+      --exclude='afl-as' --exclude='as' \
+      --exclude='afl-showmap' --exclude='afl-tmin' \
+      --exclude='afl-gotcpu' --exclude='afl-analyze' \
+      --exclude='afl-replay' --exclude='aflnet-replay' \
+      --exclude='test-instr' --exclude='.test-instr*' \
+      --exclude='out_dir' --exclude='*.stackdump' \
+      --exclude='core' --exclude='core.*' \
+      "$REPO_ROOT/ChatAFL/" "$subject/$DST/"
+    # Second: overlay variant-specific files (env.sh)
+    rsync -a "$REPO_ROOT/$SRC/" "$subject/$DST/"
+  done
+done
+
 echo "[Step 1] Done."
 
 # ---- Step 2: Build Docker images ----

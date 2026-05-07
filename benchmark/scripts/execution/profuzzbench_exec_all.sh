@@ -137,6 +137,21 @@ do
                 profuzzbench_exec_common.sh pure-ftpd $NUM_CONTAINERS results-pure-ftpd chatafl out-pure-ftpd-chatafl "-m none -P FTP -D 10000 -q 3 -s 3 -E -K -t ${TEST_TIMEOUT}+" $TIMEOUT $SKIPCOUNT &
             fi
 
+            if [[ $FUZZER == "chatafl-v0" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh pure-ftpd $NUM_CONTAINERS results-pure-ftpd chatafl-v0 out-pure-ftpd-chatafl_v0 "-m none -P FTP -D 10000 -q 3 -s 3 -E -K -t ${TEST_TIMEOUT}+" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-v1" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh pure-ftpd $NUM_CONTAINERS results-pure-ftpd chatafl-v1 out-pure-ftpd-chatafl_v1 "-m none -P FTP -D 10000 -q 3 -s 3 -E -K -t ${TEST_TIMEOUT}+" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-v2" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh pure-ftpd $NUM_CONTAINERS results-pure-ftpd chatafl-v2 out-pure-ftpd-chatafl_v2 "-m none -P FTP -D 10000 -q 3 -s 3 -E -K -t ${TEST_TIMEOUT}+" $TIMEOUT $SKIPCOUNT &
+            fi
+
             if [[ $FUZZER == "chatafl-cl1" ]] || [[ $FUZZER == "all" ]]
             then
                 profuzzbench_exec_common.sh pure-ftpd $NUM_CONTAINERS results-pure-ftpd chatafl-cl1 out-pure-ftpd-chatafl_cl1 "-m none -P FTP -D 10000 -q 3 -s 3 -E -K -t ${TEST_TIMEOUT}+" $TIMEOUT $SKIPCOUNT &
@@ -197,6 +212,21 @@ do
             if [[ $FUZZER == "chatafl" ]] || [[ $FUZZER == "all" ]]
             then
                 profuzzbench_exec_common.sh live555 $NUM_CONTAINERS results-live555 chatafl out-live555-chatafl "-P RTSP -D 10000 -q 3 -s 3 -E -K -R -m none" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-v0" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh live555 $NUM_CONTAINERS results-live555 chatafl-v0 out-live555-chatafl_v0 "-P RTSP -D 10000 -q 3 -s 3 -E -K -R -m none" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-v1" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh live555 $NUM_CONTAINERS results-live555 chatafl-v1 out-live555-chatafl_v1 "-P RTSP -D 10000 -q 3 -s 3 -E -K -R -m none" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-v2" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh live555 $NUM_CONTAINERS results-live555 chatafl-v2 out-live555-chatafl_v2 "-P RTSP -D 10000 -q 3 -s 3 -E -K -R -m none" $TIMEOUT $SKIPCOUNT &
             fi
 
             if [[ $FUZZER == "chatafl-cl1" ]] || [[ $FUZZER == "all" ]]

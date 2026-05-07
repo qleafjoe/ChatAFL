@@ -54,13 +54,18 @@ RUN cd chatafl && \
     make clean all $MAKE_OPT && \
     cd llvm_mode && make $MAKE_OPT
 
-COPY --chown=ubuntu:ubuntu chatafl-cl1 chatafl-cl1
-RUN cd chatafl-cl1 && \
+COPY --chown=ubuntu:ubuntu chatafl-v0 chatafl-v0
+RUN cd chatafl-v0 && \
     make clean all $MAKE_OPT && \
     cd llvm_mode && make $MAKE_OPT
 
-COPY --chown=ubuntu:ubuntu chatafl-cl2 chatafl-cl2
-RUN cd chatafl-cl2 && \
+COPY --chown=ubuntu:ubuntu chatafl-v1 chatafl-v1
+RUN cd chatafl-v1 && \
+    make clean all $MAKE_OPT && \
+    cd llvm_mode && make $MAKE_OPT
+
+COPY --chown=ubuntu:ubuntu chatafl-v2 chatafl-v2
+RUN cd chatafl-v2 && \
     make clean all $MAKE_OPT && \
     cd llvm_mode && make $MAKE_OPT
 
