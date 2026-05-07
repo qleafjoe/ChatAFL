@@ -43,6 +43,7 @@
 #include "alloc-inl.h"
 #include "hash.h"
 #include "chat-llm.h"
+#include "llm-validator.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -427,6 +428,9 @@ klist_t(rang) * protocol_patterns;
 khash_t(strSet) * message_types_set;
 // Protocol name kept for prompts
 char *protocol_name;
+// Validation-driven LLM fuzzing flags
+u8 afl_llm_validation = 0;            // AFL_LLM_VALIDATION=0/1
+u8 afl_llm_validation_permissive = 0; // AFL_LLM_VALIDATION_PERMISSIVE=1
 // Reward fields - To be used
 u32 reward_random;
 u32 reward_grammar;
@@ -2751,6 +2755,31 @@ void get_seeds_with_messsage_types(const char *in_dir, khash_t(strSet) * message
         }
 
         unescaped_client_requests = format_request_message(unescaped_client_requests);
+
+        if (afl_llm_validation && unescaped_client_requests) {
+          llm_validation_record_t record = {0};
+          record.stage = LLM_STAGE_ENRICHMENT;
+
+          protocol_context_t ctx = {0};
+          if (strcmp(protocol_name, "RTSP") == 0) ctx.type = PROTOCOL_RTSP;
+          else if (strcmp(protocol_name, "FTP") == 0) ctx.type = PROTOCOL_FTP;
+          else if (strcmp(protocol_name, "HTTP") == 0) ctx.type = PROTOCOL_HTTP;
+
+          record.result = validate_llm_sequence(protocol_name, LLM_STAGE_ENRICHMENT, unescaped_client_requests, &ctx);
+
+          if (record.result != LLM_VALID_OK) {
+            snprintf(record.reason, sizeof(record.reason), "enrich_validation_fail:%d", record.result);
+            log_llm_validation_record(&record);
+
+            if (!afl_llm_validation_permissive) {
+              free(unescaped_client_requests);
+              free(formatted_nl_file_content);
+              free(formatted_unescaped_client_requests);
+              free(client_request_answer);
+              continue;
+            }
+          }
+        }
 
         // Create the file in the same directory with the name enriched_state_<file_name>
         char *enriched_file_name = malloc(strlen(nl_file_name) + 10 + 20);
@@ -6992,6 +7021,28 @@ AFLNET_REGIONS_SELECTION:;
 
         stall_message = format_request_message(stall_message);
 
+        if (stall_message != NULL && afl_llm_validation) {
+          llm_validation_record_t record = {0};
+          record.stage = LLM_STAGE_STALL;
+
+          protocol_context_t ctx = {0};
+          if (strcmp(protocol_name, "RTSP") == 0) ctx.type = PROTOCOL_RTSP;
+          else if (strcmp(protocol_name, "FTP") == 0) ctx.type = PROTOCOL_FTP;
+          else if (strcmp(protocol_name, "HTTP") == 0) ctx.type = PROTOCOL_HTTP;
+
+          record.result = validate_llm_message(protocol_name, LLM_STAGE_STALL, stall_message, &ctx);
+
+          if (record.result != LLM_VALID_OK) {
+            snprintf(record.reason, sizeof(record.reason), "stall_validation_fail:%d", record.result);
+            log_llm_validation_record(&record);
+
+            if (!afl_llm_validation_permissive) {
+              ck_free(stall_message);
+              goto free_stall;
+            }
+          }
+        }
+
         if (stall_message != NULL)
         {
           // printf("Filtered message:\n%s\n",stall_message);
@@ -10648,6 +10699,11 @@ int main(int argc, char **argv)
   if (getenv("AFL_FAST_CAL"))
     fast_cal = 1;
 
+  if (getenv("AFL_LLM_VALIDATION"))
+    afl_llm_validation = 1;
+  if (getenv("AFL_LLM_VALIDATION_PERMISSIVE"))
+    afl_llm_validation_permissive = 1;
+
   if (getenv("AFL_HANG_TMOUT"))
   {
     hang_tmout = atoi(getenv("AFL_HANG_TMOUT"));
@@ -10696,6 +10752,11 @@ int main(int argc, char **argv)
     message_types_set = kh_init(strSet);
 
     setup_llm_grammars();
+
+    if (afl_llm_validation) {
+      init_validation_log(out_dir);
+    }
+
     enrich_testcases();
   }
   read_testcases();
@@ -10934,6 +10995,10 @@ stop_fuzzing:
   ck_free(sync_id);
 
   destroy_ipsm();
+
+  if (afl_llm_validation) {
+    close_validation_log();
+  }
 
   alloc_report();
 
