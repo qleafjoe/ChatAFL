@@ -38,7 +38,7 @@ for subject in "${TARGETS[@]}"; do
     rm -rf "$subject/$DST"
     rsync -a \
       --exclude='*.o' --exclude='*.so' \
-      --exclude='test_llm' --exclude='aflnet-client' \
+      --exclude='test/' --exclude='test_llm' --exclude='aflnet-client' \
       --exclude='afl-fuzz' --exclude='afl-gcc' --exclude='afl-g++' \
       --exclude='afl-clang' --exclude='afl-clang++' \
       --exclude='afl-clang-fast' --exclude='afl-clang-fast++' \
@@ -60,10 +60,11 @@ for subject in "${TARGETS[@]}"; do
     SRC="${pair%%:*}"
     DST="${pair##*:}"
     echo "  [$subname] Overlaying ChatAFL -> $DST, then $SRC -> $DST"
+    rm -rf "$subject/$DST"
     # First: copy ChatAFL base source (same exclusions as above)
     rsync -a \
       --exclude='*.o' --exclude='*.so' \
-      --exclude='test_llm' --exclude='aflnet-client' \
+      --exclude='test/' --exclude='test_llm' --exclude='aflnet-client' \
       --exclude='afl-fuzz' --exclude='afl-gcc' --exclude='afl-g++' \
       --exclude='afl-clang' --exclude='afl-clang++' \
       --exclude='afl-clang-fast' --exclude='afl-clang-fast++' \

@@ -18,7 +18,7 @@ cids=()
 
 #create one container for each run
 for i in $(seq 1 $RUNS); do
-  id=$(docker run --cpus=1 -e LLM_URL="${LLM_URL}" -e LLM_TOKEN="${LLM_TOKEN}" -e LLM_MODEL="${LLM_MODEL}" -e AFL_LLM_VALIDATION="${AFL_LLM_VALIDATION}" -e AFL_LLM_VALIDATION_PERMISSIVE="${AFL_LLM_VALIDATION_PERMISSIVE}" -e AFL_LLM_VALIDATION_STRICT="${AFL_LLM_VALIDATION_STRICT}" -d -it $DOCIMAGE /bin/bash -c "cd ${WORKDIR} && run ${FUZZER} ${OUTDIR} '${OPTIONS}' ${TIMEOUT} ${SKIPCOUNT}")
+  id=$(docker run --cpus=1 -e LLM_URL="${LLM_URL}" -e LLM_TOKEN="${LLM_TOKEN}" -e LLM_MODEL="${LLM_MODEL}" -e AFL_LLM_VALIDATION="${AFL_LLM_VALIDATION}" -e AFL_LLM_VALIDATION_PERMISSIVE="${AFL_LLM_VALIDATION_PERMISSIVE}" -e AFL_LLM_VALIDATION_STRICT="${AFL_LLM_VALIDATION_STRICT}" -e AFL_LLM_POST_GAIN="${AFL_LLM_POST_GAIN}" -e AFL_LLM_FEEDBACK="${AFL_LLM_FEEDBACK}" -e AFL_LLM_FEEDBACK_MAX_RETRIES="${AFL_LLM_FEEDBACK_MAX_RETRIES}" -d -it $DOCIMAGE /bin/bash -c "cd ${WORKDIR} && if [ -f ${WORKDIR}/${FUZZER}/env.sh ]; then . ${WORKDIR}/${FUZZER}/env.sh; fi && run ${FUZZER} ${OUTDIR} '${OPTIONS}' ${TIMEOUT} ${SKIPCOUNT}")
   cids+=(${id::12}) #store only the first 12 characters of a container ID
 done
 

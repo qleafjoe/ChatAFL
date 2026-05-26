@@ -79,7 +79,11 @@ ENV AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 \
     AFL_NO_AFFINITY=1
 
 
-RUN mkdir $WORKDIR
+RUN mkdir $WORKDIR && \
+    for f in chatafl chatafl-v0 chatafl-v1 chatafl-v2; do \
+      mkdir -p ${WORKDIR}/${f}; \
+      cp /home/ubuntu/${f}/env.sh ${WORKDIR}/${f}/env.sh; \
+    done
 
 COPY --chown=ubuntu:ubuntu fuzzing.patch ${WORKDIR}/fuzzing.patch
 COPY --chown=ubuntu:ubuntu gcov.patch ${WORKDIR}/gcov.patch
@@ -89,7 +93,7 @@ RUN apt -y install automake
 USER ubuntu
 
 # Set up environment variables for ASAN
-env ASAN_OPTIONS='abort_on_error=1:symbolize=0:detect_leaks=0:detect_stack_use_after_return=1:detect_container_overflow=0:poison_array_cookie=0:malloc_fill_byte=0:max_malloc_fill_size=16777216'
+ENV ASAN_OPTIONS='abort_on_error=1:symbolize=0:detect_leaks=0:detect_stack_use_after_return=1:detect_container_overflow=0:poison_array_cookie=0:malloc_fill_byte=0:max_malloc_fill_size=16777216'
 
 # Set up PureFTPD for fuzzing
 RUN cd ${WORKDIR} && \
@@ -98,7 +102,7 @@ RUN cd ${WORKDIR} && \
     git checkout 10122d9f && \
     patch -p1 < ${WORKDIR}/fuzzing.patch && \
     ./autogen.sh && \
-    CC="afl-clang-fast" CXX="afl-clang-fast++" CFLAGS="-fsanitize=address -g -O0" CXXFLAGS="-fsanitize=address -g -O0" LDFLAGS="-fsanitize=address" ./configure --without-privsep -without-capabilities && \
+    CC="afl-clang-fast" CXX="afl-clang-fast++" CFLAGS="-fsanitize=address -g -O0" CXXFLAGS="-fsanitize=address -g -O0" LDFLAGS="-fsanitize=address" ./configure --without-privsep --without-capabilities && \
     make $MAKE_OPT
 
 # Set up PureFTPD for coverage analysis
@@ -108,7 +112,7 @@ RUN cd ${WORKDIR} && \
     git checkout 10122d9f && \
     patch -p1 < ${WORKDIR}/gcov.patch && \
     ./autogen.sh && \
-    CC=cc CXX=c++ CFLAGS="-fprofile-arcs -ftest-coverage" CPPFLAGS="-fprofile-arcs -ftest-coverage" CXXFLAGS="-fprofile-arcs -ftest-coverage" LDFLAGS="-fprofile-arcs -ftest-coverage" ./configure --without-privsep -without-capabilities && \
+    CC=cc CXX=c++ CFLAGS="-fprofile-arcs -ftest-coverage" CPPFLAGS="-fprofile-arcs -ftest-coverage" CXXFLAGS="-fprofile-arcs -ftest-coverage" LDFLAGS="-fprofile-arcs -ftest-coverage" ./configure --without-privsep --without-capabilities && \
     make $MAKE_OPT
 
 COPY --chown=ubuntu:ubuntu in-ftp ${WORKDIR}/in-ftp

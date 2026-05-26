@@ -1099,7 +1099,7 @@ int min(int a, int b) {
     return a < b ? a : b;
 }
 
-char *enrich_sequence(char *sequence, khash_t(strSet) * missing_message_types)
+char *enrich_sequence_with_prompt(char *sequence, khash_t(strSet) * missing_message_types, char **prompt_out)
 {
     const char *prompt_template =
         "The following is one sequence of client requests:\\n"
@@ -1164,9 +1164,206 @@ char *enrich_sequence(char *sequence, khash_t(strSet) * missing_message_types)
         }
     }
 
-    free(prompt);
+    if (prompt_out) {
+        *prompt_out = prompt;
+    } else {
+        free(prompt);
+    }
 
     return response;
+}
+
+char *enrich_sequence(char *sequence, khash_t(strSet) * missing_message_types)
+{
+    return enrich_sequence_with_prompt(sequence, missing_message_types, NULL);
+}
+
+/* ---- Feedback retry: construct feedback prompt for stall stage ---- */
+static char *construct_feedback_prompt_stall(
+    const char *protocol_name,
+    const char *failed_message,
+    const char *error_detail)
+{
+    char *prompt_text = NULL;
+    asprintf(&prompt_text,
+        "The following %s client request message was generated but FAILED validation:\n\n"
+        "--- BEGIN FAILED MESSAGE ---\n%s\n--- END FAILED MESSAGE ---\n\n"
+        "Validation error: %s\n\n"
+        "Please generate a CORRECTED %s client request that fixes the above error. "
+        "Output exactly ONE complete client request message. "
+        "MUST include proper headers and MUST end with \\r\\n\\r\\n. "
+        "NO markdown, NO formatting, NO explanations.",
+        protocol_name, failed_message, error_detail, protocol_name);
+
+    json_object *messages = json_object_new_array();
+
+    json_object *sys_msg = json_object_new_object();
+    json_object_object_add(sys_msg, "role", json_object_new_string("system"));
+    json_object_object_add(sys_msg, "content", json_object_new_string(
+        "You are a network protocol expert assistant. "
+        "The previous message failed validation. "
+        "Fix the described issue and output ONLY the raw corrected protocol message."));
+    json_object_array_add(messages, sys_msg);
+
+    json_object *user_msg = json_object_new_object();
+    json_object_object_add(user_msg, "role", json_object_new_string("user"));
+    json_object_object_add(user_msg, "content", json_object_new_string(prompt_text));
+    json_object_array_add(messages, user_msg);
+
+    char *result = strdup(json_object_to_json_string(messages));
+    json_object_put(messages);
+    free(prompt_text);
+
+    return result;
+}
+
+/* ---- Feedback retry: construct feedback prompt for enrichment stage ---- */
+static char *construct_feedback_prompt_enrichment(
+    const char *protocol_name,
+    const char *failed_message,
+    const char *error_detail)
+{
+    char *prompt_text = NULL;
+    asprintf(&prompt_text,
+        "The following %s message sequence was generated but FAILED validation:\n\n"
+        "--- BEGIN FAILED SEQUENCE ---\n%s\n--- END FAILED SEQUENCE ---\n\n"
+        "Validation error: %s\n\n"
+        "Please generate a CORRECTED %s message sequence that fixes the above error. "
+        "The sequence should contain multiple properly formatted client request messages. "
+        "Each message MUST end with \\r\\n\\r\\n. "
+        "NO markdown, NO formatting, NO explanations.",
+        protocol_name, failed_message, error_detail, protocol_name);
+
+    json_object *messages = json_object_new_array();
+
+    json_object *sys_msg = json_object_new_object();
+    json_object_object_add(sys_msg, "role", json_object_new_string("system"));
+    json_object_object_add(sys_msg, "content", json_object_new_string(
+        "You are a network protocol expert assistant. "
+        "The previous message sequence failed validation. "
+        "Fix the described issue and output ONLY the raw corrected protocol messages."));
+    json_object_array_add(messages, sys_msg);
+
+    json_object *user_msg = json_object_new_object();
+    json_object_object_add(user_msg, "role", json_object_new_string("user"));
+    json_object_object_add(user_msg, "content", json_object_new_string(prompt_text));
+    json_object_array_add(messages, user_msg);
+
+    char *result = strdup(json_object_to_json_string(messages));
+    json_object_put(messages);
+    free(prompt_text);
+
+    return result;
+}
+
+/* ---- Feedback retry: stall stage ---- */
+char *llm_feedback_retry_stall(
+    const char *protocol_name,
+    const char *failed_message,
+    llm_validation_result_t error,
+    llm_validation_mode_t mode,
+    int max_retries)
+{
+    if (!protocol_name || !failed_message || max_retries <= 0)
+        return NULL;
+
+    const char *error_detail = get_validation_error_detail(protocol_name, error, failed_message);
+    printf("[LLM-Feedback-Stall] Error: %s\n", error_detail);
+
+    for (int attempt = 0; attempt < max_retries; attempt++) {
+        printf("[LLM-Feedback-Stall] Retry %d/%d\n", attempt + 1, max_retries);
+
+        char *feedback_prompt = construct_feedback_prompt_stall(protocol_name, failed_message, error_detail);
+        char *llm_response = chat_with_llm(feedback_prompt, "instruct", 1, 0.7);
+        free(feedback_prompt);
+
+        if (!llm_response) {
+            printf("[LLM-Feedback-Stall] LLM returned NULL on attempt %d\n", attempt + 1);
+            continue;
+        }
+
+        char *extracted = extract_stalled_message(llm_response, strlen(llm_response));
+        free(llm_response);
+
+        if (!extracted) {
+            printf("[LLM-Feedback-Stall] extract_stalled_message returned NULL on attempt %d\n", attempt + 1);
+            continue;
+        }
+
+        char *formatted = format_request_message(extracted);
+        // format_request_message frees extracted, so 'extracted' is now dangling
+
+        protocol_context_t ctx;
+        memset(&ctx, 0, sizeof(ctx));
+        llm_validation_result_t vresult = validate_llm_message_with_mode(
+            protocol_name, LLM_STAGE_STALL, formatted, &ctx, mode);
+
+        if (vresult == LLM_VALID_OK) {
+            printf("[LLM-Feedback-Stall] Recovered on attempt %d\n", attempt + 1);
+            return formatted; // caller must ck_free()
+        }
+
+        printf("[LLM-Feedback-Stall] Validation failed (%d) on attempt %d\n", vresult, attempt + 1);
+        ck_free(formatted);
+    }
+
+    printf("[LLM-Feedback-Stall] All %d retries exhausted\n", max_retries);
+    return NULL;
+}
+
+/* ---- Feedback retry: enrichment stage ---- */
+char *llm_feedback_retry_enrichment(
+    const char *protocol_name,
+    const char *failed_message,
+    llm_validation_result_t error,
+    llm_validation_mode_t mode,
+    int max_retries)
+{
+    if (!protocol_name || !failed_message || max_retries <= 0)
+        return NULL;
+
+    const char *error_detail = get_validation_error_detail(protocol_name, error, failed_message);
+    printf("[LLM-Feedback-Enrichment] Error: %s\n", error_detail);
+
+    for (int attempt = 0; attempt < max_retries; attempt++) {
+        printf("[LLM-Feedback-Enrichment] Retry %d/%d\n", attempt + 1, max_retries);
+
+        char *feedback_prompt = construct_feedback_prompt_enrichment(protocol_name, failed_message, error_detail);
+        char *llm_response = chat_with_llm(feedback_prompt, "instruct", 1, 0.7);
+        free(feedback_prompt);
+
+        if (!llm_response) {
+            printf("[LLM-Feedback-Enrichment] LLM returned NULL on attempt %d\n", attempt + 1);
+            continue;
+        }
+
+        char *unescaped = unescape_string(llm_response);
+        free(llm_response);
+
+        if (!unescaped) {
+            printf("[LLM-Feedback-Enrichment] unescape_string returned NULL on attempt %d\n", attempt + 1);
+            continue;
+        }
+
+        char *formatted = format_request_message(unescaped);
+        // format_request_message frees unescaped, so 'unescaped' is now dangling
+
+        protocol_context_t ctx;
+        memset(&ctx, 0, sizeof(ctx));
+        llm_validation_result_t vresult = validate_llm_sequence_with_mode(
+            protocol_name, LLM_STAGE_ENRICHMENT, formatted, &ctx, mode);
+
+        if (vresult == LLM_VALID_OK) {
+            printf("[LLM-Feedback-Enrichment] Recovered on attempt %d\n", attempt + 1);
+            return formatted; // caller must ck_free()
+        }
+
+        printf("[LLM-Feedback-Enrichment] Validation failed (%d) on attempt %d\n", vresult, attempt + 1);
+        ck_free(formatted);
+    }
+
+    printf("[LLM-Feedback-Enrichment] All %d retries exhausted\n", max_retries);
+    return NULL;
 }
 
 // // For debugging

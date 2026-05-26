@@ -4,6 +4,7 @@
 #include "klist.h"
 #include "kvec.h"
 #include "khash.h"
+#include "llm-validator.h"
 #include <json-c/json.h>
 
 /*
@@ -33,6 +34,9 @@ Similarly 1700 is for the example request in the seed enrichment
 
 //Maximum amount of tries for an enrichment
 #define ENRICHMENT_RETRIES 5
+
+// Feedback retry: default max retries when validation fails
+#define LLM_FEEDBACK_MAX_RETRIES_DEFAULT 3
 
 // Maximum number of messages to be added
 #define MAX_ENRICHMENT_MESSAGE_TYPES 2
@@ -88,9 +92,28 @@ range_list get_mutable_ranges(char *line, int length, int offset, pcre2_code *pa
 void get_protocol_message_types(char *state_prompt, khash_t(strSet) * message_types);
 
 char *enrich_sequence(char* sequence, khash_t(strSet) *missing_message_types);
+char *enrich_sequence_with_prompt(char* sequence, khash_t(strSet) *missing_message_types, char **prompt_out);
 khash_t(strSet)* duplicate_hash(khash_t(strSet)* set);
 void write_new_seeds(char *enriched_file, char *contents);
 char *unescape_string(const char *input);
 char *format_string(char *state_string);
 message_set_list message_combinations(khash_t(strSet)* sequence, int size);
+
+/* Feedback retry: when LLM output fails validation, construct a feedback prompt
+   with the error reason and ask LLM to regenerate.
+   Returns: ck_alloc'd recovered message (caller must ck_free), or NULL on failure. */
+char *llm_feedback_retry_stall(
+    const char *protocol_name,
+    const char *failed_message,
+    llm_validation_result_t error,
+    llm_validation_mode_t mode,
+    int max_retries);
+
+char *llm_feedback_retry_enrichment(
+    const char *protocol_name,
+    const char *failed_message,
+    llm_validation_result_t error,
+    llm_validation_mode_t mode,
+    int max_retries);
+
 #endif // __CHAT_LLM_H

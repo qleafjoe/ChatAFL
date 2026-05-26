@@ -432,9 +432,204 @@ char *protocol_name;
 u8 afl_llm_validation = 0;            // AFL_LLM_VALIDATION=0/1
 u8 afl_llm_validation_permissive = 0; // AFL_LLM_VALIDATION_PERMISSIVE=1
 u8 afl_llm_validation_strict = 0;     // AFL_LLM_VALIDATION_STRICT=0/1
+u8 afl_llm_post_gain = 0;             // AFL_LLM_POST_GAIN=0/1
+u8 afl_llm_feedback = 0;              // AFL_LLM_FEEDBACK=0/1
+u32 afl_llm_feedback_max_retries = LLM_FEEDBACK_MAX_RETRIES_DEFAULT;
+u8 last_llm_exec_fault = 0;
+u8 last_llm_exec_interesting = 0;
+u64 last_llm_exec_us = 0;
 // Reward fields - To be used
 u32 reward_random;
 u32 reward_grammar;
+
+static u8 env_flag_enabled(const char *name)
+{
+  const char *value = getenv(name);
+  return value && value[0] != '\0' && strcmp(value, "0") != 0;
+}
+
+static llm_validation_mode_t get_llm_validation_mode(void)
+{
+  if (!afl_llm_validation)
+    return LLM_VALIDATE_DISABLED;
+  return afl_llm_validation_strict ? LLM_VALIDATE_FULL : LLM_VALIDATE_FORMAT_ONLY;
+}
+
+static u32 current_validation_protocol_type(void)
+{
+  if (strcmp(protocol_name, "FTP") == 0)
+    return PROTOCOL_FTP;
+  if (strcmp(protocol_name, "HTTP") == 0)
+    return PROTOCOL_HTTP;
+  return PROTOCOL_RTSP;
+}
+
+static void init_protocol_context(protocol_context_t *ctx)
+{
+  memset(ctx, 0, sizeof(*ctx));
+  ctx->type = current_validation_protocol_type();
+}
+
+static void init_validation_record_common(llm_validation_record_t *record,
+                                          llm_generation_stage_t stage,
+                                          u32 input_bytes)
+{
+  memset(record, 0, sizeof(*record));
+  record->stage = stage;
+  record->protocol_type = current_validation_protocol_type();
+  record->input_bytes = input_bytes;
+  record->normalized_bytes = input_bytes;
+}
+
+static void write_llm_text_artifact(const char *dir_name,
+                                    const char *prefix,
+                                    u32 call_id,
+                                    const char *content)
+{
+  char *path = alloc_printf("%s/%s/%s-%u", out_dir, dir_name, prefix, call_id);
+  int fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+
+  if (fd >= 0)
+  {
+    if (content && content[0])
+      ck_write(fd, content, strlen(content), path);
+    close(fd);
+  }
+
+  ck_free(path);
+}
+
+static void fill_validation_reason(llm_validation_record_t *record,
+                                   llm_validation_result_t result,
+                                   const char *prefix)
+{
+  const char *label = "ok";
+  switch (result)
+  {
+  case LLM_VALID_FORMAT_FAIL:
+    label = "format_fail";
+    break;
+  case LLM_VALID_GRAMMAR_FAIL:
+    label = "grammar_fail";
+    break;
+  case LLM_VALID_CONTEXT_FAIL:
+    label = "context_fail";
+    break;
+  case LLM_VALID_NO_GAIN:
+    label = "no_gain";
+    break;
+  case LLM_VALID_OK:
+  default:
+    label = "ok";
+    break;
+  }
+
+  snprintf(record->reason, sizeof(record->reason), "%s:%s", prefix, label);
+}
+
+static u32 count_candidate_regions(const char *candidate)
+{
+  region_t *regions;
+  unsigned int region_count = 0;
+
+  if (!candidate || !extract_requests)
+    return 0;
+
+  regions = (*extract_requests)((unsigned char *)candidate,
+                                (unsigned int)strlen(candidate), &region_count);
+  if (regions)
+    ck_free(regions);
+
+  return region_count;
+}
+
+static int field_table_has_prefix(khash_t(field_table) *field_table,
+                                  const char *prefix)
+{
+  khiter_t iter;
+  size_t prefix_len = strlen(prefix);
+
+  for (iter = kh_begin(field_table); iter != kh_end(field_table); ++iter)
+  {
+    const char *field_name;
+    if (!kh_exist(field_table, iter))
+      continue;
+    field_name = kh_key(field_table, iter);
+    if (field_name && strncasecmp(field_name, prefix, prefix_len) == 0)
+      return 1;
+  }
+
+  return 0;
+}
+
+static llm_validation_result_t validate_grammar_required_fields(
+    const char *protocol,
+    const char *message_type,
+    khash_t(field_table) *field_table)
+{
+  if (!protocol || !message_type || !field_table)
+    return LLM_VALID_GRAMMAR_FAIL;
+
+  if (strcmp(protocol, "RTSP") == 0)
+  {
+    if (!field_table_has_prefix(field_table, "CSeq:"))
+      return LLM_VALID_GRAMMAR_FAIL;
+
+    if (strcasecmp(message_type, "SETUP") == 0 &&
+        !field_table_has_prefix(field_table, "Transport:"))
+      return LLM_VALID_GRAMMAR_FAIL;
+
+    if ((strcasecmp(message_type, "PLAY") == 0 ||
+         strcasecmp(message_type, "PAUSE") == 0 ||
+         strcasecmp(message_type, "TEARDOWN") == 0) &&
+        !field_table_has_prefix(field_table, "Session:"))
+      return LLM_VALID_CONTEXT_FAIL;
+  }
+
+  return LLM_VALID_OK;
+}
+
+static void fill_post_execution_record(llm_validation_record_t *record,
+                                       u32 queued_before,
+                                       u32 state_before,
+                                       u32 edge_before)
+{
+  unsigned int response_state_count = 0;
+  unsigned int *response_state_sequence = NULL;
+  u8 *response_state_str = NULL;
+
+  if (extract_response_codes && response_buf && response_buf_size > 0)
+  {
+    response_state_sequence = (*extract_response_codes)((unsigned char *)response_buf,
+                                                        response_buf_size,
+                                                        &response_state_count);
+  }
+
+  record->state_count = response_state_count;
+  if (response_state_sequence)
+  {
+    response_state_str = state_sequence_to_string(response_state_sequence,
+                                                  response_state_count);
+    if (response_state_str)
+    {
+      strncpy(record->response_code_seq, (char *)response_state_str,
+              sizeof(record->response_code_seq) - 1);
+      ck_free(response_state_str);
+    }
+    ck_free(response_state_sequence);
+  }
+
+  record->has_new_cov =
+      (queued_paths > queued_before) || last_llm_exec_interesting;
+  record->has_new_state = state_ids_count > state_before;
+  record->has_new_transition = ipsm && agnedges(ipsm) > edge_before;
+  record->fault = last_llm_exec_fault;
+  record->exec_us = last_llm_exec_us;
+  record->result = classify_llm_execution_gain(record->has_new_cov,
+                                               record->has_new_state,
+                                               record->has_new_transition);
+  fill_validation_reason(record, record->result, "stall_post_exec");
+}
 
 void setup_llm_grammars()
 {
@@ -546,21 +741,56 @@ void setup_llm_grammars()
       int pattern_fd = open(pattern_path, O_WRONLY | O_CREAT, 0600);
 
       char *message_type = extract_message_pattern(header_str, field_table, patterns, pattern_fd, pattern_path);
-      if (message_type != NULL)
+      llm_validation_mode_t validation_mode = get_llm_validation_mode();
+      if (message_type == NULL)
       {
-        /* Grammar validation: check if message type is in protocol whitelist */
-        if (afl_llm_validation && !validate_grammar_pattern(message_type, protocol_name)) {
-          llm_validation_record_t record = {0};
-          record.stage = LLM_STAGE_GRAMMAR;
-          if (strcmp(protocol_name, "RTSP") == 0) record.protocol_type = PROTOCOL_RTSP;
-          else if (strcmp(protocol_name, "FTP") == 0) record.protocol_type = PROTOCOL_FTP;
-          else if (strcmp(protocol_name, "HTTP") == 0) record.protocol_type = PROTOCOL_HTTP;
-          snprintf(record.reason, sizeof(record.reason), "grammar_pattern_fail:%s", message_type);
+        if (validation_mode == LLM_VALIDATE_FULL)
+        {
+          llm_validation_record_t record;
+          init_validation_record_common(&record, LLM_STAGE_GRAMMAR,
+                                        (u32)strlen(header_str));
+          record.result = LLM_VALID_GRAMMAR_FAIL;
+          fill_validation_reason(&record, record.result,
+                                 "grammar_extract_null");
           log_llm_validation_record(&record);
+        }
+      }
+      else
+      {
+        if (validation_mode == LLM_VALIDATE_FULL)
+        {
+          llm_validation_record_t record;
+          init_validation_record_common(&record, LLM_STAGE_GRAMMAR,
+                                        (u32)strlen(message_type));
+          record.result = LLM_VALID_OK;
 
-          if (!afl_llm_validation_permissive) {
+          if (!validate_grammar_pattern(message_type, protocol_name))
+          {
+            record.result = LLM_VALID_GRAMMAR_FAIL;
+            snprintf(record.reason, sizeof(record.reason),
+                     "grammar_pattern_fail:%s", message_type);
+          }
+          else
+          {
+            record.result = validate_grammar_required_fields(protocol_name,
+                                                             message_type,
+                                                             field_table);
+            if (record.result != LLM_VALID_OK)
+            {
+              snprintf(record.reason, sizeof(record.reason),
+                       "grammar_field_fail:%s", message_type);
+            }
+            else
+            {
+              fill_validation_reason(&record, record.result,
+                                     "grammar_accept");
+            }
+          }
+
+          log_llm_validation_record(&record);
+          if (record.result != LLM_VALID_OK && !afl_llm_validation_permissive)
+          {
             ck_free(message_type);
-            // Free patterns (pcre2_code pointers)
             if (patterns[0]) pcre2_code_free(patterns[0]);
             if (patterns[1]) pcre2_code_free(patterns[1]);
             ck_free(patterns);
@@ -2761,48 +2991,86 @@ void get_seeds_with_messsage_types(const char *in_dir, khash_t(strSet) * message
       khash_t(strSet)* subset = kv_A(message_subsets,i); 
 
       // Try enriching the sequence
-        char *client_request_answer = enrich_sequence(nl_file_content, subset);
+        static u32 enrichment_call_id_seq = 0;
+        char *enrichment_prompt = NULL;
+        u32 enrichment_call_id = ++enrichment_call_id_seq;
+        char *client_request_answer = enrich_sequence_with_prompt(nl_file_content, subset,
+                                                                  &enrichment_prompt);
 
-        if (client_request_answer == NULL)
+        write_llm_text_artifact("enrichment-interactions", "prompt",
+                                enrichment_call_id, enrichment_prompt);
+        write_llm_text_artifact("enrichment-interactions", "response",
+                                enrichment_call_id, client_request_answer);
+
+        if (client_request_answer == NULL) {
+          free(enrichment_prompt);
           continue;
+        }
 
         // Check whether the client_request_answer is the same as the nl_file_content or if the client_request_answer is empty
         char *formatted_nl_file_content = format_string(nl_file_content);
         char *unescaped_client_requests = unescape_string(client_request_answer);
-        char *formatted_unescaped_client_requests = format_string(unescaped_client_requests);
+        char *formatted_unescaped_client_requests = NULL;
+        char *formatted_request_base = unescaped_client_requests;
+
+        if (unescaped_client_requests == NULL) {
+          free(enrichment_prompt);
+          free(client_request_answer);
+          continue;
+        }
+
+        formatted_unescaped_client_requests = format_string(unescaped_client_requests);
         // printf("## Formatted answer from LLM:\n %s\n", formatted_unescaped_client_requests);
         // printf("## Formatted file content:\n %s\n", formatted_nl_file_content);
         if (formatted_unescaped_client_requests == NULL || strcmp(formatted_unescaped_client_requests, formatted_nl_file_content) == 0)
         {
           printf("## Skip the same seed\n");
+          free(enrichment_prompt);
+          free(formatted_request_base);
+          free(client_request_answer);
           continue;
         }
 
         unescaped_client_requests = format_request_message(unescaped_client_requests);
+        write_llm_text_artifact("enrichment-interactions", "candidate",
+                                enrichment_call_id, unescaped_client_requests);
 
         if (afl_llm_validation && unescaped_client_requests) {
-          llm_validation_record_t record = {0};
-          record.stage = LLM_STAGE_ENRICHMENT;
-          record.input_bytes = strlen(unescaped_client_requests);
-          if (strcmp(protocol_name, "RTSP") == 0) record.protocol_type = PROTOCOL_RTSP;
-          else if (strcmp(protocol_name, "FTP") == 0) record.protocol_type = PROTOCOL_FTP;
-          else if (strcmp(protocol_name, "HTTP") == 0) record.protocol_type = PROTOCOL_HTTP;
+          llm_validation_record_t record;
+          protocol_context_t ctx;
+          llm_validation_mode_t validation_mode = get_llm_validation_mode();
 
-          protocol_context_t ctx = {0};
-          if (strcmp(protocol_name, "RTSP") == 0) ctx.type = PROTOCOL_RTSP;
-          else if (strcmp(protocol_name, "FTP") == 0) ctx.type = PROTOCOL_FTP;
-          else if (strcmp(protocol_name, "HTTP") == 0) ctx.type = PROTOCOL_HTTP;
+          init_validation_record_common(&record, LLM_STAGE_ENRICHMENT,
+                                        strlen(unescaped_client_requests));
+          record.llm_call_id = enrichment_call_id;
+          record.region_count = count_candidate_regions(unescaped_client_requests);
+          init_protocol_context(&ctx);
 
-          record.result = validate_llm_sequence(protocol_name, LLM_STAGE_ENRICHMENT, unescaped_client_requests, &ctx);
+          record.result = validate_llm_sequence_with_mode(protocol_name,
+                                                          LLM_STAGE_ENRICHMENT,
+                                                          unescaped_client_requests,
+                                                          &ctx,
+                                                          validation_mode);
+          fill_validation_reason(&record, record.result, "enrichment_validation");
+          log_llm_validation_record(&record);
 
-          if (record.result != LLM_VALID_OK) {
-            snprintf(record.reason, sizeof(record.reason), "enrich_validation_fail:%d", record.result);
-            log_llm_validation_record(&record);
-
-            if (!afl_llm_validation_permissive) {
-              free(unescaped_client_requests);
-              free(formatted_nl_file_content);
-              free(formatted_unescaped_client_requests);
+          if (record.result != LLM_VALID_OK && !afl_llm_validation_permissive) {
+            if (afl_llm_feedback) {
+              char *recovered = llm_feedback_retry_enrichment(
+                  protocol_name, unescaped_client_requests, record.result,
+                  validation_mode, afl_llm_feedback_max_retries);
+              if (recovered) {
+                ck_free(unescaped_client_requests);
+                unescaped_client_requests = recovered;
+              } else {
+                ck_free(unescaped_client_requests);
+                free(enrichment_prompt);
+                free(client_request_answer);
+                continue;
+              }
+            } else {
+              ck_free(unescaped_client_requests);
+              free(enrichment_prompt);
               free(client_request_answer);
               continue;
             }
@@ -2825,6 +3093,9 @@ void get_seeds_with_messsage_types(const char *in_dir, khash_t(strSet) * message
 
         free(enriched_file_name);
         free(enriched_file_path);
+        ck_free(unescaped_client_requests);
+        free(enrichment_prompt);
+        free(client_request_answer);
     }
 
     for(int i = 0;i < kv_size(message_subsets);i++) {
@@ -6325,7 +6596,12 @@ EXP_ST u8 common_fuzz_stuff(char **argv, u8 *out_buf, u32 len)
 
   /* End of AFLNet code */
 
-  fault = run_target(argv, exec_tmout);
+  {
+    u64 llm_exec_start_us = get_cur_time_us();
+    fault = run_target(argv, exec_tmout);
+    last_llm_exec_us = get_cur_time_us() - llm_exec_start_us;
+    last_llm_exec_fault = fault;
+  }
 
   // Update fuzz count, no matter whether the generated test is interesting or not
   if (state_aware_mode)
@@ -6360,6 +6636,7 @@ EXP_ST u8 common_fuzz_stuff(char **argv, u8 *out_buf, u32 len)
   /* This handles FAULT_ERROR for us: */
 
   u8 is_interesting = save_if_interesting(argv, out_buf, len, fault);
+  last_llm_exec_interesting = is_interesting;
 
   if (is_interesting)
   {
@@ -7050,34 +7327,91 @@ AFLNET_REGIONS_SELECTION:;
         stall_message = format_request_message(stall_message);
 
         if (stall_message != NULL && afl_llm_validation) {
-          llm_validation_record_t record = {0};
-          record.stage = LLM_STAGE_STALL;
-          record.input_bytes = strlen(stall_message);
-          if (strcmp(protocol_name, "RTSP") == 0) record.protocol_type = PROTOCOL_RTSP;
-          else if (strcmp(protocol_name, "FTP") == 0) record.protocol_type = PROTOCOL_FTP;
-          else if (strcmp(protocol_name, "HTTP") == 0) record.protocol_type = PROTOCOL_HTTP;
+          llm_validation_record_t record;
+          protocol_context_t ctx;
+          llm_validation_mode_t validation_mode = get_llm_validation_mode();
 
-          protocol_context_t ctx = {0};
-          if (strcmp(protocol_name, "RTSP") == 0) ctx.type = PROTOCOL_RTSP;
-          else if (strcmp(protocol_name, "FTP") == 0) ctx.type = PROTOCOL_FTP;
-          else if (strcmp(protocol_name, "HTTP") == 0) ctx.type = PROTOCOL_HTTP;
+          init_validation_record_common(&record, LLM_STAGE_STALL,
+                                        strlen(stall_message));
+          record.region_count = count_candidate_regions(stall_message);
+          init_protocol_context(&ctx);
 
-          record.result = validate_llm_message(protocol_name, LLM_STAGE_STALL, stall_message, &ctx);
+          record.result = validate_llm_message_with_mode(protocol_name,
+                                                         LLM_STAGE_STALL,
+                                                         stall_message,
+                                                         &ctx,
+                                                         validation_mode);
 
           if (record.result != LLM_VALID_OK) {
-            snprintf(record.reason, sizeof(record.reason), "stall_validation_fail:%d", record.result);
+            fill_validation_reason(&record, record.result, "stall_validation");
             log_llm_validation_record(&record);
 
             if (!afl_llm_validation_permissive) {
-              ck_free(stall_message);
-              goto free_stall;
+              if (afl_llm_feedback) {
+                char *recovered = llm_feedback_retry_stall(
+                    protocol_name, stall_message, record.result,
+                    validation_mode, afl_llm_feedback_max_retries);
+                if (recovered) {
+                  ck_free(stall_message);
+                  stall_message = recovered;
+                } else {
+                  ck_free(stall_message);
+                  goto free_stall;
+                }
+              } else {
+                ck_free(stall_message);
+                goto free_stall;
+              }
             }
+          } else if (!afl_llm_post_gain) {
+            fill_validation_reason(&record, record.result, "stall_validation");
+            log_llm_validation_record(&record);
+          }
+
+          if (stall_message != NULL)
+          {
+            u32 queued_before = queued_paths;
+            u32 state_before = state_ids_count;
+            u32 edge_before = ipsm ? agnedges(ipsm) : 0;
+            u8 should_abort = common_fuzz_stuff(argv, stall_message, strlen(stall_message));
+
+            if (afl_llm_post_gain && record.result == LLM_VALID_OK) {
+              fill_post_execution_record(&record, queued_before, state_before,
+                                         edge_before);
+              log_llm_validation_record(&record);
+            }
+
+            if (should_abort)
+            {
+              // code diverges from abandon entry due to less allocations
+              splicing_with = -1;
+
+              /* Update pending_not_fuzzed count if we made it through the calibration
+                cycle and have not seen this entry before. */
+
+              if (!stop_soon && !queue_cur->cal_failed && !queue_cur->was_fuzzed)
+              {
+                queue_cur->was_fuzzed = 1;
+                was_fuzzed_map[get_state_index(target_state_id)][queue_cur->index] = 1;
+                pending_not_fuzzed--;
+                if (queue_cur->favored)
+                  pending_favored--;
+              }
+
+              ck_free(stall_message);
+
+              delete_kl_messages(kl_messages);
+
+              return ret_val;
+            }
+
+            ck_free(stall_message);
+            stall_message = NULL;
           }
         }
-
-        if (stall_message != NULL)
+        else if (stall_message != NULL)
         {
-          // printf("Filtered message:\n%s\n",stall_message);
+          // stall_message execution without validation logging
 
           if (common_fuzz_stuff(argv, stall_message, strlen(stall_message)))
           {
@@ -7105,7 +7439,6 @@ AFLNET_REGIONS_SELECTION:;
 
           ck_free(stall_message);
         }
-
         free(stall_response);
       free_stall:
         free(stall_prompt);
@@ -9669,6 +10002,13 @@ EXP_ST void setup_dirs_fds(void)
     PFATAL("Unable to create '%s'", tmp);
   ck_free(tmp);
 
+  /* All output from LLM seed enrichment -- for debugging purposes. */
+
+  tmp = alloc_printf("%s/enrichment-interactions", out_dir);
+  if (mkdir(tmp, 0700))
+    PFATAL("Unable to create '%s'", tmp);
+  ck_free(tmp);
+
   /* All output from the LLM's help for unblocking the state stall -- for debugging purposes.  */
   tmp = alloc_printf("%s/stall-interactions", out_dir);
   if (mkdir(tmp, 0700))
@@ -10731,12 +11071,24 @@ int main(int argc, char **argv)
   if (getenv("AFL_FAST_CAL"))
     fast_cal = 1;
 
-  if (getenv("AFL_LLM_VALIDATION"))
-    afl_llm_validation = 1;
-  if (getenv("AFL_LLM_VALIDATION_PERMISSIVE"))
-    afl_llm_validation_permissive = 1;
-  if (getenv("AFL_LLM_VALIDATION_STRICT"))
-    afl_llm_validation_strict = 1;
+  afl_llm_validation = env_flag_enabled("AFL_LLM_VALIDATION");
+  afl_llm_validation_permissive = env_flag_enabled("AFL_LLM_VALIDATION_PERMISSIVE");
+  afl_llm_validation_strict = env_flag_enabled("AFL_LLM_VALIDATION_STRICT");
+  afl_llm_post_gain = env_flag_enabled("AFL_LLM_POST_GAIN");
+
+  /* Feedback retry: auto-enable when validation is on, unless explicitly disabled */
+  if (getenv("AFL_LLM_FEEDBACK")) {
+    afl_llm_feedback = env_flag_enabled("AFL_LLM_FEEDBACK");
+  } else if (afl_llm_validation) {
+    afl_llm_feedback = 1;
+  }
+  {
+    const char *fb_retries = getenv("AFL_LLM_FEEDBACK_MAX_RETRIES");
+    if (fb_retries && fb_retries[0]) {
+      int v = atoi(fb_retries);
+      if (v > 0) afl_llm_feedback_max_retries = v;
+    }
+  }
 
   if (getenv("AFL_HANG_TMOUT"))
   {
@@ -10785,11 +11137,11 @@ int main(int argc, char **argv)
     protocol_patterns = kl_init(rang);
     message_types_set = kh_init(strSet);
 
-    setup_llm_grammars();
-
     if (afl_llm_validation) {
       init_validation_log(out_dir);
     }
+
+    setup_llm_grammars();
 
     enrich_testcases();
   }

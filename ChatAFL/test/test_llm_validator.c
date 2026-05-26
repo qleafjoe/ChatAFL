@@ -8,8 +8,8 @@
  * Licensed under the Apache License, Version 2.0
  */
 
-#include "llm-validator.h"
-#include "alloc-inl.h"
+#include "../llm-validator.h"
+#include "../alloc-inl.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -146,7 +146,7 @@ static void test_rtsp(void) {
         "CSeq: 4\r\n"
         "\r\n",
         &ctx);
-    ASSERT_GRAMMAR_FAIL(r, "Missing Session for PLAY");
+    ASSERT_CONTEXT_FAIL(r, "Missing Session for PLAY");
 
     /* --- Missing Session for PAUSE --- */
 
@@ -156,7 +156,7 @@ static void test_rtsp(void) {
         "CSeq: 5\r\n"
         "\r\n",
         &ctx);
-    ASSERT_GRAMMAR_FAIL(r, "Missing Session for PAUSE");
+    ASSERT_CONTEXT_FAIL(r, "Missing Session for PAUSE");
 
     /* --- Missing Session for TEARDOWN --- */
 
@@ -166,7 +166,7 @@ static void test_rtsp(void) {
         "CSeq: 6\r\n"
         "\r\n",
         &ctx);
-    ASSERT_GRAMMAR_FAIL(r, "Missing Session for TEARDOWN");
+    ASSERT_CONTEXT_FAIL(r, "Missing Session for TEARDOWN");
 
     /* --- Invalid method --- */
 
@@ -206,7 +206,7 @@ static void test_rtsp(void) {
         "CSeq: 1\x01\r\n"
         "\r\n",
         &ctx);
-    ASSERT_GRAMMAR_FAIL(r, "Non-printable character in header");
+    ASSERT_FORMAT_FAIL(r, "Non-printable character in header");
 
     /* --- Case-insensitive headers (lowercase cseq:) --- */
 
@@ -226,7 +226,7 @@ static void test_rtsp(void) {
         "CSeq 1\r\n"
         "\r\n",
         &ctx);
-    ASSERT_GRAMMAR_FAIL(r, "Header line without ':'");
+    ASSERT_FORMAT_FAIL(r, "Header line without ':'");
 }
 
 /* ------------------------------------------------------------------ */
@@ -433,7 +433,7 @@ static void test_sequences(void) {
         "CSeq: 2\r\n"
         "\r\n",
         &ctx);
-    ASSERT_GRAMMAR_FAIL(r, "Invalid RTSP sequence (PLAY without Session/SETUP)");
+    ASSERT_CONTEXT_FAIL(r, "Invalid RTSP sequence (PLAY without Session/SETUP)");
 }
 
 /* ------------------------------------------------------------------ */
@@ -632,6 +632,100 @@ static void test_http_sequence(void) {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Validation Mode Tests                                             */
+/* ------------------------------------------------------------------ */
+
+static void test_validation_modes(void) {
+    printf("[Validation Mode Tests]\n");
+
+    protocol_context_t ctx;
+    llm_validation_result_t result;
+
+    ctx = (protocol_context_t){0};
+    result = validate_llm_message_with_mode(
+        "RTSP",
+        LLM_STAGE_STALL,
+        "PLAY rtsp://example.com/media RTSP/1.0\r\n"
+        "CSeq: 9\r\n"
+        "\r\n",
+        &ctx,
+        LLM_VALIDATE_FORMAT_ONLY
+    );
+    ASSERT_OK(result, "Format-only mode accepts RTSP message missing session context");
+
+    ctx = (protocol_context_t){0};
+    result = validate_llm_message_with_mode(
+        "RTSP",
+        LLM_STAGE_STALL,
+        "PLAY rtsp://example.com/media RTSP/1.0\r\n"
+        "CSeq: 9\r\n"
+        "\r\n",
+        &ctx,
+        LLM_VALIDATE_FULL
+    );
+    ASSERT_CONTEXT_FAIL(result, "Full mode reports missing RTSP session as context failure");
+
+    ctx = (protocol_context_t){0};
+    result = validate_llm_message_with_mode(
+        "HTTP",
+        LLM_STAGE_STALL,
+        "INVALID /index.html HTTP/1.1\r\n"
+        "Host: example.com\r\n"
+        "\r\n",
+        &ctx,
+        LLM_VALIDATE_FORMAT_ONLY
+    );
+    ASSERT_OK(result, "Format-only mode ignores HTTP grammar errors");
+
+    ctx = (protocol_context_t){0};
+    result = validate_llm_message_with_mode(
+        "HTTP",
+        LLM_STAGE_STALL,
+        "INVALID /index.html HTTP/1.1\r\n"
+        "Host: example.com\r\n"
+        "\r\n",
+        &ctx,
+        LLM_VALIDATE_FULL
+    );
+    ASSERT_GRAMMAR_FAIL(result, "Full mode rejects HTTP grammar errors");
+
+    ctx = (protocol_context_t){0};
+    result = validate_llm_sequence_with_mode(
+        "FTP",
+        LLM_STAGE_ENRICHMENT,
+        "USER demo\r\nPASS demo\r\nLIST\r\n",
+        &ctx,
+        LLM_VALIDATE_FORMAT_ONLY
+    );
+    ASSERT_OK(result, "Format-only mode accepts valid FTP sequence");
+
+    ctx = (protocol_context_t){0};
+    result = validate_llm_sequence_with_mode(
+        "FTP",
+        LLM_STAGE_ENRICHMENT,
+        "PASS demo\r\nLIST\r\n",
+        &ctx,
+        LLM_VALIDATE_FULL
+    );
+    ASSERT_CONTEXT_FAIL(result, "Full mode rejects FTP sequence with missing login context");
+}
+
+/* ------------------------------------------------------------------ */
+/*  Post-Execution Classification Tests                               */
+/* ------------------------------------------------------------------ */
+
+static void test_post_execution_classification(void) {
+    printf("[Post-Execution Classification Tests]\n");
+
+    ASSERT_EQ(classify_llm_execution_gain(0, 0, 0), LLM_VALID_NO_GAIN);
+    ASSERT_EQ(classify_llm_execution_gain(1, 0, 0), LLM_VALID_OK);
+    ASSERT_EQ(classify_llm_execution_gain(0, 1, 0), LLM_VALID_OK);
+    ASSERT_EQ(classify_llm_execution_gain(0, 0, 1), LLM_VALID_OK);
+
+    printf("  PASS: Post-execution gain classification behaves as expected\n");
+}
+
+/* ------------------------------------------------------------------ */
 /*  main                                                              */
 /* ------------------------------------------------------------------ */
 
@@ -664,6 +758,12 @@ int main(void) {
     printf("\n");
 
     test_http_sequence();
+    printf("\n");
+
+    test_validation_modes();
+    printf("\n");
+
+    test_post_execution_classification();
 
     printf("\n=== Results: %d passed, %d failed ===\n",
            tests_passed, tests_failed);
