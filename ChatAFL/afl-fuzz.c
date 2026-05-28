@@ -8749,6 +8749,12 @@ havoc_stage:
     stage_max = SPLICE_HAVOC * perf_score / havoc_div / 100;
   }
 
+  /* Apply dynamic stage weights from coverage feedback */
+  {
+    u32 weight = stage_weights[splice_cycle ? STAGE_SPLICE : STAGE_HAVOC];
+    stage_max = stage_max * weight / 100;
+  }
+
   if (stage_max < HAVOC_MIN)
     stage_max = HAVOC_MIN;
 
