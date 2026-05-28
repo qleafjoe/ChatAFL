@@ -45,7 +45,7 @@ static int curl_initialized = 0;
 
 static void ensure_curl_init(void) {
     if (!curl_initialized) {
-        ensure_curl_init();
+        curl_global_init(CURL_GLOBAL_DEFAULT);
         curl_initialized = 1;
     }
 }
