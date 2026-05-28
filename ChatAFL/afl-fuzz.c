@@ -496,10 +496,11 @@ static void init_seed_hash_table(u32 size) {
 static u8 is_seed_duplicate(const u8 *data, u32 len) {
   if (!seed_hash_table) return 0;
 
-  /* Compute seed hash - ensure len is aligned to 8 bytes for hash32 */
+  /* Compute seed hash - use aligned length for hash32, but mix in full
+     length to reduce false collisions between different-length inputs */
   u32 aligned_len = len & ~7u;
   if (aligned_len == 0) aligned_len = 8;
-  u32 hash = hash32(data, aligned_len, 0x12345678);
+  u32 hash = hash32(data, aligned_len, 0x12345678 ^ len);
   u32 index = hash % seed_hash_table_size;
 
   if (seed_hash_table[index]) {
@@ -5153,6 +5154,11 @@ static u8 save_if_interesting(char **argv, void *mem, u32 len, u8 fault)
       return 0;
     }
 
+    /* Seed deduplication: check before writing file to avoid orphans */
+    if (seed_hash_table && is_seed_duplicate(mem, len)) {
+      return 0;
+    }
+
 #ifndef SIMPLE_FILES
 
     fn = alloc_printf("%s/queue/id:%06u,%s", out_dir, queued_paths,
@@ -5165,12 +5171,6 @@ static u8 save_if_interesting(char **argv, void *mem, u32 len, u8 fault)
 #endif /* ^!SIMPLE_FILES */
 
     u32 full_len = save_kl_messages_to_file(kl_messages, fn, 0, messages_sent);
-
-    /* Seed deduplication: skip if content hash already seen */
-    if (seed_hash_table && is_seed_duplicate(mem, len)) {
-      ck_free(fn);
-      return 0;
-    }
 
     /* We use the actual length of all messages (full_len), not the len of the mutated message subsequence (len)*/
     add_to_queue(fn, full_len, 0);

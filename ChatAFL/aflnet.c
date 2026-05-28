@@ -1804,7 +1804,7 @@ void free_response_info(response_info_t *info) {
 
 // Global state transition graph
 static state_node_t *state_graph = NULL;
-static u32 state_count = 0;
+static u32 state_graph_node_count = 0;
 
 // Add a new state node to the graph; caller should check find_state_node() first
 static state_node_t *add_state_node(u32 state_id) {
@@ -1814,7 +1814,7 @@ static state_node_t *add_state_node(u32 state_id) {
   node->transitions = NULL;
   node->next = state_graph;
   state_graph = node;
-  state_count++;
+  state_graph_node_count++;
 
   return node;
 }

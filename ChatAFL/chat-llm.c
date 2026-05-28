@@ -40,6 +40,16 @@ struct MemoryStruct
     size_t size;
 };
 
+/* One-time curl initialization */
+static int curl_initialized = 0;
+
+static void ensure_curl_init(void) {
+    if (!curl_initialized) {
+        ensure_curl_init();
+        curl_initialized = 1;
+    }
+}
+
 static size_t chat_with_llm_helper(void *contents, size_t size, size_t nmemb, void *userp)
 {
     size_t realsize = size * nmemb;
@@ -104,7 +114,10 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
     const char *model_env = getenv("LLM_MODEL");
 
     if (!url_env || url_env[0] == '\0') url_env = "https://api.minimaxi.com/v1/text/chatcompletion_v2";
-    if (!token_env || token_env[0] == '\0') token_env = "sk-api-adJ3ML-ux_Ary01UQr8ehTDCoex9QhDJSln-9qQC49PvINgkw77-Vgtm7BZQSx3hHVzeQCr3K3FWD3hx-2uoG9S2kKdoYS4Q0akTfhMXDzSJR7cY08LiEJs";
+    if (!token_env || token_env[0] == '\0') {
+        printf("[LLM] ERROR: LLM_TOKEN environment variable not set. Please set it to your API key.\n");
+        return NULL;
+    }
     if (!model_env || model_env[0] == '\0') model_env = "MiniMax-M2.7";
 
     // Debug: print which LLM endpoint is being used
@@ -130,7 +143,7 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
     json_object_put(root_obj);
 
 
-    curl_global_init(CURL_GLOBAL_DEFAULT);
+    ensure_curl_init();
 
     int retry_count = 0;
     int max_retries = tries;
@@ -238,7 +251,7 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
         free(auth_header);
     }
 
-    curl_global_cleanup();
+    /* curl_global_cleanup() not called per-request; handled at process exit */
     return answer;
 }
 
