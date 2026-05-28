@@ -472,9 +472,6 @@ static u32 stage_weights[MUTATION_STAGE_COUNT] = {
     100, /* STAGE_HAVOC */
     100, /* STAGE_SPLICE */
 };
-// Reward fields - To be used
-u32 reward_random;
-u32 reward_grammar;
 
 static u8 env_flag_enabled(const char *name)
 {
@@ -7376,10 +7373,10 @@ AFLNET_REGIONS_SELECTION:;
     u32 response_count = 0;
     char *response_fname = alloc_printf("%s/responses-ipsm/id:%s", out_dir, basename(queue_cur->fname));
     char **responses_temp = get_responses_from_file(response_fname, &response_bytes_temp, &response_count, &buffer_len);
+    ck_free(response_fname);
     if (responses_temp != NULL)
     {
       chat_times++;
-      ck_free(response_fname);
 
       char *history = NULL;
       u32 history_len = 0;

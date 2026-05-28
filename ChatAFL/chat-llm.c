@@ -16,6 +16,24 @@
 #define MAX_TOKENS 4096
 #define CONFIDENT_TIMES 3
 
+/* Parse prompt as a JSON array of messages. If it's not a valid JSON array,
+   wrap it as a single user message. Returns a new json_object array. */
+static json_object *parse_or_create_messages(const char *prompt) {
+    json_object *messages_array = json_tokener_parse(prompt);
+
+    if (!messages_array || json_object_get_type(messages_array) != json_type_array) {
+        if (messages_array) json_object_put(messages_array);
+
+        messages_array = json_object_new_array();
+        json_object *msg_obj = json_object_new_object();
+        json_object_object_add(msg_obj, "role", json_object_new_string("user"));
+        json_object_object_add(msg_obj, "content", json_object_new_string(prompt));
+        json_object_array_add(messages_array, msg_obj);
+    }
+
+    return messages_array;
+}
+
 struct MemoryStruct
 {
     char *memory;
@@ -96,37 +114,12 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
     char *auth_header = NULL;
     asprintf(&auth_header, "Authorization: Bearer %s", token_env);
     
-    char *content_header = "Content-Type: application/json";
-    char *accept_header = "Accept: application/json";
+    const char *content_header = "Content-Type: application/json";
+    const char *accept_header = "Accept: application/json";
     char *data = NULL;
-    
+
     json_object *root_obj = json_object_new_object();
-    json_object *messages_array = NULL;
-    
-    if (strcmp(model, "instruct") == 0) {
-        messages_array = json_tokener_parse(prompt);
-        if (!messages_array || json_object_get_type(messages_array) != json_type_array) {
-            if (messages_array) json_object_put(messages_array);
-            // Fallback: wrap raw prompt in a user message
-            messages_array = json_object_new_array();
-            json_object *msg_obj = json_object_new_object();
-            json_object_object_add(msg_obj, "role", json_object_new_string("user"));
-            json_object_object_add(msg_obj, "content", json_object_new_string(prompt));
-            json_object_array_add(messages_array, msg_obj);
-        }
-    } else {
-        // Prompt is already a JSON array string? No, let's be safe.
-        // In the current codebase, prompt is usually a JSON string for chat models.
-        messages_array = json_tokener_parse(prompt);
-        if (!messages_array || json_object_get_type(messages_array) != json_type_array) {
-            if (messages_array) json_object_put(messages_array);
-            messages_array = json_object_new_array();
-            json_object *msg_obj = json_object_new_object();
-            json_object_object_add(msg_obj, "role", json_object_new_string("user"));
-            json_object_object_add(msg_obj, "content", json_object_new_string(prompt));
-            json_object_array_add(messages_array, msg_obj);
-        }
-    }
+    json_object *messages_array = parse_or_create_messages(prompt);
 
     json_object_object_add(root_obj, "model", json_object_new_string(model_env));
     json_object_object_add(root_obj, "messages", messages_array);
@@ -431,10 +424,6 @@ char *construct_prompt_for_remaining_templates(char *protocol_name, char *first_
     asprintf(&second_question, "For the %s protocol, other templates of client requests are:", protocol_name);
 
     json_object *answer_str = json_object_new_string(first_answer);
-    // printf("The First Question\n%s\n\n", first_question);
-    // printf("The First Answer\n%s\n\n", first_answer);
-    // printf("The Second Question\n%s\n\n", second_question);
-    json_object_to_json_string(answer_str); // keep the call if needed for side effects, but actually it's just getting a string. I'll remove it.
 
     json_object *messages = json_object_new_array();
     
