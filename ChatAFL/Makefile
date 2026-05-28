@@ -36,6 +36,13 @@ ifneq "$(filter Linux GNU%,$(shell uname))" ""
   LDFLAGS  += -ldl -lgvc -lcgraph -lm -lcap
 endif
 
+# 覆盖率支持
+COVERAGE ?= 0
+ifeq ($(COVERAGE), 1)
+    CFLAGS += -fprofile-arcs -ftest-coverage
+    LDFLAGS += -lgcov
+endif
+
 ifeq "$(findstring clang, $(shell $(CC) --version 2>/dev/null))" ""
   TEST_CC   = afl-gcc
 else
