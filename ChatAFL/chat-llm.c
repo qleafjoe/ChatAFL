@@ -42,6 +42,38 @@ static size_t chat_with_llm_helper(void *contents, size_t size, size_t nmemb, vo
     return realsize;
 }
 
+/* Convert LF (\n) to CRLF (\r\n) for protocol messages.
+ * LLM often generates Unix line endings, but RTSP/HTTP require CRLF.
+ * Returns a new string (caller must free), or NULL on alloc failure. */
+static char *lf_to_crlf(const char *input)
+{
+    if (!input) return NULL;
+
+    size_t newlines = 0;
+    for (const char *p = input; *p; p++) {
+        if (*p == '\n' && (p == input || *(p - 1) != '\r')) {
+            newlines++;
+        }
+    }
+
+    if (newlines == 0) return strdup(input);
+
+    size_t old_len = strlen(input);
+    size_t new_len = old_len + newlines + 1;
+    char *result = malloc(new_len);
+    if (!result) return NULL;
+
+    char *dst = result;
+    for (const char *src = input; *src; src++) {
+        if (*src == '\n' && (src == input || *(src - 1) != '\r')) {
+            *dst++ = '\r';
+        }
+        *dst++ = *src;
+    }
+    *dst = '\0';
+    return result;
+}
+
 char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
 {
     CURL *curl;
@@ -54,7 +86,7 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
     const char *model_env = getenv("LLM_MODEL");
 
     if (!url_env || url_env[0] == '\0') url_env = "https://api.minimaxi.com/v1/text/chatcompletion_v2";
-    if (!token_env || token_env[0] == '\0') token_env = "sk-cp-EK3rwNPjpttunXcODVKSpsvJh4dySqRdtbgbjcmLxdlSHRyoIuWJzFPXFUr8I8rponL4y-xwRMMcO3eodW7dwfO2hqL3G6cCQBtIufVHuRX11_JV1YK5YFs";
+    if (!token_env || token_env[0] == '\0') token_env = "sk-api-adJ3ML-ux_Ary01UQr8ehTDCoex9QhDJSln-9qQC49PvINgkw77-Vgtm7BZQSx3hHVzeQCr3K3FWD3hx-2uoG9S2kKdoYS4Q0akTfhMXDzSJR7cY08LiEJs";
     if (!model_env || model_env[0] == '\0') model_env = "MiniMax-M2.7";
 
     // Debug: print which LLM endpoint is being used
@@ -106,8 +138,21 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
 
 
     curl_global_init(CURL_GLOBAL_DEFAULT);
+
+    int retry_count = 0;
+    int max_retries = tries;
+    int base_delay = 1; /* base delay 1 second for exponential backoff */
+
     do
     {
+        /* Exponential backoff delay: skip on first attempt */
+        if (retry_count > 0) {
+            int delay = base_delay * (1 << (retry_count - 1));
+            if (delay > 30) delay = 30; /* cap at 30 seconds */
+            printf("[LLM] Retry %d/%d, delaying %d seconds\n", retry_count, max_retries, delay);
+            sleep(delay);
+        }
+
         struct MemoryStruct chunk;
 
         chunk.memory = malloc(1); /* will be grown as needed by the realloc above */
@@ -137,7 +182,7 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
                 if (jobj && json_object_get_type(jobj) == json_type_object)
                 {
                     json_object *choices = NULL;
-                    if (json_object_object_get_ex(jobj, "choices", &choices) && 
+                    if (json_object_object_get_ex(jobj, "choices", &choices) &&
                         json_object_get_type(choices) == json_type_array &&
                         json_object_array_length(choices) > 0)
                     {
@@ -160,17 +205,15 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
                             }
                         }
                     }
-                    
+
                     if (!answer)
                     {
                         printf("LLM Response parsed but no valid answer found (refused or malformed). Raw: %s\n", chunk.memory);
-                        sleep(1);
                     }
                 }
                 else
                 {
                     printf("Error: LLM returned invalid JSON or error: %s\n", chunk.memory);
-                    sleep(2);
                 }
                 if (jobj) json_object_put(jobj);
             }
@@ -184,7 +227,14 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
         }
 
         free(chunk.memory);
-    } while ((res != CURLE_OK || answer == NULL) && (--tries > 0));
+
+        /* Success: exit retry loop */
+        if (res == CURLE_OK && answer != NULL) {
+            break;
+        }
+
+        retry_count++;
+    } while (retry_count < max_retries);
 
     if (data != NULL)
     {
@@ -201,18 +251,46 @@ char *chat_with_llm(char *prompt, char *model, int tries, float temperature)
 
 char *clean_llm_response(const char *raw_response) {
     if (!raw_response) return NULL;
-    
-    // 1. Check for refusal keywords
-    const char *refusals[] = {"sorry", "As an AI", "cannot fulfill", "can't help", "unable to", "policy", NULL};
-    for (int i = 0; refusals[i]; i++) {
-        if (strcasestr(raw_response, refusals[i])) {
-            printf("[LLM] Refusal detected: %s\n", refusals[i]);
-            return NULL;
+
+    /* 1. Context-aware refusal detection:
+     *    Check if response contains protocol indicators. If it does,
+     *    skip refusal detection to avoid false positives on valid protocol data. */
+    int is_protocol_response = 0;
+    const char *protocol_indicators[] = {
+        "RTSP/1.0", "HTTP/1.1", "FTP", "SIP/2.0",
+        "SETUP", "PLAY", "DESCRIBE", "OPTIONS",
+        "200 OK", "400 Bad Request", "404 Not Found",
+        NULL
+    };
+
+    for (int i = 0; protocol_indicators[i]; i++) {
+        if (strcasestr(raw_response, protocol_indicators[i])) {
+            is_protocol_response = 1;
+            break;
         }
     }
 
-    // 2. Try to extract JSON/Array if it looks like one (for grammar extraction)
-    // We prioritize JSON extraction for grammar modules
+    if (!is_protocol_response) {
+        const char *refusals[] = {"sorry", "As an AI", "cannot fulfill", "can't help", "unable to", "policy", NULL};
+        for (int i = 0; refusals[i]; i++) {
+            if (strcasestr(raw_response, refusals[i])) {
+                printf("[LLM] Refusal detected: %s\n", refusals[i]);
+                return NULL;
+            }
+        }
+    }
+
+    /* 2. Robust JSON extraction: try json-c parsing first */
+    json_object *json_obj = json_tokener_parse(raw_response);
+    if (json_obj) {
+        /* Successfully parsed as JSON (handles arrays, objects, etc.) */
+        const char *json_str = json_object_to_json_string(json_obj);
+        char *cleaned = lf_to_crlf(json_str);
+        json_object_put(json_obj);
+        if (cleaned) return cleaned;
+    }
+
+    /* 3. Fallback: simple JSON extraction by finding outermost braces/brackets */
     char *json_start = strpbrk(raw_response, "{[");
     char *json_end = NULL;
     if (json_start) {
@@ -223,23 +301,35 @@ char *clean_llm_response(const char *raw_response) {
     if (json_start && json_end && json_end > json_start) {
         size_t len = json_end - json_start + 1;
         char *cleaned = malloc(len + 1);
-        memcpy(cleaned, json_start, len);
-        cleaned[len] = '\0';
-        return cleaned;
+        if (cleaned) {
+            memcpy(cleaned, json_start, len);
+            cleaned[len] = '\0';
+
+            /* Validate the extracted string is valid JSON */
+            json_object *test_obj = json_tokener_parse(cleaned);
+            if (test_obj) {
+                json_object_put(test_obj);
+                char *crlf_cleaned = lf_to_crlf(cleaned);
+                free(cleaned);
+                if (crlf_cleaned) return crlf_cleaned;
+            } else {
+                free(cleaned);
+            }
+        }
     }
 
-    // 3. For raw protocol data (stall breaking/enrichment), strip markdown and leading/trailing noise
+    /* 4. For raw protocol data (stall breaking/enrichment), strip markdown and noise */
     char *res = strdup(raw_response);
     char *ptr = res;
 
-    // Skip leading markdown code blocks (e.g., ```rtsp, ```text)
+    /* Skip leading markdown code blocks (e.g., ```rtsp, ```text) */
     if (strncmp(ptr, "```", 3) == 0) {
         ptr += 3;
-        while (*ptr && isalpha(*ptr)) ptr++; // skip language tag like 'rtsp'
+        while (*ptr && isalpha(*ptr)) ptr++; /* skip language tag like 'rtsp' */
         while (*ptr && isspace(*ptr)) ptr++;
     }
 
-    // Strip trailing markdown backticks
+    /* Strip trailing markdown backticks */
     char *end = ptr + strlen(ptr) - 1;
     while (end >= ptr && (isspace(*end) || *end == '`')) {
         *end = '\0';
@@ -252,31 +342,10 @@ char *clean_llm_response(const char *raw_response) {
     /* Convert LF (\n) to CRLF (\r\n) for protocol messages
      * LLM often generates Unix line endings, but RTSP/HTTP require CRLF */
     if (final_res) {
-        /* First pass: count newlines to allocate correct size */
-        size_t newlines = 0;
-        for (char *p = final_res; *p; p++) {
-            if (*p == '\n' && (p == final_res || *(p-1) != '\r')) {
-                newlines++;
-            }
-        }
-
-        if (newlines > 0) {
-            size_t old_len = strlen(final_res);
-            size_t new_len = old_len + newlines + 1;
-            char *crlf_res = malloc(new_len);
-            if (crlf_res) {
-                /* Second pass: copy with \n -> \r\n conversion */
-                char *dst = crlf_res;
-                for (char *src = final_res; *src; src++) {
-                    if (*src == '\n' && (src == final_res || *(src-1) != '\r')) {
-                        *dst++ = '\r';
-                    }
-                    *dst++ = *src;
-                }
-                *dst = '\0';
-                free(final_res);
-                return crlf_res;
-            }
+        char *crlf_res = lf_to_crlf(final_res);
+        if (crlf_res) {
+            free(final_res);
+            return crlf_res;
         }
     }
 
