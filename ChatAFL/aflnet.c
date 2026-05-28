@@ -1724,6 +1724,202 @@ unsigned int *extract_response_codes_ipp(unsigned char *buf, unsigned int buf_si
   return state_sequence;
 }
 
+// --- Response content analysis ---
+
+// Parse an RTSP response and extract key header fields
+static response_info_t *parse_rtsp_response(const char *response, u32 len) {
+  response_info_t *info = ck_alloc(sizeof(response_info_t));
+
+  // Extract response code (e.g. "RTSP/1.0 200 OK")
+  if (sscanf(response, "RTSP/1.0 %u", &info->response_code) != 1) {
+    ck_free(info);
+    return NULL;
+  }
+
+  // Extract Session header
+  char *session_start = strstr(response, "Session: ");
+  if (session_start) {
+    session_start += 9; // skip "Session: "
+    char *session_end = strstr(session_start, "\r\n");
+    if (session_end) {
+      u32 session_len = session_end - session_start;
+      info->session_id = ck_alloc(session_len + 1);
+      memcpy(info->session_id, session_start, session_len);
+      info->session_id[session_len] = '\0';
+    }
+  }
+
+  // Extract Content-Type header
+  char *content_type_start = strstr(response, "Content-Type: ");
+  if (content_type_start) {
+    content_type_start += 14; // skip "Content-Type: "
+    char *content_type_end = strstr(content_type_start, "\r\n");
+    if (content_type_end) {
+      u32 content_type_len = content_type_end - content_type_start;
+      info->content_type = ck_alloc(content_type_len + 1);
+      memcpy(info->content_type, content_type_start, content_type_len);
+      info->content_type[content_type_len] = '\0';
+    }
+  }
+
+  // Extract Content-Length header
+  char *content_length_start = strstr(response, "Content-Length: ");
+  if (content_length_start) {
+    content_length_start += 16; // skip "Content-Length: "
+    sscanf(content_length_start, "%u", &info->content_length);
+  }
+
+  // Extract Server header
+  char *server_start = strstr(response, "Server: ");
+  if (server_start) {
+    server_start += 8; // skip "Server: "
+    char *server_end = strstr(server_start, "\r\n");
+    if (server_end) {
+      u32 server_len = server_end - server_start;
+      info->server_header = ck_alloc(server_len + 1);
+      memcpy(info->server_header, server_start, server_len);
+      info->server_header[server_len] = '\0';
+    }
+  }
+
+  return info;
+}
+
+// Free a response_info_t and all its allocated string fields
+static void free_response_info(response_info_t *info) {
+  if (!info) return;
+
+  if (info->session_id) ck_free(info->session_id);
+  if (info->content_type) ck_free(info->content_type);
+  if (info->server_header) ck_free(info->server_header);
+  ck_free(info);
+}
+
+// --- State transition graph ---
+
+// Global state transition graph
+static state_node_t *state_graph = NULL;
+static u32 state_count = 0;
+
+// Add a new state node to the graph (or return existing one)
+static state_node_t *add_state_node(u32 state_id) {
+  state_node_t *node = ck_alloc(sizeof(state_node_t));
+  node->state_id = state_id;
+  node->visit_count = 0;
+  node->transitions = NULL;
+  node->next = state_graph;
+  state_graph = node;
+  state_count++;
+
+  return node;
+}
+
+// Find a state node by ID, returns NULL if not found
+static state_node_t *find_state_node(u32 state_id) {
+  state_node_t *node = state_graph;
+  while (node) {
+    if (node->state_id == state_id) {
+      return node;
+    }
+    node = node->next;
+  }
+  return NULL;
+}
+
+// Add a state transition to the graph; increments count if transition already exists
+static void add_state_transition(u32 from_state, u32 to_state, u32 trigger_code) {
+  state_node_t *from_node = find_state_node(from_state);
+  if (!from_node) {
+    from_node = add_state_node(from_state);
+  }
+
+  // Ensure the destination node exists as well
+  state_node_t *to_node = find_state_node(to_state);
+  if (!to_node) {
+    to_node = add_state_node(to_state);
+  }
+
+  // Check if this transition already exists
+  state_transition_t *trans = from_node->transitions;
+  while (trans) {
+    if (trans->to_state == to_state && trans->trigger_code == trigger_code) {
+      trans->count++;
+      return;
+    }
+    trans = trans->next;
+  }
+
+  // Add new transition
+  trans = ck_alloc(sizeof(state_transition_t));
+  trans->from_state = from_state;
+  trans->to_state = to_state;
+  trans->trigger_code = trigger_code;
+  trans->count = 1;
+  trans->next = from_node->transitions;
+  from_node->transitions = trans;
+}
+
+// Calculate edge coverage percentage over the current state graph
+static u32 calculate_edge_coverage(void) {
+  u32 total_edges = 0;
+  u32 covered_edges = 0;
+
+  state_node_t *node = state_graph;
+  while (node) {
+    state_transition_t *trans = node->transitions;
+    while (trans) {
+      total_edges++;
+      if (trans->count > 0) {
+        covered_edges++;
+      }
+      trans = trans->next;
+    }
+    node = node->next;
+  }
+
+  if (total_edges == 0) return 0;
+  return (covered_edges * 100) / total_edges;
+}
+
+// --- Protocol consistency checking ---
+
+// Check RTSP protocol consistency between a request and its response.
+// Returns 1 if consistent, 0 if a violation is detected.
+static u8 check_rtsp_consistency(const char *request, const char *response) {
+  // SETUP request must include a Transport header
+  if (strncmp(request, "SETUP", 5) == 0) {
+    if (!strstr(request, "Transport:")) {
+      printf("[Protocol violation] SETUP request missing Transport header\n");
+      return 0;
+    }
+
+    // SETUP response (200 OK) must include a Session header
+    if (strstr(response, "200 OK") && !strstr(response, "Session:")) {
+      printf("[Protocol violation] SETUP response missing Session header\n");
+      return 0;
+    }
+  }
+
+  // PLAY request must include a Session header
+  if (strncmp(request, "PLAY", 4) == 0) {
+    if (!strstr(request, "Session:")) {
+      printf("[Protocol violation] PLAY request missing Session header\n");
+      return 0;
+    }
+  }
+
+  // Validate response code range
+  u32 response_code = 0;
+  if (sscanf(response, "RTSP/1.0 %u", &response_code) == 1) {
+    if (response_code < 100 || response_code > 599) {
+      printf("[Protocol violation] Invalid response code: %u\n", response_code);
+      return 0;
+    }
+  }
+
+  return 1; // consistent
+}
+
 // kl_messages manipulating functions
 
 klist_t(lms) * construct_kl_messages(u8 *fname, region_t *regions, u32 region_count)
