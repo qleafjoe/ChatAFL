@@ -165,4 +165,13 @@ struct state_transition {
   state_transition_t *next;    /* Next transition in linked list */
 };
 
+// --- Protocol state machine functions ---
+
+response_info_t *parse_rtsp_response(const char *response, u32 len);
+void free_response_info(response_info_t *info);
+void add_state_transition(u32 from_state, u32 to_state, u32 trigger_code);
+u32 calculate_edge_coverage(void);
+u8 check_rtsp_consistency(const char *request, u32 req_len,
+                          const char *response, u32 resp_len);
+
 #endif /* __AFLNET_H */

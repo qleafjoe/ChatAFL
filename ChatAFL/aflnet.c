@@ -1411,6 +1411,7 @@ unsigned int *extract_response_codes_rtsp(unsigned char *buf, unsigned int buf_s
   unsigned int mem_size = 1024;
   unsigned int *state_sequence = NULL;
   unsigned int state_count = 0;
+  unsigned int prev_state = 0;
   char terminator[2] = {0x0D, 0x0A};
   char rtsp[5] = {0x52, 0x54, 0x53, 0x50, 0x2f};
 
@@ -1437,6 +1438,10 @@ unsigned int *extract_response_codes_rtsp(unsigned char *buf, unsigned int buf_s
 
         if (message_code == 0)
           break;
+
+        // Track state transition in the state graph
+        add_state_transition(prev_state, message_code, message_code);
+        prev_state = message_code;
 
         state_count++;
         state_sequence = (unsigned int *)ck_realloc(state_sequence, state_count * sizeof(unsigned int));
@@ -1727,7 +1732,7 @@ unsigned int *extract_response_codes_ipp(unsigned char *buf, unsigned int buf_si
 // --- Response content analysis ---
 
 // Parse an RTSP response and extract key header fields
-static response_info_t *parse_rtsp_response(const char *response, u32 len) {
+response_info_t *parse_rtsp_response(const char *response, u32 len) {
   response_info_t *info = ck_alloc(sizeof(response_info_t));
 
   // Extract response code (e.g. "RTSP/1.0 200 OK")
@@ -1786,7 +1791,7 @@ static response_info_t *parse_rtsp_response(const char *response, u32 len) {
 }
 
 // Free a response_info_t and all its allocated string fields
-static void free_response_info(response_info_t *info) {
+void free_response_info(response_info_t *info) {
   if (!info) return;
 
   if (info->session_id) ck_free(info->session_id);
@@ -1801,7 +1806,7 @@ static void free_response_info(response_info_t *info) {
 static state_node_t *state_graph = NULL;
 static u32 state_count = 0;
 
-// Add a new state node to the graph (or return existing one)
+// Add a new state node to the graph; caller should check find_state_node() first
 static state_node_t *add_state_node(u32 state_id) {
   state_node_t *node = ck_alloc(sizeof(state_node_t));
   node->state_id = state_id;
@@ -1827,7 +1832,7 @@ static state_node_t *find_state_node(u32 state_id) {
 }
 
 // Add a state transition to the graph; increments count if transition already exists
-static void add_state_transition(u32 from_state, u32 to_state, u32 trigger_code) {
+void add_state_transition(u32 from_state, u32 to_state, u32 trigger_code) {
   state_node_t *from_node = find_state_node(from_state);
   if (!from_node) {
     from_node = add_state_node(from_state);
@@ -1860,7 +1865,7 @@ static void add_state_transition(u32 from_state, u32 to_state, u32 trigger_code)
 }
 
 // Calculate edge coverage percentage over the current state graph
-static u32 calculate_edge_coverage(void) {
+u32 calculate_edge_coverage(void) {
   u32 total_edges = 0;
   u32 covered_edges = 0;
 
@@ -1885,7 +1890,8 @@ static u32 calculate_edge_coverage(void) {
 
 // Check RTSP protocol consistency between a request and its response.
 // Returns 1 if consistent, 0 if a violation is detected.
-static u8 check_rtsp_consistency(const char *request, const char *response) {
+u8 check_rtsp_consistency(const char *request, u32 req_len,
+                          const char *response, u32 resp_len) {
   // SETUP request must include a Transport header
   if (strncmp(request, "SETUP", 5) == 0) {
     if (!strstr(request, "Transport:")) {
