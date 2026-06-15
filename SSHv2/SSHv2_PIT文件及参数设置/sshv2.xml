@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach xmlns="http://peachfuzzer.com/2017/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://peachfuzzer.com/2017/Peach E:\peachpro\output\win_x64_release\bin/peach.xsd">
+    <Defaults >
+        <Number endian='network'/>
+    </Defaults>
+	<PythonPath path="E:\研究生项目\模糊测试\SSHv2\SSHv2_PIT文件及参数设置"/>
+     <Import import="ssh"/> 
+	
+    <!--最开始建立关系用的-->
+    <DataModel name="initial-message">
+        <Blob name="version" value="SSH-2.0-OpenSSH_for_Windows_7.7" mutable='true'/>
+        <Number value='10' size='8'/>
+    </DataModel>
+
+    <!--Key Exchange Init-->
+    <DataModel name="key-ex-init">
+		 <!-- 包长度，32位 -->
+        <Number name="packet_len" size="32" mutable="false">
+            <Relation type="size" of="main"/>
+        </Number>
+
+        <Block name="main">
+			<!-- 填充长度，8位 -->
+            <Number name="padding_len" size="8" mutable="false">
+                <Relation type="size" of="padding"/>
+            </Number>
+            <Block name="key-ex">
+				<!-- 消息代码，8位 -->
+                <Number name="message-code" size="8" value="20" mutable='false'/>
+                <Block name='algo'>
+					<!-- Cookie，16字节的十六进制值 -->
+                    <Blob name="cookie" length='16' valueType="hex" mutable='true'>
+                        
+                    </Blob>
+                    <!-- 密钥交换算法长度，32位 -->
+                    <Number name='kex-algo-len' size='32' >
+                        <Relation type='size' of="kex-algo-str"/>
+                    </Number><!--带ex的在密钥交换中有2段交互，不带ex的只有1段交互，而且H的算法不一样-->
+                    
+					<!-- 支持的密钥交换算法字符串 -->
+					<Blob name='kex-algo-str' value='diffie-hellman-group14-sha1,diffie-hellman-group14-sha256,
+						  diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256'/>
+                    <!-- 服务器主机密钥算法长度，32位 -->
+                    <Number name='server-host-key-algo' size='32' >
+                        <Relation type='size' of="server-host-key-str"/>
+                    </Number>
+					<!-- 支持的服务器主机密钥算法字符串 -->
+                    <Blob name='server-host-key-str' value='ssh-rsa' mutable='true'/>
+                    <!-- 客户端到服务器的加密算法长度，32位 -->
+                    <Number name='encrypt-algo-c2s-len' size='32' >
+                        <Relation type='size' of="encrypt-algo-c2s-str"/>
+                    </Number>
+					<!-- 支持的客户端到服务器加密算法字符串 -->
+                    <Blob name='encrypt-algo-c2s-str' value='aes128-cbc,aes256-cbc,aes128-ctr,aes256-ctr'  mutable='true'/>
+                    <!-- 服务器到客户端的加密算法长度，32位 -->
+                    <Number name='encrypt-algo-s2c-len' size='32' >
+                        <Relation type='size' of="encrypt-algo-s2c-str"/>
+                    </Number>
+					<!-- 支持的服务器到客户端加密算法字符串 -->
+                    <Blob name='encrypt-algo-s2c-str' value='aes128-cbc,aes256-cbc,aes128-ctr,aes256-ctr'  mutable='true'/>
+                    <!-- 客户端到服务器的消息认证码算法长度，32位 -->
+                    <Number name='mac-algo-c2s-len' size='32' >
+                        <Relation type='size' of="mac-algo-c2s-str"/>
+                    </Number>
+					<!-- 支持的客户端到服务器消息认证码算法字符串 -->
+                    <Blob name='mac-algo-c2s-str' value='hmac-sha1-96,hmac-sha1,hmac-sha2-256'  mutable='true'/>
+                    <!-- 服务器到客户端的消息认证码算法长度，32位 -->
+                    <Number name='mac-algo-s2c-len' size='32' >
+                        <Relation type='size' of="mac-algo-s2c-str"/>
+                    </Number>
+					<!-- 支持的服务器到客户端消息认证码算法字符串 -->
+                    <Blob name='mac-algo-s2c-str' value='hmac-sha1-96,hmac-sha1,hmac-sha2-256' mutable='true'/>
+                    <!--暂不考虑压缩和language-->
+					<!-- 客户端到服务器的压缩算法长度，32位，目前为4 -->
+                    <Number name="compress-algo-c2s-len" size='32' value='4'>
+                        <Relation type='size' of="compress-algo-c2s-str"/>
+                    </Number>
+					<!-- 支持的客户端到服务器压缩算法字符串，默认为'none' -->
+                    <Blob name="compress-algo-c2s-str" value='none'  mutable='true'/>
+                    <!-- 服务器到客户端的压缩算法长度，32位，目前为4 -->
+                    <Number name="compress-algo-s2c-len" size='32' value='4'>
+                        <Relation type='size' of="compress-algo-s2c-str"/>
+                    </Number>
+					<!-- 支持的服务器到客户端压缩算法字符串，默认为'none' -->
+                    <Blob name="compress-algo-s2c-str" value='none' mutable='true'/>
+                    <!-- 客户端到服务器的语言算法长度，32位，目前为4 -->
+                    <Number name="language-algo-c2s-len" size='32' value='4'>
+                        <Relation type='size' of="language-algo-c2s-str"/>
+                    </Number>
+                    <Blob name="language-algo-c2s-str" mutable='false'/>
+                    <!-- 服务器到客户端的语言算法长度，32位，目前为4 -->
+                    <Number name="language-algo-s2c" size='32' value='4'>
+                        <Relation type='size' of="language-algo-s2c-str"/>
+                    </Number>
+                    <Blob name="language-algo-s2c-str" />
+                    <!-- 第一个密钥交换包后续跟随的标志，8位，目前为0 -->
+                    <Number name='first-kex-packet-follows' size='8' value='0'/>
+					<!-- 保留字段，4字节，十六进制值全为00 -->
+                    <Blob name='reserved' value='00 00 00 00' valueType='hex' length='4' mutable='true'/>                   
+                </Block>
+            </Block>
+			<!--从抓包来看key init 的padding似乎是16字节对齐-->
+            <Padding name="padding" alignedTo='key-ex-init' alignment='128'/>
+        </Block>    
+    </DataModel>
+
+    
+
+    <!--client to server diffie-hellman group exchange init-->
+    <DataModel name="dh-group-ex-init">
+		<!-- 数据包总长度，32位 -->
+        <Number name="packet_len" size="32" mutable="false">
+            <Relation type="size" of="main"/>
+        </Number>
+
+        <Block name="main">
+			<!-- 填充长度，8位 -->
+            <Number name="padding_len" size="8" mutable="false">
+                <Relation type="size" of="padding"/>
+            </Number>
+            <Block name="key-ex">
+				<!-- 消息代码，表示Diffie-Hellman组交换初始化请求，8位-->
+                <Number name="message-code" size="8" value="32" mutable='false'/>
+				<!-- DH客户端公钥长度，32位 -->
+                <Number name="e-len" size="32" >
+                    <Relation type="size" of="dh-client-e"/>
+                </Number>
+				<!-- DH客户端公钥数据块 -->
+                <Blob name='dh-client-e' mutable='true'/>
+            </Block>
+			<!-- 按照DH组交换初始化请求进行填充，以128字节对齐 -->
+            <Padding name="padding" alignedTo='dh-group-ex-init' alignment='128'/>
+        </Block>
+    </DataModel>
+
+
+    <!--server to client diffie-hellman group exchange reply-->
+    <DataModel name="dh-group-ex-reply">
+        <Number name="packet_len" size="32" mutable="false">
+            <Relation type="size" of="main"/>
+        </Number>
+
+        <Block name="main">
+            <Number name="padding_len" size="8" mutable="false">
+                <Relation type="size" of="padding"/>
+            </Number>
+            <Block name="key-ex">
+				<!-- 消息代码，表示Diffie-Hellman组交换回复，8位，不可变 -->
+                <Number name="message-code" size="8" value="33" mutable='false'/>
+				<!-- KEX主机密钥块 -->
+                <Block name="kex-host-key">
+					<!-- KEX主机密钥长度，32位 -->
+                    <Number name="kex-host-key-len" size="32"  >
+                        <Relation type="size" of="kex-block"/>
+                    </Number>
+					<!-- KEX数据块 -->
+                    <Block name="kex-block">
+					<!-- 主机密钥类型长度，32位 -->
+                    <Number name="host-key-type-len" size="32"  >
+                        <Relation type="size" of="host-key-type"/>
+                    </Number>
+					<!-- 主机密钥类型数据 -->
+                    <Blob name='host-key-type'/>
+					<!-- RSA公钥指数长度，32位 -->
+                    <Number name="rsa-public-exponent-len" size="32" >
+                        <Relation type="size" of="rsa-public-exponent"/>
+                    </Number>
+					<!-- RSA公钥指数数据 -->
+                    <Blob name='rsa-public-exponent'/>
+					<!-- RSA模数N长度，32位 -->
+                    <Number name="rsa-modulus-N-len" size="32"  >
+                        <Relation type="size" of="rsa-modulus-N"/>
+                    </Number>
+					<!-- RSA模数N数据 -->
+                    <Blob name='rsa-modulus-N'/>
+                    </Block>
+                </Block>
+				<!-- DH服务器公钥长度，32位 -->
+                <Number name="f-len" size="32"  >
+                    <Relation type="size" of="dh-server-f"/>
+                </Number>
+				<!-- DH服务器公钥数据 -->
+                <Blob name='dh-server-f'/>
+				<!-- KEX-H签名长度，32位 -->
+                <Number name="H-len" size="32"  >
+                    <Relation type="size" of="kex-H-sign"/>
+                </Number>
+				<!-- KEX-H签名数据 -->
+                <Blob name='kex-H-sign'/>
+            </Block>
+            <Padding name="padding" alignedTo='dh-group-ex-reply' alignment='128'/>
+        </Block>
+    </DataModel>
+
+
+
+    <!--new keys-->
+    <DataModel name="new-keys">
+        <Number name="packet_len" size="32" mutable="false">
+            <Relation type="size" of="main"/>
+        </Number>
+
+        <Block name="main">
+            <Number name="padding_len" size="8" mutable="false">
+                <Relation type="size" of="padding"/>
+            </Number>
+            <Block name="key-ex">
+				<!-- 消息代码，表示新密钥交换，8位-->
+                <Number name="message-code" size="8" value="21" mutable='false'/>
+            </Block>
+            <Padding name="padding" alignedTo='new-keys' alignment='128'/>
+        </Block>
+    </DataModel>
+
+
+    <!--service request-->
+    <DataModel name="service-req">
+            <Number name="packet_len" size="32" mutable="false">
+                <Relation type="size" of="main"/>
+            </Number>
+
+            <Block name="main">
+                <Number name="padding_len" size="8" mutable="false">
+                    <Relation type="size" of="padding"/>
+                </Number>
+                <Number name="message-code" size="8" value="5" mutable='false'/>
+                <Number name="service_len" size="32" mutable="false" value="12"/>
+                <String name="service-name" value="ssh-userauth" mutable='true'/>
+                <Padding name="padding" alignedTo='service-req' alignment='128'/>
+            </Block>
+    </DataModel>
+	
+		
+	<DataModel name="respon">
+        
+        <Blob name="m"/>
+    </DataModel>
+
+    <DataModel name="send">
+        
+        <Blob name="Payload"/>
+    </DataModel>
+
+    <StateModel name="SSH_State" initialState="InitialState" >
+
+		<State name="InitialState" >
+			<!-- 初始状态，连接动作 -->
+            <Action type="connect">	
+			</Action>
+			<!-- 输入动作，接收服务器版本号 -->
+            <Action type="input" onComplete="context.iterationStateStore['v_s']=self.dataModel.find('version').InternalValue">
+				<DataModel ref="initial-message"/>
+			</Action>
+			<!-- 输出动作，发送客户端版本号 -->
+            <Action type="output" onComplete="context.iterationStateStore['v_c']=self.dataModel.find('version').InternalValue;">
+				<DataModel ref="initial-message"/>
+			</Action>
+	   <Action type="changeState" ref="kex_al"/>
+	    </State>
+	    
+	   <State name="kex_al">
+			<!-- 接收密钥交换初始化数据 -->
+            <Action type="input" onComplete="ssh.parser_kex(context,self);context.iterationStateStore['i_s']=self.dataModel.find('key-ex').InternalValue;">
+				<DataModel ref="key-ex-init" />
+			</Action>
+
+			<!-- 发送密钥交换数据 -->
+            <Action type="output" onComplete="context.iterationStateStore['i_c']=self.dataModel.find('key-ex').InternalValue;">
+				<DataModel ref="key-ex-init" />
+               
+			</Action>
+            <Action type="changeState" ref="dh"/>
+                     </State>
+         
+        <State name="dh" >
+            <Action type="output" onStart="ssh.ex_init_group(context,self)">
+				<DataModel ref="dh-group-ex-init" />
+					<Data name="a">
+					<Field name="main.key-ex.message-code" value="30"/>
+					</Data>
+			</Action>
+			<!-- 接收相关密钥和签名数据 -->
+            <Action type="input"
+            onComplete="context.iterationStateStore['k_s']=self.dataModel.find('kex-host-key').InternalValue;context.iterationStateStore['f']=self.dataModel.find('dh-server-f').InternalValue;context.iterationStateStore['H-sign']=self.dataModel.find('kex-H-sign').InternalValue;context.iterationStateStore['rsa_n']=self.dataModel.find('rsa-modulus-N').InternalValue;context.iterationStateStore['rsa_e']=self.dataModel.find('rsa-public-exponent').InternalValue;">
+				<DataModel ref="dh-group-ex-reply"/>
+			</Action>
+	   <Action type="changeState" ref="new"/>
+	   </State>
+
+	<State name="new">
+			<!-- 输入动作，接收新密钥数据 -->
+            <Action type="input">
+				<DataModel ref="new-keys"/>
+			</Action>
+			<!-- 输出动作，开始生成会话密钥 -->
+            <Action type="output" onStart="ssh.gen_K(context,self)">
+				<DataModel ref="new-keys"/>
+			</Action>
+	        <Action type="changeState" ref="ensend"/>
+
+	</State>
+
+	   <State name="ensend">
+
+			<!-- 开始加密服务请求 -->
+            <Action type="output" onStart="ssh.en(context,self)" publisher="null">
+				<DataModel ref="service-req"/>
+			</Action>
+			<!-- 发送加密数据 -->
+            <Action type="output" onStart="ssh.send(context,self)">
+				<DataModel ref="send"/>
+			</Action>
+			<!-- 解密响应 -->
+            <!--<Action type="input" onComplete="ssh.den(context,self)">
+				<DataModel ref="respon"/>
+			</Action>-->			
+                        
+		</State>
+        
+	</StateModel>
+
+
+	<Agent name="LocalAgent">
+		
+		<Monitor class="Ping">
+            <Param name="Host" value="##TargetIPv4##" />
+            <Param name="Timeout" value="3000" />
+	        <Param name="Data" value="abcdefg" />
+        </Monitor>
+			
+		<Monitor class="RunCommand">
+			<Param name="Command" value="D:/important/anconda3/python.exe"/>
+			<Param name="Arguments" value="D:/networkprogram/MPLS/11.23ssh第三版/9.22ssh第三版/SSHv2/SSHv2_PIT文件及参数设置/ssh_authentication.py"/>
+			<Param name="When" value="OnIterationEnd"/>
+		    <!-- <Param name="FaultOnNonZeroExit" value="true"/> -->
+		</Monitor>
+	</Agent>
+
+	<Test name="Default">
+		<StateModel ref="SSH_State"/>
+        <Agent ref="LocalAgent"/>
+        <Publisher class="Tcp">
+			<Param name="Host" value="##TargetIPv4##"/>
+			<Param name="Port" value="##TargetPort##"/>
+			<Param name="ConnectTimeout" value="10000"/>
+			<Param name="Timeout" value="3000"/>
+			<Param name="SendTimeout" value="5000"/>
+		</Publisher>
+		
+        <Publisher class="Null" name="null"/>
+        
+        <!--<Logger class="File">
+            <Param name="Path" value="ssh_test_server_logs"/>
+        </Logger>-->
+
+	    <Mutators mode="include">	
+            <Mutator class="BlobChangeFromNull" />
+            <Mutator class="StringLengthEdgeCase" />
+            <Mutator class="StringAsciiRandom" />
+            <Mutator class="StringCaseRandom" />
+            <Mutator class="StringUnicodeAbstractCharacters" />
+            <Mutator class="StringUtf8Invalid" />
+		</Mutators>	
+	
+        <Strategy class="Random"/>
+	</Test>
+</Peach>

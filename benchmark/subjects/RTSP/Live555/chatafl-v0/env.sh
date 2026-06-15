@@ -1,0 +1,10 @@
+#!/bin/bash
+# ChatAFL-V0: LLM baseline without validation
+: "${AFL_LLM_VALIDATION:=0}"
+: "${AFL_LLM_VALIDATION_STRICT:=0}"
+: "${AFL_LLM_POST_GAIN:=0}"
+: "${AFL_LLM_FEEDBACK:=0}"
+export AFL_LLM_VALIDATION
+export AFL_LLM_VALIDATION_STRICT
+export AFL_LLM_POST_GAIN
+export AFL_LLM_FEEDBACK

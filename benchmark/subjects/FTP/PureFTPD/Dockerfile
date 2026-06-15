@@ -102,6 +102,7 @@ RUN cd ${WORKDIR} && \
     git checkout 10122d9f && \
     patch -p1 < ${WORKDIR}/fuzzing.patch && \
     ./autogen.sh && \
+    ac_cv_sizeof_mode_t=4 \
     CC="afl-clang-fast" CXX="afl-clang-fast++" CFLAGS="-fsanitize=address -g -O0" CXXFLAGS="-fsanitize=address -g -O0" LDFLAGS="-fsanitize=address" ./configure --without-privsep --without-capabilities && \
     make $MAKE_OPT
 
@@ -112,6 +113,7 @@ RUN cd ${WORKDIR} && \
     git checkout 10122d9f && \
     patch -p1 < ${WORKDIR}/gcov.patch && \
     ./autogen.sh && \
+    ac_cv_sizeof_mode_t=4 \
     CC=cc CXX=c++ CFLAGS="-fprofile-arcs -ftest-coverage" CPPFLAGS="-fprofile-arcs -ftest-coverage" CXXFLAGS="-fprofile-arcs -ftest-coverage" LDFLAGS="-fprofile-arcs -ftest-coverage" ./configure --without-privsep --without-capabilities && \
     make $MAKE_OPT
 
