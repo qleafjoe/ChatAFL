@@ -1,0 +1,13 @@
+group,run,dir,has_plot_final,has_cov,paths_total,n_nodes,n_edges,chat_times,unique_crashes,unique_hangs,max_depth,execs_per_sec,map_size_pct,line_cov_pct,branch_cov_pct,llm_records,llm_valid,llm_valid_pct,llm_soft_accept,llm_soft_reject
+tr1,1,out-pure-ftpd-chatafl_tr1_1,True,False,472,23,148,23,0,0,13,13.3,2.09,,,,,,,
+tr1,2,out-pure-ftpd-chatafl_tr1_2,True,False,534,27,222,31,0,0,8,1.0,2.47,,,,,,,
+tr1,3,out-pure-ftpd-chatafl_tr1_3,True,False,506,24,165,34,0,0,11,0.33,2.26,,,,,,,
+tr2,1,out-pure-ftpd-chatafl_tr2_1,True,False,438,22,138,32,0,0,11,5.28,2.15,,,,,,,
+tr2,2,out-pure-ftpd-chatafl_tr2_2,True,False,677,27,250,13,0,0,7,4.31,2.38,,,,,,,
+tr2,3,out-pure-ftpd-chatafl_tr2_3,True,False,550,27,217,10,0,0,8,0.63,2.49,,,,,,,
+tr3,1,out-pure-ftpd-chatafl_tr3_1,False,True,,,,,,,,,,8.4,4.1,1,1,100.0,0,0
+tr3,2,out-pure-ftpd-chatafl_tr3_2,True,False,600,27,184,23,0,0,8,5.1,2.62,,,20,6,30.0,0,0
+tr3,3,out-pure-ftpd-chatafl_tr3_3,True,False,625,25,211,7,0,0,8,5.88,2.2,,,218,56,25.688073394495415,0,0
+tr4,1,out-pure-ftpd-chatafl_tr4_1,True,False,527,25,186,23,0,0,8,0.03,2.28,,,65,14,21.53846153846154,0,1
+tr4,2,out-pure-ftpd-chatafl_tr4_2,True,False,479,22,145,24,0,0,8,0.87,2.07,,,12,9,75.0,0,0
+tr4,3,out-pure-ftpd-chatafl_tr4_3,True,False,540,25,176,16,0,0,8,0.31,2.19,,,10,2,20.0,0,2

@@ -1,0 +1,13 @@
+target,group,run,dir,has_fuzzer_stats,has_cov_over_time,start_time,last_update,cycles_done,execs_done,execs_per_sec,paths_total,paths_favored,paths_found,max_depth,pending_total,variable_paths,stability,bitmap_cvg,unique_crashes,unique_hangs,slowest_exec_ms,peak_rss_mb,runtime_sec,runtime_hr,queue_files,replayable_queue_files,regions_files,replayable_hangs_files,replayable_crashes_files,protocol_grammars_files,enrichment_interactions_files,stall_interactions_files
+pure-ftpd,tr1,1,out-pure-ftpd-chatafl_tr1_1,True,False,1780337424,1780378829,76,141298,0.38,472,59,468,13,351,350,18.57,2.09,0,0,3227,16,41405,11.501388888888888,411,0,0,0,0,0,0,0
+pure-ftpd,tr1,2,out-pure-ftpd-chatafl_tr1_2,True,False,1780337451,1780378856,91,156024,0.65,534,61,530,8,412,320,22.63,2.47,0,0,3404,17,41405,11.501388888888888,471,0,0,0,0,2,0,0
+pure-ftpd,tr1,3,out-pure-ftpd-chatafl_tr1_3,True,False,1780337455,1780378871,75,142534,0.62,506,52,502,11,392,311,30.7,2.26,0,0,3339,16,41416,11.504444444444445,449,0,0,0,0,2,0,0
+pure-ftpd,tr2,1,out-pure-ftpd-chatafl_tr2_1,True,False,1780337386,1780378841,67,153352,0.33,438,46,434,11,333,308,27.34,2.15,0,0,3280,16,41455,11.515277777777778,387,0,0,0,0,0,0,0
+pure-ftpd,tr2,2,out-pure-ftpd-chatafl_tr2_2,True,False,1780347607,1780378843,77,98311,0.33,676,61,544,7,576,436,24.08,2.38,0,0,3296,18,31236,8.676666666666666,581,0,0,0,0,37,0,0
+pure-ftpd,tr2,3,out-pure-ftpd-chatafl_tr2_3,True,False,1780351987,1780378815,80,53623,0.34,550,65,482,8,475,337,29.98,2.49,0,0,3347,17,26828,7.452222222222222,466,0,0,0,0,34,0,0
+pure-ftpd,tr3,1,out-pure-ftpd-chatafl_tr3_1,False,True,,,,,,,,,,,,,,,,,,,,4,0,4,0,0,3,0,0
+pure-ftpd,tr3,2,out-pure-ftpd-chatafl_tr3_2,True,False,1780337488,1780378867,72,148620,4.94,600,69,596,8,488,341,28.0,2.62,0,0,3313,19,41379,11.494166666666667,527,0,0,0,0,2,0,0
+pure-ftpd,tr3,3,out-pure-ftpd-chatafl_tr3_3,True,False,1780352303,1780378836,83,70875,0.33,624,64,494,8,527,408,21.46,2.2,0,0,3551,18,26533,7.370277777777778,550,0,0,0,0,35,540,0
+pure-ftpd,tr4,1,out-pure-ftpd-chatafl_tr4_1,True,False,1780338465,1780378855,66,138388,0.32,527,66,514,8,434,388,21.13,2.28,0,0,3244,17,40390,11.219444444444445,454,0,0,0,0,37,45,0
+pure-ftpd,tr4,2,out-pure-ftpd-chatafl_tr4_2,True,False,1780337559,1780378815,67,124167,0.37,479,53,475,8,375,301,36.6,2.07,0,0,3310,17,41256,11.46,415,0,0,0,0,3,0,0
+pure-ftpd,tr4,3,out-pure-ftpd-chatafl_tr4_3,True,False,1780337569,1780378814,65,121841,0.32,540,62,536,8,446,363,25.38,2.19,0,0,3253,17,41245,11.456944444444444,475,0,0,0,0,4,0,0

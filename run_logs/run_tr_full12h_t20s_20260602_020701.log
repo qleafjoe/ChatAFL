@@ -1,0 +1,107 @@
+# TR ablation mode: full
+# NUM_CONTAINERS: 10
+# TIMEOUT: 720 min
+# TARGETS: live555,pure-ftpd
+# FUZZERS: chatafl-tr1,chatafl-tr2,chatafl-tr3,chatafl-tr4
+# EXPERIMENT_ID: tr_full12h_t20s_20260602_020701
+# LLM_URL: https://api.minimaxi.com/v1/text/chatcompletion_v2
+# LLM_MODEL: MiniMax-M2.7
+
+# NUM_CONTAINERS: 10
+# TIMEOUT: 43200 s
+# SKIPCOUNT: 1
+# TEST TIMEOUT: 20000 ms
+# TARGET LIST: live555,pure-ftpd
+# FUZZER LIST: chatafl-tr1,chatafl-tr2,chatafl-tr3,chatafl-tr4
+# EXPERIMENT ID: tr_full12h_t20s_20260602_020701
+
+
+***** RUNNING chatafl-tr1 ON live555 *****
+
+
+***** RUNNING chatafl-tr1 ON pure-ftpd *****
+
+
+***** RUNNING chatafl-tr2 ON live555 *****
+
+
+***** RUNNING chatafl-tr2 ON pure-ftpd *****
+
+
+***** RUNNING chatafl-tr3 ON live555 *****
+
+
+***** RUNNING chatafl-tr3 ON pure-ftpd *****
+
+
+***** RUNNING chatafl-tr4 ON live555 *****
+
+
+***** RUNNING chatafl-tr4 ON pure-ftpd *****
+
+
+CHATAFL-TR1: Fuzzing in progress ...
+CHATAFL-TR1: Waiting for the following containers to stop:  55c71f58748a 68c905b2028c 5f7d97706949 6d6e64a1e588 b9eaeaa3607d 9d7021f283e0 df3d14a9fe5c 88a28f37afb9 9cce4ed966cd 67bb37ccdea4
+CHATAFL-TR3: Fuzzing in progress ...
+CHATAFL-TR3: Waiting for the following containers to stop:  039ecf242778 a6c95facf7e2 f1457552bee6 9c92d5638e94 4ec00ddb2259 02ebe376347f a5eaeb013d67 481000e486a2 f4ca3eb32d48 518775a608f9
+CHATAFL-TR2: Fuzzing in progress ...
+CHATAFL-TR2: Waiting for the following containers to stop:  d94334eb7573 2033bfb417df 9498e6456ea5 10cf423b4bfe 41aebec0e205 976f4fe05ead a4cebe0853ab 5686780f41f5 ea30ab2edb6e ccf0a4249572
+CHATAFL-TR1: Fuzzing in progress ...
+CHATAFL-TR1: Waiting for the following containers to stop:  f81a69fb351b 94e43b8f397d d18491d64ae3 9b02c71c7ee3 0b71b9da3df5 88cfb488da5f a77d402e4a78 8a052e2bca58 d08d4eea29ca 6e0bd3a517c1
+CHATAFL-TR4: Fuzzing in progress ...
+CHATAFL-TR4: Waiting for the following containers to stop:  310abde900dc a621f62cac88 9a0101d70a61 883461d273a2 7aa1f0ed7342 a182065352f8 1a055cfb5ad0 257916e8a118 b5f1027458c4 ee2a0a859251
+CHATAFL-TR3: Fuzzing in progress ...
+CHATAFL-TR3: Waiting for the following containers to stop:  1ba2861d1e6b 06ea44667648 bfecaf289f83 aee6214551ea 19a9d51a8db8 fa21e9caab99 b407b266f63e c53dde837a9e 907862804edd 139c51674b90
+CHATAFL-TR2: Fuzzing in progress ...
+CHATAFL-TR2: Waiting for the following containers to stop:  b7ae94638f05 1248145e1218 f17f75cf08c5 993db0100712 ca6f96e91a33 335db0c35a1c 76af7f0b03ac 6a37bad7a9cf a7ae32a44775 1e9669f1f8fb
+CHATAFL-TR4: Fuzzing in progress ...
+CHATAFL-TR4: Waiting for the following containers to stop:  655acf9ae9d6 54bda5aa12f2 854ff9aa6f32 be0cd28e11d5 b4317f5fd7ed e63868d52c47 48e161645013 8eedebd0549d fe911b42d3c5 8504bc709012
+CHATAFL-TR3: Collecting results and save them to results-live555-tr_full12h_t20s_20260602_020701
+CHATAFL-TR3: Collecting results from container 1ba2861d1e6b
+CHATAFL-TR3: Collecting results from container 06ea44667648
+CHATAFL-TR3: Collecting results from container bfecaf289f83
+CHATAFL-TR3: Collecting results from container aee6214551ea
+CHATAFL-TR3: Collecting results from container 19a9d51a8db8
+CHATAFL-TR3: Collecting results from container fa21e9caab99
+CHATAFL-TR3: Collecting results from container b407b266f63e
+CHATAFL-TR3: Collecting results and save them to results-pure-ftpd-tr_full12h_t20s_20260602_020701
+CHATAFL-TR3: Collecting results from container 039ecf242778
+CHATAFL-TR3: Collecting results from container c53dde837a9e
+CHATAFL-TR3: Collecting results from container a6c95facf7e2
+CHATAFL-TR3: Collecting results from container f1457552bee6
+CHATAFL-TR3: Collecting results from container 907862804edd
+CHATAFL-TR4: Collecting results and save them to results-live555-tr_full12h_t20s_20260602_020701
+CHATAFL-TR4: Collecting results from container 655acf9ae9d6
+CHATAFL-TR3: Collecting results from container 9c92d5638e94
+CHATAFL-TR3: Collecting results from container 139c51674b90
+CHATAFL-TR4: Collecting results from container 54bda5aa12f2
+CHATAFL-TR3: Collecting results from container 4ec00ddb2259
+CHATAFL-TR2: Collecting results and save them to results-pure-ftpd-tr_full12h_t20s_20260602_020701
+CHATAFL-TR2: Collecting results from container d94334eb7573
+CHATAFL-TR3: I am done!
+
+CHATAFL-TR4: Collecting results from container 854ff9aa6f32
+CHATAFL-TR3: Collecting results from container 02ebe376347f
+CHATAFL-TR2: Collecting results from container 2033bfb417df
+CHATAFL-TR4: Collecting results from container be0cd28e11d5
+CHATAFL-TR1: Collecting results and save them to results-pure-ftpd-tr_full12h_t20s_20260602_020701
+CHATAFL-TR1: Collecting results from container f81a69fb351b
+CHATAFL-TR2: Collecting results from container 9498e6456ea5
+CHATAFL-TR1: Collecting results and save them to results-live555-tr_full12h_t20s_20260602_020701
+CHATAFL-TR1: Collecting results from container 55c71f58748a
+CHATAFL-TR3: Collecting results from container a5eaeb013d67
+CHATAFL-TR4: Collecting results from container b4317f5fd7ed
+CHATAFL-TR1: Collecting results from container 94e43b8f397d
+CHATAFL-TR2: Collecting results from container 10cf423b4bfe
+CHATAFL-TR1: Collecting results from container 68c905b2028c
+CHATAFL-TR3: Collecting results from container 481000e486a2
+CHATAFL-TR4: Collecting results from container e63868d52c47
+CHATAFL-TR4: Collecting results and save them to results-pure-ftpd-tr_full12h_t20s_20260602_020701
+CHATAFL-TR4: Collecting results from container 310abde900dc
+CHATAFL-TR1: Collecting results from container d18491d64ae3
+CHATAFL-TR2: Collecting results from container 41aebec0e205
+CHATAFL-TR1: Collecting results from container 5f7d97706949
+CHATAFL-TR3: Collecting results from container f4ca3eb32d48
+CHATAFL-TR4: Collecting results from container 48e161645013
+CHATAFL-TR4: Collecting results from container a621f62cac88
+CHATAFL-TR1: Collecting results from container 9b02c71c7ee3

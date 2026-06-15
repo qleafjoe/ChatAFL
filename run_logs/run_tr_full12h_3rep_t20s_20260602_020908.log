@@ -1,0 +1,58 @@
+# TR ablation mode: full
+# NUM_CONTAINERS: 3
+# TIMEOUT: 720 min
+# TARGETS: live555,pure-ftpd
+# FUZZERS: chatafl-tr1,chatafl-tr2,chatafl-tr3,chatafl-tr4
+# EXPERIMENT_ID: tr_full12h_3rep_t20s_20260602_020908
+# LLM_URL: https://api.minimaxi.com/v1/text/chatcompletion_v2
+# LLM_MODEL: MiniMax-M2.7
+
+# NUM_CONTAINERS: 3
+# TIMEOUT: 43200 s
+# SKIPCOUNT: 1
+# TEST TIMEOUT: 20000 ms
+# TARGET LIST: live555,pure-ftpd
+# FUZZER LIST: chatafl-tr1,chatafl-tr2,chatafl-tr3,chatafl-tr4
+# EXPERIMENT ID: tr_full12h_3rep_t20s_20260602_020908
+
+
+***** RUNNING chatafl-tr1 ON live555 *****
+
+
+***** RUNNING chatafl-tr1 ON pure-ftpd *****
+
+
+***** RUNNING chatafl-tr2 ON live555 *****
+
+
+***** RUNNING chatafl-tr2 ON pure-ftpd *****
+
+
+***** RUNNING chatafl-tr3 ON live555 *****
+
+
+***** RUNNING chatafl-tr3 ON pure-ftpd *****
+
+
+***** RUNNING chatafl-tr4 ON live555 *****
+
+
+***** RUNNING chatafl-tr4 ON pure-ftpd *****
+
+
+CHATAFL-TR4: Fuzzing in progress ...
+CHATAFL-TR4: Waiting for the following containers to stop:  b1a6a1f6e139 5b885ca7dd07 17858afa4f29
+CHATAFL-TR1: Fuzzing in progress ...
+CHATAFL-TR1: Waiting for the following containers to stop:  1b55d8146975 0374247e15b9 510b97e1ddaa
+CHATAFL-TR2: Fuzzing in progress ...
+CHATAFL-TR2: Waiting for the following containers to stop:  ee5418cf92e5 47412331f2fd e6a862aaa50f
+CHATAFL-TR1: Fuzzing in progress ...
+CHATAFL-TR1: Waiting for the following containers to stop:  f4938db98ebc f3ddf2ecad3b e9d259cef84e
+CHATAFL-TR3: Fuzzing in progress ...
+CHATAFL-TR3: Waiting for the following containers to stop:  4f9f714a734e 8f875ac26eac e8a8531a1737
+CHATAFL-TR2: Fuzzing in progress ...
+CHATAFL-TR2: Waiting for the following containers to stop:  cfc45640dd55 5a7a3cd34a59 907ba46c4f74
+CHATAFL-TR3: Fuzzing in progress ...
+CHATAFL-TR3: Waiting for the following containers to stop:  f88f5e37e4dc 612dc1e811cf 49d8ce570b0d
+CHATAFL-TR4: Fuzzing in progress ...
+CHATAFL-TR4: Waiting for the following containers to stop:  cc781a0c75da 2569f40b8192 2189ff30bd7f

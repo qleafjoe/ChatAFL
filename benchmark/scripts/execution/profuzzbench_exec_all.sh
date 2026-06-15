@@ -129,7 +129,7 @@ do
         then
 
             cd $PFBENCH
-            mkdir results-pure-ftpd${RESULT_SUFFIX}
+            mkdir -p results-pure-ftpd${RESULT_SUFFIX}
 
             if [[ $FUZZER == "aflnet" ]] || [[ $FUZZER == "all" ]]
             then
@@ -154,6 +154,31 @@ do
             if [[ $FUZZER == "chatafl-v2" ]] || [[ $FUZZER == "all" ]]
             then
                 profuzzbench_exec_common.sh pure-ftpd $NUM_CONTAINERS results-pure-ftpd${RESULT_SUFFIX} chatafl-v2 out-pure-ftpd-chatafl_v2 "-m none -P FTP -D 10000 -q 3 -s 3 -E -K -t ${TEST_TIMEOUT}+" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-tr1" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh pure-ftpd $NUM_CONTAINERS results-pure-ftpd${RESULT_SUFFIX} chatafl-tr1 out-pure-ftpd-chatafl_tr1 "-m none -P FTP -D 10000 -q 3 -s 3 -E -K -t ${TEST_TIMEOUT}+" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-tr2" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh pure-ftpd $NUM_CONTAINERS results-pure-ftpd${RESULT_SUFFIX} chatafl-tr2 out-pure-ftpd-chatafl_tr2 "-m none -P FTP -D 10000 -q 3 -s 3 -E -K -t ${TEST_TIMEOUT}+" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-tr3" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh pure-ftpd $NUM_CONTAINERS results-pure-ftpd${RESULT_SUFFIX} chatafl-tr3 out-pure-ftpd-chatafl_tr3 "-m none -P FTP -D 10000 -q 3 -s 3 -E -K -t ${TEST_TIMEOUT}+" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-tr4" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh pure-ftpd $NUM_CONTAINERS results-pure-ftpd${RESULT_SUFFIX} chatafl-tr4 out-pure-ftpd-chatafl_tr4 "-m none -P FTP -D 10000 -q 3 -s 3 -E -K -t ${TEST_TIMEOUT}+" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-tr5" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh pure-ftpd $NUM_CONTAINERS results-pure-ftpd${RESULT_SUFFIX} chatafl-tr5 out-pure-ftpd-chatafl_tr5 "-m none -P FTP -D 10000 -q 3 -s 3 -E -K -t ${TEST_TIMEOUT}+" $TIMEOUT $SKIPCOUNT &
             fi
 
             if [[ $FUZZER == "chatafl-cl1" ]] || [[ $FUZZER == "all" ]]
@@ -206,7 +231,7 @@ do
         then
 
             cd $PFBENCH
-            mkdir results-live555${RESULT_SUFFIX}
+            mkdir -p results-live555${RESULT_SUFFIX}
 
             if [[ $FUZZER == "aflnet" ]] || [[ $FUZZER == "all" ]]
             then
@@ -231,6 +256,31 @@ do
             if [[ $FUZZER == "chatafl-v2" ]] || [[ $FUZZER == "all" ]]
             then
                 profuzzbench_exec_common.sh live555 $NUM_CONTAINERS results-live555${RESULT_SUFFIX} chatafl-v2 out-live555-chatafl_v2 "-P RTSP -D 10000 -q 3 -s 3 -E -K -R -m none" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-tr1" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh live555 $NUM_CONTAINERS results-live555${RESULT_SUFFIX} chatafl-tr1 out-live555-chatafl_tr1 "-P RTSP -D 10000 -q 3 -s 3 -E -K -R -m none" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-tr2" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh live555 $NUM_CONTAINERS results-live555${RESULT_SUFFIX} chatafl-tr2 out-live555-chatafl_tr2 "-P RTSP -D 10000 -q 3 -s 3 -E -K -R -m none" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-tr3" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh live555 $NUM_CONTAINERS results-live555${RESULT_SUFFIX} chatafl-tr3 out-live555-chatafl_tr3 "-P RTSP -D 10000 -q 3 -s 3 -E -K -R -m none" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-tr4" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh live555 $NUM_CONTAINERS results-live555${RESULT_SUFFIX} chatafl-tr4 out-live555-chatafl_tr4 "-P RTSP -D 10000 -q 3 -s 3 -E -K -R -m none" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-tr5" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh live555 $NUM_CONTAINERS results-live555${RESULT_SUFFIX} chatafl-tr5 out-live555-chatafl_tr5 "-P RTSP -D 10000 -q 3 -s 3 -E -K -R -m none" $TIMEOUT $SKIPCOUNT &
             fi
 
             if [[ $FUZZER == "chatafl-cl1" ]] || [[ $FUZZER == "all" ]]
@@ -334,6 +384,31 @@ do
                 profuzzbench_exec_common.sh lighttpd1 $NUM_CONTAINERS results-lighttpd1${RESULT_SUFFIX} chatafl-cl2 out-lighttpd1-chatafl_cl2 "-P HTTP -D 200000 -m none -q 3 -s 3 -E -K -R -t ${TEST_TIMEOUT}+" $TIMEOUT $SKIPCOUNT &
             fi
 
+            if [[ $FUZZER == "chatafl-tr1" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh lighttpd1 $NUM_CONTAINERS results-lighttpd1${RESULT_SUFFIX} chatafl-tr1 out-lighttpd1-chatafl_tr1 "-P HTTP -D 200000 -m none -q 3 -s 3 -E -K -R -t ${TEST_TIMEOUT}+" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-tr2" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh lighttpd1 $NUM_CONTAINERS results-lighttpd1${RESULT_SUFFIX} chatafl-tr2 out-lighttpd1-chatafl_tr2 "-P HTTP -D 200000 -m none -q 3 -s 3 -E -K -R -t ${TEST_TIMEOUT}+" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-tr3" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh lighttpd1 $NUM_CONTAINERS results-lighttpd1${RESULT_SUFFIX} chatafl-tr3 out-lighttpd1-chatafl_tr3 "-P HTTP -D 200000 -m none -q 3 -s 3 -E -K -R -t ${TEST_TIMEOUT}+" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-tr4" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh lighttpd1 $NUM_CONTAINERS results-lighttpd1${RESULT_SUFFIX} chatafl-tr4 out-lighttpd1-chatafl_tr4 "-P HTTP -D 200000 -m none -q 3 -s 3 -E -K -R -t ${TEST_TIMEOUT}+" $TIMEOUT $SKIPCOUNT &
+            fi
+
+            if [[ $FUZZER == "chatafl-tr5" ]] || [[ $FUZZER == "all" ]]
+            then
+                profuzzbench_exec_common.sh lighttpd1 $NUM_CONTAINERS results-lighttpd1${RESULT_SUFFIX} chatafl-tr5 out-lighttpd1-chatafl_tr5 "-P HTTP -D 200000 -m none -q 3 -s 3 -E -K -R -t ${TEST_TIMEOUT}+" $TIMEOUT $SKIPCOUNT &
+            fi
+
         fi
 
 
@@ -346,3 +421,4 @@ do
     done
 done
 
+wait

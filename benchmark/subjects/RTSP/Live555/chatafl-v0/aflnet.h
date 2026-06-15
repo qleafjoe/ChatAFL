@@ -136,42 +136,4 @@ void hexdump(unsigned char *msg, unsigned char * buf, int start, int end);
 /* Reads a number of bytes from buf from offset into an unsigned int and returns it. May overflow*/
 u32 read_bytes_to_uint32(unsigned char* buf, unsigned int offset, int num_bytes);
 
-// --- Response content analysis types ---
-
-typedef struct {
-  u32 response_code;      /* Response code */
-  char *session_id;       /* Session ID */
-  char *content_type;     /* Content type */
-  u32 content_length;     /* Content length */
-  char *server_header;    /* Server header */
-} response_info_t;
-
-// --- State transition graph types ---
-
-typedef struct state_transition state_transition_t;
-
-typedef struct state_node {
-  u32 state_id;                          /* State ID */
-  u32 visit_count;                       /* Visit count */
-  state_transition_t *transitions;       /* Outgoing transitions */
-  struct state_node *next;               /* Next node in linked list */
-} state_node_t;
-
-struct state_transition {
-  u32 from_state;              /* Source state */
-  u32 to_state;                /* Destination state */
-  u32 trigger_code;            /* Trigger code (response code) */
-  u32 count;                   /* Transition count */
-  state_transition_t *next;    /* Next transition in linked list */
-};
-
-// --- Protocol state machine functions ---
-
-response_info_t *parse_rtsp_response(const char *response, u32 len);
-void free_response_info(response_info_t *info);
-void add_state_transition(u32 from_state, u32 to_state, u32 trigger_code);
-u32 calculate_edge_coverage(void);
-u8 check_rtsp_consistency(const char *request, u32 req_len,
-                          const char *response, u32 resp_len);
-
 #endif /* __AFLNET_H */

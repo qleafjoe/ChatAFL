@@ -1,0 +1,221 @@
+[
+  {
+    "group": "tr3",
+    "file": "grammar.csv",
+    "records": 36,
+    "ok_reason_count": 18,
+    "soft_accept": 0,
+    "soft_reject": 0,
+    "result_counts": {
+      "0": 18,
+      "2": 18
+    },
+    "top_reasons": [
+      [
+        "grammar_accept:ok",
+        18
+      ],
+      [
+        "grammar_extract_null:grammar_fail",
+        11
+      ],
+      [
+        "grammar_pattern_fail:P=���`\"",
+        1
+      ],
+      [
+        "grammar_pattern_fail:STOU",
+        1
+      ],
+      [
+        "grammar_pattern_fail:ABOR",
+        1
+      ],
+      [
+        "grammar_pattern_fail:MDTM",
+        1
+      ],
+      [
+        "grammar_pattern_fail:FEAT",
+        1
+      ],
+      [
+        "grammar_pattern_fail:OPTS",
+        1
+      ],
+      [
+        "grammar_pattern_fail:SIZE",
+        1
+      ]
+    ]
+  },
+  {
+    "group": "tr3",
+    "file": "enrichment.csv",
+    "records": 180,
+    "ok_reason_count": 39,
+    "soft_accept": 0,
+    "soft_reject": 0,
+    "result_counts": {
+      "2": 141,
+      "0": 39
+    },
+    "top_reasons": [
+      [
+        "enrichment_validation:grammar_fail",
+        141
+      ],
+      [
+        "enrichment_validation:ok",
+        39
+      ]
+    ]
+  },
+  {
+    "group": "tr3",
+    "file": "stall.csv",
+    "records": 23,
+    "ok_reason_count": 6,
+    "soft_accept": 0,
+    "soft_reject": 0,
+    "result_counts": {
+      "0": 6,
+      "3": 13,
+      "2": 3,
+      "1": 1
+    },
+    "top_reasons": [
+      [
+        "stall_validation:context_fail",
+        13
+      ],
+      [
+        "stall_validation:ok",
+        6
+      ],
+      [
+        "stall_validation:grammar_fail",
+        3
+      ],
+      [
+        "stall_validation:format_fail",
+        1
+      ]
+    ]
+  },
+  {
+    "group": "tr4",
+    "file": "grammar.csv",
+    "records": 38,
+    "ok_reason_count": 6,
+    "soft_accept": 0,
+    "soft_reject": 0,
+    "result_counts": {
+      "2": 32,
+      "0": 6
+    },
+    "top_reasons": [
+      [
+        "grammar_extract_null:grammar_fail",
+        9
+      ],
+      [
+        "grammar_pattern_fail:",
+        8
+      ],
+      [
+        "grammar_accept:ok",
+        6
+      ],
+      [
+        "grammar_pattern_fail:����\"",
+        2
+      ],
+      [
+        "grammar_pattern_fail:`k5M",
+        1
+      ],
+      [
+        "grammar_pattern_fail:P3�5�^\"",
+        1
+      ],
+      [
+        "grammar_pattern_fail:�fk��gj�:",
+        1
+      ],
+      [
+        "grammar_pattern_fail:��5�^\"",
+        1
+      ],
+      [
+        "grammar_pattern_fail:!\"",
+        1
+      ],
+      [
+        "grammar_pattern_fail:�&�5�^\"",
+        1
+      ]
+    ]
+  },
+  {
+    "group": "tr4",
+    "file": "enrichment.csv",
+    "records": 16,
+    "ok_reason_count": 4,
+    "soft_accept": 0,
+    "soft_reject": 1,
+    "result_counts": {
+      "2": 12,
+      "0": 4
+    },
+    "top_reasons": [
+      [
+        "enrichment_validation:grammar_fail",
+        11
+      ],
+      [
+        "enrichment_validation:ok",
+        4
+      ],
+      [
+        "soft_reject:grammar_fail",
+        1
+      ]
+    ]
+  },
+  {
+    "group": "tr4",
+    "file": "stall.csv",
+    "records": 33,
+    "ok_reason_count": 15,
+    "soft_accept": 0,
+    "soft_reject": 2,
+    "result_counts": {
+      "0": 15,
+      "1": 5,
+      "3": 13
+    },
+    "top_reasons": [
+      [
+        "stall_validation:ok",
+        15
+      ],
+      [
+        "stall_validation:context_fail",
+        12
+      ],
+      [
+        "stall_validation:format_fail",
+        4
+      ],
+      [
+        "soft_reject:context_fail",
+        1
+      ],
+      [
+        "soft_reject:format_fail",
+        1
+      ]
+    ]
+  }
+]

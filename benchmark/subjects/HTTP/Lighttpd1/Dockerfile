@@ -67,6 +67,31 @@ RUN cd chatafl-cl2 && \
     make clean all $MAKE_OPT && \
     cd llvm_mode && make $MAKE_OPT
 
+COPY --chown=ubuntu:ubuntu chatafl-tr1 chatafl-tr1
+RUN cd chatafl-tr1 && \
+    make clean all $MAKE_OPT && \
+    cd llvm_mode && make $MAKE_OPT
+
+COPY --chown=ubuntu:ubuntu chatafl-tr2 chatafl-tr2
+RUN cd chatafl-tr2 && \
+    make clean all $MAKE_OPT && \
+    cd llvm_mode && make $MAKE_OPT
+
+COPY --chown=ubuntu:ubuntu chatafl-tr3 chatafl-tr3
+RUN cd chatafl-tr3 && \
+    make clean all $MAKE_OPT && \
+    cd llvm_mode && make $MAKE_OPT
+
+COPY --chown=ubuntu:ubuntu chatafl-tr4 chatafl-tr4
+RUN cd chatafl-tr4 && \
+    make clean all $MAKE_OPT && \
+    cd llvm_mode && make $MAKE_OPT
+
+COPY --chown=ubuntu:ubuntu chatafl-tr5 chatafl-tr5
+RUN cd chatafl-tr5 && \
+    make clean all $MAKE_OPT && \
+    cd llvm_mode && make $MAKE_OPT
+
 # Set up environment variables for AFLNet
 ENV WORKDIR="/home/ubuntu/experiments"
 ENV AFLNET="/home/ubuntu/aflnet"

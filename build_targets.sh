@@ -3,7 +3,7 @@ set -e
 
 echo "============================================"
 echo " ChatAFL Docker Image Builder"
-echo " Targets: PureFTPD, Live555"
+echo " Targets: PureFTPD, Live555, Lighttpd1"
 echo "============================================"
 
 REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
@@ -15,12 +15,18 @@ echo "[Step 1] Copying fuzzer sources to benchmark dirs..."
 TARGETS=(
   "$REPO_ROOT/benchmark/subjects/FTP/PureFTPD"
   "$REPO_ROOT/benchmark/subjects/RTSP/Live555"
+  "$REPO_ROOT/benchmark/subjects/HTTP/Lighttpd1"
 )
 
 FUZZERS=(
   "aflnet:aflnet"
   "ChatAFL:chatafl"
   "ChatAFL-V0:chatafl-v0"
+  "ChatAFL-TR1:chatafl-tr1"
+  "ChatAFL-TR2:chatafl-tr2"
+  "ChatAFL-TR3:chatafl-tr3"
+  "ChatAFL-TR4:chatafl-tr4"
+  "ChatAFL-TR5:chatafl-tr5"
 )
 
 # V1 and V2 share ChatAFL source with only env.sh overlay
@@ -98,11 +104,15 @@ docker build -t live555 "$REPO_ROOT/benchmark/subjects/RTSP/Live555" 2>&1
 echo ">>> Live555 build COMPLETE."
 
 echo ""
+echo ">>> Building Lighttpd1..."
+docker build -t lighttpd1 "$REPO_ROOT/benchmark/subjects/HTTP/Lighttpd1" 2>&1
+echo ">>> Lighttpd1 build COMPLETE."
+
+echo ""
 echo "============================================"
 echo " All Docker images built successfully!"
 echo "============================================"
 echo ""
 echo "Next: Run fuzzing with:"
 echo "  export LLM_URL=... LLM_TOKEN=... LLM_MODEL=..."
-echo "  ./run.sh 1 2 pure-ftpd chatafl"
-echo "  ./run.sh 1 2 live555 chatafl"
+echo "  ./run_tr_ablation.sh smoke"

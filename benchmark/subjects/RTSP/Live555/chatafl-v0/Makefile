@@ -36,13 +36,6 @@ ifneq "$(filter Linux GNU%,$(shell uname))" ""
   LDFLAGS  += -ldl -lgvc -lcgraph -lm -lcap
 endif
 
-# 覆盖率支持
-COVERAGE ?= 0
-ifeq ($(COVERAGE), 1)
-    CFLAGS += -fprofile-arcs -ftest-coverage
-    LDFLAGS += -lgcov
-endif
-
 ifeq "$(findstring clang, $(shell $(CC) --version 2>/dev/null))" ""
   TEST_CC   = afl-gcc
 else
@@ -78,9 +71,6 @@ afl-as: afl-as.c afl-as.h $(COMM_HDR) | test_x86
 
 afl-fuzz: afl-fuzz.c $(COMM_HDR) aflnet.o aflnet.h chat-llm.o chat-llm.h | test_x86
 	$(CC) $(CFLAGS) $@.c aflnet.o chat-llm.o -o $@ $(LDFLAGS) -lcurl -ljson-c -lpcre2-8
-
-test-integration: test/test_llm_integration
-	./test/test_llm_integration
 
 afl-replay: afl-replay.c $(COMM_HDR) aflnet.o aflnet.h | test_x86
 	$(CC) $(CFLAGS) $@.c aflnet.o -o $@ $(LDFLAGS)

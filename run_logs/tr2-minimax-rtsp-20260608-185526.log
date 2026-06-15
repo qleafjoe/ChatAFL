@@ -1,0 +1,19 @@
+
+# NUM_CONTAINERS: 1
+# TIMEOUT: 43200 s
+# SKIPCOUNT: 1
+# TEST TIMEOUT: 5000 ms
+# TARGET LIST: live555
+# FUZZER LIST: chatafl-tr2
+# EXPERIMENT ID: tr2-minimax-rtsp-20260608-185526
+
+
+***** RUNNING chatafl-tr2 ON live555 *****
+
+
+CHATAFL-TR2: Fuzzing in progress ...
+CHATAFL-TR2: Waiting for the following containers to stop:  168023f6e4cb
+CHATAFL-TR2: Collecting results and save them to results-live555-tr2-minimax-rtsp-20260608-185526
+CHATAFL-TR2: Collecting results from container 168023f6e4cbError response from daemon: Could not find the file /home/ubuntu/experiments/out-live555-chatafl_tr2.tar.gz in container 168023f6e4cb
+
+CHATAFL-TR2: I am done!

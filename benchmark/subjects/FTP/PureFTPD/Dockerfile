@@ -69,6 +69,31 @@ RUN cd chatafl-v2 && \
     make clean all $MAKE_OPT && \
     cd llvm_mode && make $MAKE_OPT
 
+COPY --chown=ubuntu:ubuntu chatafl-tr1 chatafl-tr1
+RUN cd chatafl-tr1 && \
+    make clean all $MAKE_OPT && \
+    cd llvm_mode && make $MAKE_OPT
+
+COPY --chown=ubuntu:ubuntu chatafl-tr2 chatafl-tr2
+RUN cd chatafl-tr2 && \
+    make clean all $MAKE_OPT && \
+    cd llvm_mode && make $MAKE_OPT
+
+COPY --chown=ubuntu:ubuntu chatafl-tr3 chatafl-tr3
+RUN cd chatafl-tr3 && \
+    make clean all $MAKE_OPT && \
+    cd llvm_mode && make $MAKE_OPT
+
+COPY --chown=ubuntu:ubuntu chatafl-tr4 chatafl-tr4
+RUN cd chatafl-tr4 && \
+    make clean all $MAKE_OPT && \
+    cd llvm_mode && make $MAKE_OPT
+
+COPY --chown=ubuntu:ubuntu chatafl-tr5 chatafl-tr5
+RUN cd chatafl-tr5 && \
+    make clean all $MAKE_OPT && \
+    cd llvm_mode && make $MAKE_OPT
+
 # Set up environment variables for AFLNet
 ENV WORKDIR="/home/ubuntu/experiments"
 ENV AFLNET="/home/ubuntu/aflnet"
@@ -80,7 +105,7 @@ ENV AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 \
 
 
 RUN mkdir $WORKDIR && \
-    for f in chatafl chatafl-v0 chatafl-v1 chatafl-v2; do \
+    for f in chatafl chatafl-v0 chatafl-v1 chatafl-v2 chatafl-tr1 chatafl-tr2 chatafl-tr3 chatafl-tr4 chatafl-tr5; do \
       mkdir -p ${WORKDIR}/${f}; \
       cp /home/ubuntu/${f}/env.sh ${WORKDIR}/${f}/env.sh; \
     done

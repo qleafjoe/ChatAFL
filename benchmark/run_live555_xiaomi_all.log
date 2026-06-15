@@ -1,0 +1,81 @@
+=========================================
+Live555 Xiaomi 模型测试
+=========================================
+
+模型: mimo-v2.5-pro
+容器数: 1
+超时: 48000 秒
+配置: all
+
+----------------------------------------
+运行 tr1 + xiaomi
+结果目录: results-live555-tr1_live555_xiaomi_3
+Fuzzer: chatafl-tr1
+----------------------------------------
+----------------------------------------
+运行 tr2 + xiaomi
+结果目录: results-live555-tr2_live555_xiaomi_3
+Fuzzer: chatafl-tr2
+----------------------------------------
+----------------------------------------
+=========================================
+所有实验已启动（并行运行）
+等待所有实验完成...
+运行 tr3 + xiaomi
+=========================================
+结果目录: results-live555-tr3_live555_xiaomi_3
+Fuzzer: chatafl-tr3
+----------------------------------------
+----------------------------------------
+运行 tr4 + xiaomi
+结果目录: results-live555-tr4_live555_xiaomi_3
+Fuzzer: chatafl-tr4
+----------------------------------------
+----------------------------------------
+运行 tr5 + xiaomi
+结果目录: results-live555-tr5-xiaomi-rtsp_2
+Fuzzer: chatafl-tr5
+----------------------------------------
+
+CHATAFL-TR4: Fuzzing in progress ...
+CHATAFL-TR4: Waiting for the following containers to stop:  159bcf0d59f8
+CHATAFL-TR1: Fuzzing in progress ...
+CHATAFL-TR1: Waiting for the following containers to stop:  d19e0302de3e
+CHATAFL-TR5: Fuzzing in progress ...
+CHATAFL-TR5: Waiting for the following containers to stop:  d73eca5d757c
+CHATAFL-TR2: Fuzzing in progress ...
+CHATAFL-TR2: Waiting for the following containers to stop:  2c5aaaccb579
+CHATAFL-TR3: Fuzzing in progress ...
+CHATAFL-TR3: Waiting for the following containers to stop:  fb83820aaf8b
+CHATAFL-TR3: Collecting results and save them to results-live555-tr3_live555_xiaomi_3
+CHATAFL-TR3: Collecting results from container fb83820aaf8b
+CHATAFL-TR3: I am done!
+tr3 完成
+
+
+CHATAFL-TR4: Collecting results and save them to results-live555-tr4_live555_xiaomi_3
+CHATAFL-TR4: Collecting results from container 159bcf0d59f8
+CHATAFL-TR4: I am done!
+tr4 完成
+
+
+CHATAFL-TR5: Collecting results and save them to results-live555-tr5-xiaomi-rtsp_2
+CHATAFL-TR5: Collecting results from container d73eca5d757c
+CHATAFL-TR5: I am done!
+tr5 完成
+
+
+CHATAFL-TR2: Collecting results and save them to results-live555-tr2_live555_xiaomi_3
+CHATAFL-TR2: Collecting results from container 2c5aaaccb579
+CHATAFL-TR2: I am done!
+tr2 完成
+
+
+CHATAFL-TR1: Collecting results and save them to results-live555-tr1_live555_xiaomi_3
+CHATAFL-TR1: Collecting results from container d19e0302de3e
+CHATAFL-TR1: I am done!
+tr1 完成
+
+=========================================
+所有实验完成！
+=========================================

@@ -1,0 +1,57 @@
+# TR ablation mode: smoke
+# NUM_CONTAINERS: 1
+# TIMEOUT: 10 min
+# TARGETS: live555
+# FUZZERS: chatafl-tr1,chatafl-tr2,chatafl-tr3,chatafl-tr4
+# EXPERIMENT_ID: tr_smoke_20260601_231925
+# LLM_URL: https://api.minimaxi.com/v1/text/chatcompletion_v2
+# LLM_MODEL: MiniMax-M2.7
+
+# NUM_CONTAINERS: 1
+# TIMEOUT: 600 s
+# SKIPCOUNT: 1
+# TEST TIMEOUT: 5000 ms
+# TARGET LIST: live555
+# FUZZER LIST: chatafl-tr1,chatafl-tr2,chatafl-tr3,chatafl-tr4
+# EXPERIMENT ID: tr_smoke_20260601_231925
+
+
+***** RUNNING chatafl-tr1 ON live555 *****
+
+
+***** RUNNING chatafl-tr2 ON live555 *****
+
+mkdir: cannot create directory ‘results-live555-tr_smoke_20260601_231925’: File exists
+
+***** RUNNING chatafl-tr3 ON live555 *****
+
+mkdir: cannot create directory ‘results-live555-tr_smoke_20260601_231925’: File exists
+
+***** RUNNING chatafl-tr4 ON live555 *****
+
+mkdir: cannot create directory ‘results-live555-tr_smoke_20260601_231925’: File exists
+
+CHATAFL-TR2: Fuzzing in progress ...
+CHATAFL-TR2: Waiting for the following containers to stop:  251b97665bba
+CHATAFL-TR3: Fuzzing in progress ...
+CHATAFL-TR3: Waiting for the following containers to stop:  bca4973659f8
+CHATAFL-TR1: Fuzzing in progress ...
+CHATAFL-TR1: Waiting for the following containers to stop:  003f36452de2
+CHATAFL-TR4: Fuzzing in progress ...
+CHATAFL-TR4: Waiting for the following containers to stop:  9f84352233e2
+CHATAFL-TR2: Collecting results and save them to results-live555-tr_smoke_20260601_231925
+CHATAFL-TR2: Collecting results from container 251b97665bba
+CHATAFL-TR3: Collecting results and save them to results-live555-tr_smoke_20260601_231925
+CHATAFL-TR3: Collecting results from container bca4973659f8
+CHATAFL-TR2: I am done!
+
+CHATAFL-TR1: Collecting results and save them to results-live555-tr_smoke_20260601_231925
+CHATAFL-TR1: Collecting results from container 003f36452de2
+CHATAFL-TR1: I am done!
+
+CHATAFL-TR3: I am done!
+
+CHATAFL-TR4: Collecting results and save them to results-live555-tr_smoke_20260601_231925
+CHATAFL-TR4: Collecting results from container 9f84352233e2Error response from daemon: Could not find the file /home/ubuntu/experiments/out-live555-chatafl_tr4.tar.gz in container 9f84352233e2
+
+CHATAFL-TR4: I am done!

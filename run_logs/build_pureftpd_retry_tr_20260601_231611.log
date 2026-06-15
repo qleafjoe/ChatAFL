@@ -1,0 +1,125 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 4.72kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/ubuntu:20.04
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [ 1/38] FROM docker.io/library/ubuntu:20.04
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 195.88kB 0.3s done
+#5 DONE 0.3s
+
+#6 [11/38] COPY --chown=ubuntu:ubuntu chatafl-v0 chatafl-v0
+#6 CACHED
+
+#7 [25/38] RUN mkdir /home/ubuntu/experiments &&     for f in chatafl chatafl-v0 chatafl-v1 chatafl-v2 chatafl-tr1 chatafl-tr2 chatafl-tr3 chatafl-tr4; do       mkdir -p /home/ubuntu/experiments/${f};       cp /home/ubuntu/${f}/env.sh /home/ubuntu/experiments/${f}/env.sh;     done
+#7 CACHED
+
+#8 [23/38] COPY --chown=ubuntu:ubuntu chatafl-tr4 chatafl-tr4
+#8 CACHED
+
+#9 [19/38] COPY --chown=ubuntu:ubuntu chatafl-tr2 chatafl-tr2
+#9 CACHED
+
+#10 [ 9/38] COPY --chown=ubuntu:ubuntu chatafl chatafl
+#10 CACHED
+
+#11 [12/38] RUN cd chatafl-v0 &&     make clean all $MAKE_OPT &&     cd llvm_mode && make $MAKE_OPT
+#11 CACHED
+
+#12 [17/38] COPY --chown=ubuntu:ubuntu chatafl-tr1 chatafl-tr1
+#12 CACHED
+
+#13 [24/38] RUN cd chatafl-tr4 &&     make clean all $MAKE_OPT &&     cd llvm_mode && make $MAKE_OPT
+#13 CACHED
+
+#14 [ 7/38] COPY --chown=ubuntu:ubuntu aflnet aflnet
+#14 CACHED
+
+#15 [21/38] COPY --chown=ubuntu:ubuntu chatafl-tr3 chatafl-tr3
+#15 CACHED
+
+#16 [ 2/38] RUN apt-get -y update &&     apt-get -y install sudo     apt-utils     build-essential     openssl     clang     graphviz-dev     git     autoconf     libgnutls28-dev     libssl-dev     llvm     python3-pip     nano     net-tools     vim     gdb     netcat     strace     libcap-dev     libpcre2-dev     libpcre2-8-0     libcurl4-openssl-dev     libjson-c-dev     wget
+#16 CACHED
+
+#17 [20/38] RUN cd chatafl-tr2 &&     make clean all $MAKE_OPT &&     cd llvm_mode && make $MAKE_OPT
+#17 CACHED
+
+#18 [22/38] RUN cd chatafl-tr3 &&     make clean all $MAKE_OPT &&     cd llvm_mode && make $MAKE_OPT
+#18 CACHED
+
+#19 [ 6/38] WORKDIR /home/ubuntu
+#19 CACHED
+
+#20 [14/38] RUN cd chatafl-v1 &&     make clean all $MAKE_OPT &&     cd llvm_mode && make $MAKE_OPT
+#20 CACHED
+
+#21 [15/38] COPY --chown=ubuntu:ubuntu chatafl-v2 chatafl-v2
+#21 CACHED
+
+#22 [ 3/38] RUN groupadd ubuntu &&     useradd -rm -d /home/ubuntu -s /bin/bash -g ubuntu -G sudo -u 1000 ubuntu -p "$(openssl passwd -1 ubuntu)"
+#22 CACHED
+
+#23 [18/38] RUN cd chatafl-tr1 &&     make clean all $MAKE_OPT &&     cd llvm_mode && make $MAKE_OPT
+#23 CACHED
+
+#24 [16/38] RUN cd chatafl-v2 &&     make clean all $MAKE_OPT &&     cd llvm_mode && make $MAKE_OPT
+#24 CACHED
+
+#25 [13/38] COPY --chown=ubuntu:ubuntu chatafl-v1 chatafl-v1
+#25 CACHED
+
+#26 [ 5/38] RUN pip install gcovr==4.2
+#26 CACHED
+
+#27 [27/38] COPY --chown=ubuntu:ubuntu gcov.patch /home/ubuntu/experiments/gcov.patch
+#27 CACHED
+
+#28 [ 4/38] RUN chmod 777 /tmp
+#28 CACHED
+
+#29 [ 8/38] RUN cd aflnet &&     make clean all $MAKE_OPT &&     cd llvm_mode && make $MAKE_OPT
+#29 CACHED
+
+#30 [10/38] RUN cd chatafl &&     make clean all $MAKE_OPT &&     cd llvm_mode && make $MAKE_OPT
+#30 CACHED
+
+#31 [26/38] COPY --chown=ubuntu:ubuntu fuzzing.patch /home/ubuntu/experiments/fuzzing.patch
+#31 CACHED
+
+#32 [28/38] RUN apt -y install automake
+#32 CACHED
+
+#33 [29/38] RUN cd /home/ubuntu/experiments &&     git clone https://github.com/jedisct1/pure-ftpd.git &&     cd pure-ftpd &&     git checkout 10122d9f &&     patch -p1 < /home/ubuntu/experiments/fuzzing.patch &&     ./autogen.sh &&     ac_cv_sizeof_mode_t=4     CC="afl-clang-fast" CXX="afl-clang-fast++" CFLAGS="-fsanitize=address -g -O0" CXXFLAGS="-fsanitize=address -g -O0" LDFLAGS="-fsanitize=address" ./configure --without-privsep --without-capabilities &&     make $MAKE_OPT
+#33 0.231 Cloning into 'pure-ftpd'...
+#33 29.86 fatal: unable to access 'https://github.com/jedisct1/pure-ftpd.git/': GnuTLS recv error (-110): The TLS connection was non-properly terminated.
+#33 ERROR: process "/bin/sh -c cd ${WORKDIR} &&     git clone https://github.com/jedisct1/pure-ftpd.git &&     cd pure-ftpd &&     git checkout 10122d9f &&     patch -p1 < ${WORKDIR}/fuzzing.patch &&     ./autogen.sh &&     ac_cv_sizeof_mode_t=4     CC=\"afl-clang-fast\" CXX=\"afl-clang-fast++\" CFLAGS=\"-fsanitize=address -g -O0\" CXXFLAGS=\"-fsanitize=address -g -O0\" LDFLAGS=\"-fsanitize=address\" ./configure --without-privsep --without-capabilities &&     make $MAKE_OPT" did not complete successfully: exit code: 128
+------
+ > [29/38] RUN cd /home/ubuntu/experiments &&     git clone https://github.com/jedisct1/pure-ftpd.git &&     cd pure-ftpd &&     git checkout 10122d9f &&     patch -p1 < /home/ubuntu/experiments/fuzzing.patch &&     ./autogen.sh &&     ac_cv_sizeof_mode_t=4     CC="afl-clang-fast" CXX="afl-clang-fast++" CFLAGS="-fsanitize=address -g -O0" CXXFLAGS="-fsanitize=address -g -O0" LDFLAGS="-fsanitize=address" ./configure --without-privsep --without-capabilities &&     make $MAKE_OPT:
+0.231 Cloning into 'pure-ftpd'...
+29.86 fatal: unable to access 'https://github.com/jedisct1/pure-ftpd.git/': GnuTLS recv error (-110): The TLS connection was non-properly terminated.
+------
+Dockerfile:119
+--------------------
+ 118 |     # Set up PureFTPD for fuzzing
+ 119 | >>> RUN cd ${WORKDIR} && \
+ 120 | >>>     git clone https://github.com/jedisct1/pure-ftpd.git && \
+ 121 | >>>     cd pure-ftpd && \
+ 122 | >>>     git checkout 10122d9f && \
+ 123 | >>>     patch -p1 < ${WORKDIR}/fuzzing.patch && \
+ 124 | >>>     ./autogen.sh && \
+ 125 | >>>     ac_cv_sizeof_mode_t=4 \
+ 126 | >>>     CC="afl-clang-fast" CXX="afl-clang-fast++" CFLAGS="-fsanitize=address -g -O0" CXXFLAGS="-fsanitize=address -g -O0" LDFLAGS="-fsanitize=address" ./configure --without-privsep --without-capabilities && \
+ 127 | >>>     make $MAKE_OPT
+ 128 |     
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c cd ${WORKDIR} &&     git clone https://github.com/jedisct1/pure-ftpd.git &&     cd pure-ftpd &&     git checkout 10122d9f &&     patch -p1 < ${WORKDIR}/fuzzing.patch &&     ./autogen.sh &&     ac_cv_sizeof_mode_t=4     CC=\"afl-clang-fast\" CXX=\"afl-clang-fast++\" CFLAGS=\"-fsanitize=address -g -O0\" CXXFLAGS=\"-fsanitize=address -g -O0\" LDFLAGS=\"-fsanitize=address\" ./configure --without-privsep --without-capabilities &&     make $MAKE_OPT" did not complete successfully: exit code: 128

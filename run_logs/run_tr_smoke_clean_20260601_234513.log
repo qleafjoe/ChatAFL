@@ -1,0 +1,48 @@
+# TR ablation mode: smoke
+# NUM_CONTAINERS: 1
+# TIMEOUT: 10 min
+# TARGETS: live555
+# FUZZERS: chatafl-tr1,chatafl-tr2,chatafl-tr3,chatafl-tr4
+# EXPERIMENT_ID: tr_smoke_clean_20260601_234513
+# LLM_URL: <unset>
+# LLM_MODEL: <unset>
+
+# NUM_CONTAINERS: 1
+# TIMEOUT: 600 s
+# SKIPCOUNT: 1
+# TEST TIMEOUT: 5000 ms
+# TARGET LIST: live555
+# FUZZER LIST: chatafl-tr1,chatafl-tr2,chatafl-tr3,chatafl-tr4
+# EXPERIMENT ID: tr_smoke_clean_20260601_234513
+
+
+***** RUNNING chatafl-tr1 ON live555 *****
+
+
+***** RUNNING chatafl-tr2 ON live555 *****
+
+mkdir: cannot create directory ‘results-live555-tr_smoke_clean_20260601_234513’: File exists
+
+***** RUNNING chatafl-tr3 ON live555 *****
+
+mkdir: cannot create directory ‘results-live555-tr_smoke_clean_20260601_234513’: File exists
+
+***** RUNNING chatafl-tr4 ON live555 *****
+
+mkdir: cannot create directory ‘results-live555-tr_smoke_clean_20260601_234513’: File exists
+
+CHATAFL-TR4: Fuzzing in progress ...
+CHATAFL-TR4: Waiting for the following containers to stop:  a9249a531db7
+CHATAFL-TR1: Fuzzing in progress ...
+CHATAFL-TR1: Waiting for the following containers to stop:  2a6e4fa717b4
+CHATAFL-TR3: Fuzzing in progress ...
+CHATAFL-TR3: Waiting for the following containers to stop:  2db99a0d4e1c
+CHATAFL-TR2: Fuzzing in progress ...
+CHATAFL-TR2: Waiting for the following containers to stop:  cba2a73226fd
+CHATAFL-TR2: Collecting results and save them to results-live555-tr_smoke_clean_20260601_234513
+CHATAFL-TR2: Collecting results from container cba2a73226fd
+CHATAFL-TR2: I am done!
+
+CHATAFL-TR3: Collecting results and save them to results-live555-tr_smoke_clean_20260601_234513
+CHATAFL-TR3: Collecting results from container 2db99a0d4e1c
+CHATAFL-TR3: I am done!

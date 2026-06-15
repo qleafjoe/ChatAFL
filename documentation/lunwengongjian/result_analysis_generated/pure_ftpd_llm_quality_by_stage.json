@@ -1,0 +1,188 @@
+[
+  {
+    "group": "tr3",
+    "stage": "grammar",
+    "records": 36,
+    "valid": 18,
+    "valid_pct": 50.0,
+    "soft_accept": 0,
+    "soft_reject": 0,
+    "top_reasons": [
+      [
+        "grammar",
+        "grammar_accept:ok",
+        18
+      ],
+      [
+        "grammar",
+        "grammar_extract_null:grammar_fail",
+        11
+      ],
+      [
+        "grammar",
+        "grammar_pattern_fail:P=���`\"",
+        1
+      ],
+      [
+        "grammar",
+        "grammar_pattern_fail:STOU",
+        1
+      ],
+      [
+        "grammar",
+        "grammar_pattern_fail:ABOR",
+        1
+      ],
+      [
+        "grammar",
+        "grammar_pattern_fail:MDTM",
+        1
+      ],
+      [
+        "grammar",
+        "grammar_pattern_fail:FEAT",
+        1
+      ]
+    ]
+  },
+  {
+    "group": "tr3",
+    "stage": "stall",
+    "records": 23,
+    "valid": 6,
+    "valid_pct": 26.08695652173913,
+    "soft_accept": 0,
+    "soft_reject": 0,
+    "top_reasons": [
+      [
+        "stall",
+        "stall_validation:context_fail",
+        13
+      ],
+      [
+        "stall",
+        "stall_validation:ok",
+        6
+      ],
+      [
+        "stall",
+        "stall_validation:grammar_fail",
+        3
+      ]
+    ]
+  },
+  {
+    "group": "tr3",
+    "stage": "enrichment",
+    "records": 180,
+    "valid": 39,
+    "valid_pct": 21.666666666666668,
+    "soft_accept": 0,
+    "soft_reject": 0,
+    "top_reasons": [
+      [
+        "enrichment",
+        "enrichment_validation:grammar_fail",
+        141
+      ],
+      [
+        "enrichment",
+        "enrichment_validation:ok",
+        39
+      ]
+    ]
+  },
+  {
+    "group": "tr4",
+    "stage": "grammar",
+    "records": 38,
+    "valid": 6,
+    "valid_pct": 15.789473684210526,
+    "soft_accept": 0,
+    "soft_reject": 0,
+    "top_reasons": [
+      [
+        "grammar",
+        "grammar_extract_null:grammar_fail",
+        9
+      ],
+      [
+        "grammar",
+        "grammar_pattern_fail:",
+        8
+      ],
+      [
+        "grammar",
+        "grammar_accept:ok",
+        6
+      ],
+      [
+        "grammar",
+        "grammar_pattern_fail:����\"",
+        2
+      ],
+      [
+        "grammar",
+        "grammar_pattern_fail:`k5M",
+        1
+      ],
+      [
+        "grammar",
+        "grammar_pattern_fail:P3�5�^\"",
+        1
+      ],
+      [
+        "grammar",
+        "grammar_pattern_fail:�fk��gj�:",
+        1
+      ]
+    ]
+  },
+  {
+    "group": "tr4",
+    "stage": "enrichment",
+    "records": 16,
+    "valid": 4,
+    "valid_pct": 25.0,
+    "soft_accept": 0,
+    "soft_reject": 1,
+    "top_reasons": [
+      [
+        "enrichment",
+        "enrichment_validation:grammar_fail",
+        11
+      ],
+      [
+        "enrichment",
+        "enrichment_validation:ok",
+        4
+      ]
+    ]
+  },
+  {
+    "group": "tr4",
+    "stage": "stall",
+    "records": 33,
+    "valid": 15,
+    "valid_pct": 45.45454545454545,
+    "soft_accept": 0,
+    "soft_reject": 2,
+    "top_reasons": [
+      [
+        "stall",
+        "stall_validation:ok",
+        15
+      ],
+      [
+        "stall",
+        "stall_validation:context_fail",
+        12
+      ],
+      [
+        "stall",
+        "stall_validation:format_fail",
+        4
+      ]
+    ]
+  }
+]
